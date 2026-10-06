@@ -1,8 +1,7 @@
 #!/usr/bin/env python3
 from pathlib import Path
 import sys,tempfile,subprocess,tarfile,json,shutil
-root=Path(__file__).resolve().parent.parent
-sys.path.insert(0,str(root/'seminar'))
+root=Path(__file__).resolve().parents[2]
 from verify_db import grade
 from datetime import datetime,timezone
 base=root/'seminar/reports/validation'/('db-selfcheck-'+datetime.now(timezone.utc).strftime('%Y%m%dT%H%M%SZ'))

@@ -11,5 +11,7 @@ frontend/node_modules/
 frontend/playwright-report/
 frontend/test-results/
 seminar/runtime/
+seminar/workspace/
 seminar/reports/**/private/
 seminar/__pycache__/
+seminar/tools/__pycache__/

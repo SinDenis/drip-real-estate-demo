@@ -5,7 +5,7 @@ import json
 from pathlib import Path
 import sys
 
-SEM = Path(__file__).resolve().parent
+SEM = Path(__file__).resolve().parent.parent
 
 def read(path):return json.loads(path.read_text())
 def sha(data):return hashlib.sha256(data).hexdigest()

@@ -29,7 +29,7 @@ def inspect(root):
 
 def main():
     p=argparse.ArgumentParser(description='Проверить ссылки, команды и бюджет файлов контекста')
-    p.add_argument('root', nargs='?', default=str(Path(__file__).resolve().parent.parent))
+    p.add_argument('root', nargs='?', default=str(Path(__file__).resolve().parents[2]))
     args=p.parse_args(); problems=inspect(Path(args.root))
     print(f'problems: {len(problems)}')
     for file,reason in problems: print('error: '+json.dumps({'file':file,'reason':reason},ensure_ascii=False))

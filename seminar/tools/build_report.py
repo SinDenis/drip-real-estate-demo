@@ -4,7 +4,7 @@ import json
 from pathlib import Path
 import statistics
 
-SEM = Path(__file__).resolve().parent
+SEM = Path(__file__).resolve().parent.parent
 GITHUB = 'https://github.com/SinDenis/drip-real-estate-demo/blob/codex/context-engineering-seminar/'
 
 EXPLANATIONS = {
@@ -31,7 +31,7 @@ def build_data():
   cases.append({'id':cfg['id'],'title':cfg['title'],'prompt':(report/'prompt.txt').read_text(),'hash':raw['prompt_sha256'],'report':str(report.relative_to(SEM)),'rows':rows,'aggregate':aggregates,'context':{c:json.loads((report/(c+'-r1')/'input.json').read_text())['context_files'] for c in ['before','after']},**EXPLANATIONS[cfg['id']]})
  return {'cases':cases,'github':GITHUB,'audit':json.loads((SEM/'reports/protocol-audit.json').read_text())}
 
-TEMPLATE = (SEM / 'report-template.html').read_text()
+TEMPLATE = (SEM / 'tools/report-template.html').read_text()
 
 def main():
  data=build_data();target=SEM/'.lavish/seminar-5.html';target.parent.mkdir(exist_ok=True)

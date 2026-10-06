@@ -14,6 +14,7 @@ from datetime import datetime, timezone
 
 ROOT = Path(__file__).resolve().parent.parent
 SEM = ROOT / 'seminar'
+TOOLS = SEM / 'tools'
 RUNTIME = SEM / 'runtime'
 MODEL = 'gpt-6.1-sol'
 EFFORT = 'low'
@@ -60,8 +61,8 @@ def codex_home():
         auth.symlink_to(login)
     return home
 
-def freeze_context(example_dir, paths, condition, revision, source=ROOT):
-    folder = example_dir / 'contexts' / revision / condition
+def freeze_context(example_dir, paths, condition, revision, source=ROOT, destination=None):
+    folder = (destination or example_dir / 'contexts') / revision / condition
     if not folder.exists():
         folder.mkdir(parents=True)
         for name in paths:
@@ -113,34 +114,42 @@ def materialize(config, example_dir, context_dir, label, include_dependencies=Tr
         shutil.copytree(dependencies, work / 'frontend/node_modules', symlinks=True)
     return work, code, context
 
-def execute_example(args):
+def execute_example(args, context_paths=None, before_source=None, context_root=None):
     example_dir = SEM / 'examples' / args.example
     cfg = json.loads((example_dir / 'example.json').read_text())
+    if context_paths:
+        cfg['before_context'], cfg['after_context'] = context_paths
     prompt_file = example_dir / 'prompt.txt'
     prompt_hash = sha(prompt_file.read_bytes())
-    stamp = datetime.now(timezone.utc).strftime('%Y%m%dT%H%M%SZ')
+    stamp = datetime.now(timezone.utc).strftime('%Y%m%dT%H%M%S%fZ')
     report = SEM / 'reports' / args.example / stamp
-    report.mkdir(parents=True)
     revision = args.revision or cfg.get('context_revision', 'v1')
     if args.after_source and not args.revision:
         raise RuntimeError('A custom context source requires --revision with a fresh name')
     if not revision or any(c not in 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789-_' for c in revision):
         raise RuntimeError('Revision must use letters, numbers, dash or underscore')
     after_source = Path(args.after_source).resolve() if args.after_source else ROOT
-    if args.after_source and (example_dir / 'contexts' / revision).exists():
+    frozen_root = context_root or example_dir / 'contexts'
+    if args.after_source and (frozen_root / revision).exists():
         raise RuntimeError('This revision is already frozen. Choose a new --revision to preserve it.')
-    before_source = ROOT / cfg['before_source'] if 'before_source' in cfg else ROOT
-    before = freeze_context(example_dir, cfg['before_context'], 'before', revision, before_source)
-    after = freeze_context(example_dir, cfg['after_context'], 'after', revision, after_source)
+    before_source = before_source or (ROOT / cfg['before_source'] if 'before_source' in cfg else ROOT)
+    for source, paths in ((before_source, cfg['before_context']), (after_source, cfg['after_context'])):
+        for name in paths:
+            if not (source / name).is_file():
+                raise RuntimeError('Missing context file: ' + str(source / name))
+    before = freeze_context(example_dir, cfg['before_context'], 'before', revision, before_source, frozen_root)
+    after = freeze_context(example_dir, cfg['after_context'], 'after', revision, after_source, frozen_root)
     native = native_env()
     home = codex_home()
+    binary = tooling()
+    report.mkdir(parents=True)
     tests = []
     prepared = []
     evaluator = report / 'evaluator'
     evaluator.mkdir()
     for name in ('verify.py', 'verify_domain.py', 'verify_db.py', 'grade.cjs'):
-        shutil.copyfile(SEM / name, evaluator / name)
-    shutil.copytree(SEM / 'fixtures', evaluator / 'fixtures')
+        shutil.copyfile(TOOLS / name, evaluator / name)
+    shutil.copytree(TOOLS / 'fixtures', evaluator / 'fixtures')
     replicas = args.repeats or cfg.get('replicates', 3)
     for replica in range(1, replicas + 1):
         order = ('before', 'after') if replica % 2 else ('after', 'before')
@@ -157,7 +166,7 @@ def execute_example(args):
                 'context_bytes': sum((workspace / name).stat().st_size for name in context),
                 'model': MODEL, 'effort': EFFORT,
                 'context_revision': revision,
-                'verifier_sha256': sha((SEM / 'verify.py').read_bytes()),
+                'verifier_sha256': sha((TOOLS / 'verify.py').read_bytes()),
             }
             (case_dir / 'input.json').write_text(json.dumps(manifest, ensure_ascii=False, indent=2) + '\n')
             prepared.append(manifest)
@@ -185,7 +194,7 @@ def execute_example(args):
     config_file.write_text(json.dumps(output, ensure_ascii=False, indent=2) + '\n')
     (report / 'prompt.txt').write_bytes(prompt_file.read_bytes())
     print(f'experiment: {args.example}\nreplicates: {replicas}\nconditions: 2\nprompt_sha256: {prompt_hash}', flush=True)
-    command = [str(tooling()), 'eval', '-c', str(config_file), '--no-cache', '--no-share', '--no-progress-bar', '--max-concurrency', '1', '--no-table', '-o', str(report / 'promptfoo.json'), str(report / 'promptfoo.html')]
+    command = [str(binary), 'eval', '-c', str(config_file), '--no-cache', '--no-share', '--no-progress-bar', '--max-concurrency', '1', '--no-table', '-o', str(report / 'promptfoo.json'), str(report / 'promptfoo.html')]
     with (report / 'console.log').open('w') as log:
         p = subprocess.run(command, cwd=ROOT, env=native, stdout=log, stderr=subprocess.STDOUT)
     if (report / 'promptfoo.json').exists():
@@ -194,6 +203,7 @@ def execute_example(args):
     # A failed solution is an experiment result, not a reason to discard its report.
     if not (report / 'promptfoo.json').exists():
         raise RuntimeError('No result report: inspect console.log')
+    return report
 
 def summarize(report, cfg):
     data = json.loads((report / 'promptfoo.json').read_text())
@@ -201,8 +211,10 @@ def summarize(report, cfg):
     for result in data['results']['results']:
         variables = result['vars']
         case = Path(variables['reportDir'])
-        response = result.get('response', {})
-        raw = json.loads(response.get('raw', '{}'))
+        response = result.get('response') or {}
+        raw_value = response.get('raw') or {}
+        raw = json.loads(raw_value) if isinstance(raw_value, str) else raw_value
+        grading = result.get('gradingResult') or {}
         (case / 'private').mkdir(exist_ok=True)
         (case / 'private/codex-turn.json').write_text(json.dumps(raw, ensure_ascii=False, indent=2) + '\n')
         usage = response.get('tokenUsage') or {}
@@ -215,8 +227,8 @@ def summarize(report, cfg):
             'output_tokens': usage.get('completion'), 'total_tokens': usage.get('total'),
             'latency_ms': result.get('latencyMs'), 'estimated_api_equivalent_usd': result.get('cost'),
             'command_count': len(commands), 'session_id': response.get('sessionId'),
-            'grading': result.get('gradingResult'),
-            'valid_trial': not str(result.get('gradingResult', {}).get('reason', '')).startswith('Evaluator error:') and bool(response.get('output')) and usage.get('total') is not None,
+            'grading': grading,
+            'valid_trial': bool(grading) and not str(grading.get('reason', '')).startswith('Evaluator error:') and bool(response.get('output')) and usage.get('total') is not None,
         }
         session = response.get('sessionId')
         rollouts = list((RUNTIME / 'codex-home/sessions').rglob('*' + session + '.jsonl')) if session else []
@@ -247,22 +259,26 @@ def main():
     parser = argparse.ArgumentParser(description='Контролируемые эксперименты context engineering через Promptfoo')
     sub = parser.add_subparsers(dest='action')
     sub.add_parser('setup', help='Установить закреплённые инструменты в игнорируемую папку runtime')
+    from tools import classroom
+    classroom.add_commands(sub)
     trial = sub.add_parser('run', help='Запустить один пример с фиксированным промптом')
-    trial.add_argument('--example', required=True)
-    trial.add_argument('--repeats', type=int)
+    trial.add_argument('--example', required=True, choices=classroom.EXAMPLES)
+    trial.add_argument('--repeats', type=classroom.positive_int)
     trial.add_argument('--revision', help='Fresh immutable context revision for a classroom experiment')
     trial.add_argument('--after-source', help='Folder with edited context files; requires a fresh --revision')
     prepare = sub.add_parser('prepare', help='Create an editable classroom copy from the frozen guided context')
-    prepare.add_argument('--example', required=True)
+    prepare.add_argument('--example', required=True, choices=classroom.EXAMPLES)
     restore = sub.add_parser('restore', help='Import the saved official series into native Promptfoo UI without model calls')
     restore.add_argument('--config-dir', help='Optional local Promptfoo database folder')
     args = parser.parse_args()
     if args.action == 'setup':
         tool = RUNTIME / 'tool'
         tool.mkdir(parents=True, exist_ok=True)
-        shutil.copyfile(SEM / 'package.json', tool / 'package.json')
+        shutil.copyfile(TOOLS / 'package.json', tool / 'package.json')
         run(['npm', 'install', '--prefix', str(tool), '--no-audit', '--no-fund'])
         print('setup: ready')
+    elif args.action in ('start', 'compare', 'check', 'view'):
+        classroom.dispatch(args, sys.modules[__name__])
     elif args.action == 'run':
         execute_example(args)
     elif args.action == 'restore':
@@ -303,12 +319,16 @@ def main():
         print('help: edit only context, check it, then run with --after-source and a fresh --revision')
     else:
         examples = sorted((SEM / 'examples').glob('*/example.json'))
+        print('bin: ' + str(Path(__file__).resolve()))
+        print('description: Context engineering workshop with Promptfoo')
         print(f'examples: {len(examples)}')
-        print('help: python3 seminar/run.py run --example <id> [--repeats <n>]')
+        print('workspace: ' + str(SEM / 'workspace'))
+        print('help: python3 seminar/run.py start')
+        print('guide: ' + str(SEM / 'README.md'))
 
 if __name__ == '__main__':
     try:
         main()
-    except (RuntimeError, subprocess.CalledProcessError) as error:
+    except (RuntimeError, OSError, subprocess.CalledProcessError) as error:
         print('error: ' + json.dumps(str(error), ensure_ascii=False))
         sys.exit(1)
