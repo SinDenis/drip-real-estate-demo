@@ -1,0 +1,30 @@
+{
+  "fixture_control": "existing GET and POST passed",
+  "absent_features_rejected": {
+    "1": {
+      "original_tests_and_context_unchanged": true,
+      "http_behavior": false,
+      "generator_runs": true,
+      "both_generated_contracts_current": true,
+      "route_in_openapi": true,
+      "backend_and_existing_tests": true
+    },
+    "2": {
+      "original_tests_and_context_unchanged": true,
+      "http_behavior": false,
+      "generator_runs": true,
+      "both_generated_contracts_current": true,
+      "route_in_openapi": false,
+      "backend_and_existing_tests": true
+    },
+    "3": {
+      "original_tests_and_context_unchanged": true,
+      "http_behavior": false,
+      "generator_runs": true,
+      "both_generated_contracts_current": true,
+      "route_in_openapi": false,
+      "backend_and_existing_tests": true
+    }
+  },
+  "model_calls": 0
+}
