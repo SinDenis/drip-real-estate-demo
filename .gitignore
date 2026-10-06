@@ -1,0 +1,12 @@
+.env
+.env.*
+!.env.example
+*.swp
+artifacts/
+backend/coverage*.out
+backend/.build/
+frontend/coverage/
+frontend/dist/
+frontend/node_modules/
+frontend/playwright-report/
+frontend/test-results/

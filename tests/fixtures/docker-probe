@@ -1,0 +1,11 @@
+#!/usr/bin/env bash
+
+set -euo pipefail
+
+printf 'argv[%d]:\n' "$#"
+for argument in "$@"; do
+  escaped="${argument//\\/\\\\}"
+  escaped="${escaped//\"/\\\"}"
+  escaped="${escaped//$'\n'/\\n}"
+  printf '  - "%s"\n' "$escaped"
+done

@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
+  <defs>
+    <linearGradient id="background" x1="8" y1="8" x2="56" y2="56">
+      <stop stop-color="#6d95b3" />
+      <stop offset="1" stop-color="#294f6b" />
+    </linearGradient>
+  </defs>
+  <rect width="64" height="64" rx="16" fill="#1c3548" />
+  <rect x="4" y="4" width="56" height="56" rx="13" fill="url(#background)" />
+  <text
+    x="32"
+    y="39"
+    fill="#f3f7ff"
+    font-family="Arial, sans-serif"
+    font-size="16"
+    font-weight="700"
+    text-anchor="middle"
+  >DRIP</text>
+</svg>

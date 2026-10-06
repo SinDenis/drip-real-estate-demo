@@ -1,0 +1,26 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+readonly threshold=90
+readonly backend_dir="$(cd "$(dirname "${BASH_SOURCE[0]}")/../backend" && pwd)"
+readonly profile="${backend_dir}/coverage.out"
+
+cd "${backend_dir}"
+# Process composition and PostgreSQL/HTTP adapters run against their real dependencies in the
+# mandatory Docker E2E suite. Keep the native gate focused on deterministic, isolated packages.
+readonly -a test_packages=(
+  ./internal/adapters/objectstorage
+  ./internal/adapters/security
+  ./internal/application
+  ./internal/platform/config
+  ./internal/platform/httpserver
+  ./internal/platform/observability
+)
+go test -coverprofile="${profile}" "${test_packages[@]}"
+
+coverage="$(go tool cover -func="${profile}" | awk '/^total:/ {gsub(/%/, "", $3); print $3}')"
+awk -v actual="${coverage}" -v required="${threshold}" 'BEGIN { exit !(actual + 0 >= required) }' || {
+  echo "Go coverage ${coverage}% is below ${threshold}%" >&2
+  exit 1
+}
+echo "Go coverage ${coverage}% meets the ${threshold}% gate"

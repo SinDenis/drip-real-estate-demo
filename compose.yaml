@@ -1,0 +1,160 @@
+name: drip-real-estate-demo
+
+x-app-environment: &app-environment
+  APP_ENV: local
+  APP_PORT: "8080"
+  BOOTSTRAP_ADMIN_DISPLAY_NAME: Аналитик-администратор
+  BOOTSTRAP_ADMIN_LOGIN: admin
+  BOOTSTRAP_ADMIN_PASSWORD: "Bootstrap-Admin-2026!"
+  DATABASE_URL: postgres://analytics:analytics@postgres:5432/analytics?sslmode=disable
+  S3_ENDPOINT: http://s3mock:9090
+  S3_REGION: us-east-1
+  S3_BUCKET: analytics
+  S3_ACCESS_KEY_ID: local-access
+  S3_SECRET_ACCESS_KEY: local-secret
+  S3_PATH_STYLE: "true"
+  CLIENT_ID: offline-e2e-client
+  CLIENT_SECRET: offline-e2e-secret
+  EISZHS_API_URL: http://fake-eiszhs:8090/
+  EISZHS_OAUTH_URL: http://fake-eiszhs:8090/token
+  CURRENT_COLLECTION_LEASE: 600ms
+  CURRENT_COLLECTION_RENEW_EVERY: 100ms
+
+services:
+  postgres:
+    image: postgres:18.6-bookworm
+    environment:
+      POSTGRES_DB: analytics
+      POSTGRES_PASSWORD: analytics
+      POSTGRES_USER: analytics
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U analytics -d analytics"]
+      interval: 2s
+      timeout: 3s
+      retries: 20
+    ports:
+      - "127.0.0.1:${POSTGRES_PORT:-55432}:5432"
+    volumes:
+      - postgres-data:/var/lib/postgresql
+
+  s3mock:
+    image: adobe/s3mock:5.1.0
+    environment:
+      COM_ADOBE_TESTING_S3MOCK_STORE_INITIAL_BUCKETS: analytics
+      COM_ADOBE_TESTING_S3MOCK_STORE_REGION: us-east-1
+    healthcheck:
+      test:
+        ["CMD", "wget", "--spider", "-q", "http://127.0.0.1:9090/favicon.ico"]
+      interval: 3s
+      timeout: 3s
+      retries: 30
+    ports:
+      - "127.0.0.1:${S3_PORT:-19090}:9090"
+
+  app:
+    build:
+      context: .
+      target: runtime
+    environment: *app-environment
+    depends_on:
+      postgres:
+        condition: service_healthy
+      s3mock:
+        condition: service_healthy
+      fake-eiszhs:
+        condition: service_healthy
+    healthcheck:
+      test:
+        [
+          "CMD",
+          "curl",
+          "--fail",
+          "--silent",
+          "http://127.0.0.1:8080/health/ready",
+        ]
+      interval: 3s
+      timeout: 3s
+      retries: 30
+    ports:
+      - "127.0.0.1:${APP_PORT:-8088}:8080"
+    networks:
+      default:
+        aliases:
+          - web
+
+  app-replica:
+    build:
+      context: .
+      target: runtime
+    environment: *app-environment
+    depends_on:
+      app:
+        condition: service_healthy
+    healthcheck:
+      test:
+        [
+          "CMD",
+          "curl",
+          "--fail",
+          "--silent",
+          "http://127.0.0.1:8080/health/ready",
+        ]
+      interval: 3s
+      timeout: 3s
+      retries: 30
+
+  fake-eiszhs:
+    build:
+      context: .
+      target: fake-eiszhs
+    healthcheck:
+      test:
+        ["CMD", "curl", "--fail", "--silent", "http://127.0.0.1:8090/health"]
+      interval: 2s
+      timeout: 3s
+      retries: 20
+
+  backend-e2e:
+    profiles: ["test"]
+    build:
+      context: .
+      target: backend-e2e
+    depends_on:
+      app:
+        condition: service_healthy
+      app-replica:
+        condition: service_healthy
+    environment:
+      DATABASE_URL: postgres://analytics:analytics@postgres:5432/analytics?sslmode=disable
+
+  frontend-e2e:
+    profiles: ["test"]
+    build:
+      context: .
+      target: frontend-e2e
+    depends_on:
+      app:
+        condition: service_healthy
+    environment:
+      PLAYWRIGHT_BASE_URL: http://web:8080
+    volumes:
+      - ./artifacts/playwright-report:/workspace/frontend/playwright-report
+      - ./artifacts/test-results:/workspace/frontend/test-results
+
+  aws:
+    profiles: ["tools"]
+    image: amazon/aws-cli:2.36.15
+    environment:
+      AWS_ACCESS_KEY_ID: local-access
+      AWS_SECRET_ACCESS_KEY: local-secret
+      AWS_DEFAULT_REGION: us-east-1
+    depends_on:
+      s3mock:
+        condition: service_healthy
+    entrypoint: ["aws", "--endpoint-url", "http://s3mock:9090"]
+    volumes:
+      - .:/workspace:ro
+    working_dir: /workspace
+
+volumes:
+  postgres-data:

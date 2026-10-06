@@ -1,0 +1,53 @@
+name: Validate
+
+on:
+  pull_request:
+  push:
+    branches:
+      - main
+
+concurrency:
+  group: validate-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+jobs:
+  quality:
+    name: Native quality gates
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-go@v7
+        with:
+          go-version-file: backend/go.mod
+          cache-dependency-path: backend/go.sum
+      - uses: actions/setup-node@v7
+        with:
+          node-version: 24.20.0
+      - name: Verify native quality gates
+        run: make verify-fast
+      - name: Verify generated contracts are current
+        run: git diff --exit-code -- backend/internal/adapters/httpapi/generated/api.gen.go frontend/src/api/schema.d.ts
+
+  e2e:
+    name: Docker Compose E2E
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v7
+      - uses: docker/setup-compose-action@v2
+        with:
+          version: v5.4.0
+      - name: Run backend and browser E2E
+        run: make e2e
+      - name: Upload browser diagnostics
+        if: failure()
+        uses: actions/upload-artifact@v7
+        with:
+          name: playwright-diagnostics
+          path: artifacts/
+          if-no-files-found: ignore
+          retention-days: 7

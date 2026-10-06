@@ -1,0 +1,59 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+readonly docker_command="${DOCKER:-docker}"
+readonly project_name="drip-real-estate-demo-e2e"
+readonly compose_file="compose.yaml"
+readonly -a compose=("${docker_command}" compose --file "${compose_file}" --project-name "${project_name}")
+# E2E traffic stays inside the Compose network. Random published ports prevent collisions with
+# local development stacks and concurrent worktrees.
+export APP_PORT=0 POSTGRES_PORT=0 S3_PORT=0
+
+cleanup() {
+  status=$?
+  if (( status != 0 )); then
+    "${compose[@]}" logs --no-color --tail=300 >&2 || true
+  fi
+  "${compose[@]}" down --volumes --remove-orphans || true
+  exit "${status}"
+}
+trap cleanup EXIT INT TERM
+
+build_images() {
+  local attempt
+  for attempt in 1 2 3; do
+    if "${compose[@]}" --profile test build app app-replica fake-eiszhs backend-e2e frontend-e2e; then
+      return 0
+    fi
+    if (( attempt == 3 )); then
+      return 1
+    fi
+    echo "E2E image build attempt ${attempt} failed; retrying transient registry access" >&2
+    sleep "$((attempt * 2))"
+  done
+}
+
+mkdir -p artifacts/playwright-report artifacts/test-results
+build_images
+"${compose[@]}" up --detach postgres s3mock fake-eiszhs app app-replica
+"${compose[@]}" --profile test run --rm backend-e2e
+"${compose[@]}" --profile test run --rm frontend-e2e pnpm exec playwright test --grep @bootstrap
+"${compose[@]}" --profile test run --rm --env E2E_AUTHENTICATED=true backend-e2e
+"${compose[@]}" exec --no-TTY postgres \
+  psql --no-psqlrc --quiet --username analytics --dbname analytics --set ON_ERROR_STOP=1 \
+  < tests/fixtures/session_workspace.sql
+"${compose[@]}" --profile test run --rm frontend-e2e pnpm exec playwright test --grep @workspace
+"${compose[@]}" --profile test run --rm frontend-e2e pnpm exec playwright test --grep @catalog-happy
+"${compose[@]}" --profile test run --rm frontend-e2e pnpm exec playwright test --grep @session-create
+"${compose[@]}" --profile test run --rm frontend-e2e pnpm exec playwright test --grep @session-collect
+"${compose[@]}" --profile test run --rm frontend-e2e pnpm exec playwright test --grep @session-resume
+"${compose[@]}" exec --no-TTY postgres psql --no-psqlrc --quiet \
+  --username analytics --dbname analytics --set ON_ERROR_STOP=1 --command \
+  "UPDATE residential_complex_catalog_snapshot SET observed_at = now() - interval '25 hours', expires_at = now() - interval '1 hour' WHERE region_code = '77'"
+"${compose[@]}" exec --no-TTY fake-eiszhs curl --fail --silent --show-error \
+  --request POST "http://127.0.0.1:8090/admin/mode?value=failed"
+"${compose[@]}" --profile test run --rm frontend-e2e pnpm exec playwright test --grep @catalog-stale
+"${compose[@]}" exec --no-TTY postgres psql --no-psqlrc --quiet \
+  --username analytics --dbname analytics --set ON_ERROR_STOP=1 --command \
+  "DELETE FROM residential_complex_catalog_item WHERE snapshot_id IN (SELECT id FROM residential_complex_catalog_snapshot WHERE region_code = '77'); DELETE FROM residential_complex_catalog_snapshot WHERE region_code = '77'"
+"${compose[@]}" --profile test run --rm frontend-e2e pnpm exec playwright test --grep @catalog-retry

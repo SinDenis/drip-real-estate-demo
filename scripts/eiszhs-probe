@@ -1,0 +1,451 @@
+#!/usr/bin/env bash
+
+set -euo pipefail
+umask 077
+
+readonly DESCRIPTION="Safely probe the licensed EISZHS API without printing dotenv values or access tokens"
+readonly ANNUAL_REQUEST_QUOTA=100000
+
+environment="integration"
+full_probe="false"
+request_budget=0
+
+script_directory="$(cd "$(dirname "$0")" && pwd)"
+repository_root="$(cd "$script_directory/.." && pwd)"
+env_file="$repository_root/.env"
+program_path="$script_directory/$(basename "$0")"
+program_display="$program_path"
+if [[ -n "${HOME:-}" && "$program_display" == "$HOME"/* ]]; then
+  program_display="~/${program_display#"$HOME"/}"
+fi
+
+if ! command -v jq >/dev/null 2>&1; then
+  printf 'bin: scripts/eiszhs-probe\n'
+  printf 'description: Safely probe the licensed EISZHS API\n'
+  printf 'error:\n'
+  printf '  code: runtime_unavailable\n'
+  printf '  message: Required local output runtime is unavailable\n'
+  printf 'help: Install project prerequisites and run scripts/eiszhs-probe again\n'
+  exit 1
+fi
+
+toon_quote() {
+  jq -Rn --arg value "$1" '$value'
+}
+
+print_identity() {
+  printf 'bin: %s\n' "$(toon_quote "$program_display")"
+  printf 'description: %s\n' "$(toon_quote "$DESCRIPTION")"
+}
+
+print_help() {
+  print_identity
+  printf 'usage:\n'
+  printf '  command: %s\n' "$(toon_quote "$program_display [--environment integration|production] [--env-file <path>] --request-budget <count> [--full]")"
+  printf 'flags[5]{name,default,description}:\n'
+  printf '  --environment,integration,%s\n' "$(toon_quote "Select the licensed EISZHS environment")"
+  printf '  --env-file,<repository>/.env,%s\n' "$(toon_quote "Read CLIENT_ID and CLIENT_SECRET from a protected dotenv file")"
+  printf '  --request-budget,0,%s\n' "$(toon_quote "Authorize at most 2 requests for a minimal probe or 12 for a full probe")"
+  printf '  --full,false,%s\n' "$(toon_quote "Probe all list method groups at a rate below 10 requests per minute")"
+  printf '  --help,false,%s\n' "$(toon_quote "Show this reference")"
+  printf 'credentials:\n'
+  printf '  source: %s\n' "$(toon_quote "$env_file")"
+  printf '  keys[2]: CLIENT_ID,CLIENT_SECRET\n'
+  printf 'examples[2]: %s,%s\n' \
+    "$(toon_quote "$program_display --environment production --request-budget 2")" \
+    "$(toon_quote "$program_display --environment production --request-budget 12 --full")"
+}
+
+usage_error() {
+  local message="$1"
+  print_identity
+  printf 'error:\n'
+  printf '  code: usage_error\n'
+  printf '  message: %s\n' "$(toon_quote "$message")"
+  printf 'help: %s\n' "$(toon_quote "Valid flags: --environment, --env-file, --request-budget, --full, --help")"
+  exit 2
+}
+
+structured_error() {
+  local code="$1"
+  local message="$2"
+  local help_message="${3:-}"
+  print_identity
+  printf 'error:\n'
+  printf '  code: %s\n' "$(toon_quote "$code")"
+  printf '  message: %s\n' "$(toon_quote "$message")"
+  if [[ -n "$help_message" ]]; then
+    printf 'help: %s\n' "$(toon_quote "$help_message")"
+  fi
+  exit 1
+}
+
+while [[ $# -gt 0 ]]; do
+  case "$1" in
+    --environment)
+      [[ $# -ge 2 ]] || usage_error "--environment requires integration or production"
+      environment="$2"
+      shift 2
+      ;;
+    --env-file)
+      [[ $# -ge 2 ]] || usage_error "--env-file requires a path"
+      env_file="$2"
+      shift 2
+      ;;
+    --request-budget)
+      [[ $# -ge 2 ]] || usage_error "--request-budget requires a non-negative integer"
+      request_budget="$2"
+      shift 2
+      ;;
+    --full)
+      full_probe="true"
+      shift
+      ;;
+    --help)
+      print_help
+      exit 0
+      ;;
+    *)
+      usage_error "unknown flag or argument: $1"
+      ;;
+  esac
+done
+
+[[ "$request_budget" =~ ^[0-9]+$ ]] || usage_error "--request-budget requires a non-negative integer"
+((request_budget <= 12)) || usage_error "--request-budget cannot exceed the probe maximum of 12"
+
+if [[ "$request_budget" -eq 0 ]]; then
+  print_identity
+  printf 'quota:\n'
+  printf '  annual_requests: %s\n' "$ANNUAL_REQUEST_QUOTA"
+  printf '  authorized_for_this_run: 0\n'
+  printf '  network_requests_sent: 0\n'
+  printf 'help: %s\n' "$(toon_quote "Run $program_display --environment production --request-budget 2 for the minimal probe")"
+  exit 0
+fi
+
+if [[ "$full_probe" == "true" ]]; then
+  ((request_budget >= 12)) || usage_error "--full requires --request-budget 12"
+else
+  ((request_budget >= 2)) || usage_error "the minimal probe requires --request-budget 2"
+fi
+
+case "$environment" in
+  integration)
+    readonly api_base_url="https://int.domrf.ru/gateway/public/sgs/api/v2"
+    readonly auth_base_url="https://int.domrf.ru/idm-services/auth/realms/external-eisgs-idm"
+    ;;
+  production)
+    readonly api_base_url="https://xn--80az8a.xn--d1aqf.xn--p1ai/gw/sgs/api/v2"
+    readonly auth_base_url="https://xn--80az8a.xn--d1aqf.xn--p1ai/idm-services/auth/realms/external-eisgs-idm"
+    ;;
+  *)
+    usage_error "unsupported environment: $environment"
+    ;;
+esac
+
+for dependency in curl git; do
+  command -v "$dependency" >/dev/null 2>&1 || structured_error \
+    "missing_dependency" \
+    "Required command is unavailable: $dependency" \
+    "Install the missing command and run the probe again"
+done
+
+[[ -f "$env_file" ]] || structured_error \
+  "credentials_not_found" \
+  "The protected dotenv file was not found" \
+  "Create $env_file with CLIENT_ID and CLIENT_SECRET, keep it ignored by Git, and set mode 600"
+
+env_file_directory="$(cd "$(dirname "$env_file")" && pwd)"
+env_file="$env_file_directory/$(basename "$env_file")"
+if stat -c '%a' "$env_file" >/dev/null 2>&1; then
+  env_file_mode="$(stat -c '%a' "$env_file")"
+elif stat -f '%Lp' "$env_file" >/dev/null 2>&1; then
+  env_file_mode="$(stat -f '%Lp' "$env_file")"
+else
+  env_file_mode=""
+fi
+case "$env_file_mode" in
+  400|600)
+    ;;
+  *)
+    structured_error \
+      "insecure_credentials_file" \
+      "The dotenv file must be readable only by its owner; current mode is ${env_file_mode:-unknown}" \
+      "Run chmod 600 on the dotenv file and try again"
+    ;;
+esac
+
+if [[ "$env_file" == "$repository_root"/* ]]; then
+  env_file_relative="${env_file#"$repository_root"/}"
+  git -C "$repository_root" check-ignore -q -- "$env_file_relative" || structured_error \
+    "credentials_file_not_ignored" \
+    "The dotenv file is inside the repository but is not ignored by Git" \
+    "Add $env_file_relative to $repository_root/.gitignore before running the probe"
+fi
+
+dotenv_value() {
+  local wanted_key="$1"
+  local dotenv_path="$2"
+  local raw_value
+  local first_character
+  local last_character
+
+  raw_value="$(awk -v wanted_key="$wanted_key" '
+    {
+      line = $0
+      sub(/^[[:space:]]*/, "", line)
+      sub(/^export[[:space:]]+/, "", line)
+      equals = index(line, "=")
+      if (equals == 0) {
+        next
+      }
+      name = substr(line, 1, equals - 1)
+      gsub(/[[:space:]]/, "", name)
+      if (name == wanted_key) {
+        count += 1
+        value = substr(line, equals + 1)
+      }
+    }
+    END {
+      if (count != 1) {
+        exit 42
+      }
+      print value
+    }
+  ' "$dotenv_path")" || return 1
+
+  raw_value="${raw_value%$'\r'}"
+  raw_value="${raw_value#"${raw_value%%[![:space:]]*}"}"
+  raw_value="${raw_value%"${raw_value##*[![:space:]]}"}"
+
+  if [[ ${#raw_value} -ge 2 ]]; then
+    first_character="${raw_value:0:1}"
+    last_character="${raw_value: -1}"
+    if [[ "$first_character" == '"' && "$last_character" == '"' ]] || \
+      [[ "$first_character" == "'" && "$last_character" == "'" ]]; then
+      raw_value="${raw_value:1:${#raw_value}-2}"
+    fi
+  fi
+
+  [[ -n "$raw_value" ]] || return 1
+  printf '%s' "$raw_value"
+}
+
+if ! client_id="$(dotenv_value "CLIENT_ID" "$env_file")"; then
+  structured_error \
+    "credentials_not_found" \
+    "CLIENT_ID must occur exactly once and have a non-empty value in the dotenv file" \
+    "Fix CLIENT_ID without printing the dotenv file, then run the probe again"
+fi
+
+if ! client_secret="$(dotenv_value "CLIENT_SECRET" "$env_file")"; then
+  unset client_id
+  structured_error \
+    "credentials_not_found" \
+    "CLIENT_SECRET must occur exactly once and have a non-empty value in the dotenv file" \
+    "Fix CLIENT_SECRET without printing the dotenv file, then run the probe again"
+fi
+
+temporary_directory="$(mktemp -d "${TMPDIR:-/tmp}/eiszhs-probe.XXXXXX")"
+access_token=""
+cleanup() {
+  unset client_id client_secret access_token
+  if [[ -n "${temporary_directory:-}" && -d "$temporary_directory" ]]; then
+    rm -rf -- "$temporary_directory"
+  fi
+}
+trap cleanup EXIT INT TERM
+
+token_response="$temporary_directory/token.json"
+token_error="$temporary_directory/token-error.txt"
+encoded_client_id="$(jq -rn --arg value "$client_id" '$value | @uri')"
+encoded_client_secret="$(jq -rn --arg value "$client_secret" '$value | @uri')"
+
+set +e
+token_http_status="$({
+  printf 'grant_type=client_credentials&client_id=%s&client_secret=%s' "$encoded_client_id" "$encoded_client_secret"
+} | curl \
+  --silent \
+  --show-error \
+  --max-time 30 \
+  --output "$token_response" \
+  --write-out '%{http_code}' \
+  --header 'Content-Type: application/x-www-form-urlencoded' \
+  --data-binary @- \
+  "$auth_base_url/protocol/openid-connect/token" 2>"$token_error")"
+token_curl_status=$?
+set -e
+
+if [[ $token_curl_status -ne 0 ]]; then
+  structured_error \
+    "authentication_network_error" \
+    "The authentication endpoint could not be reached" \
+    "Check DNS, TLS, and connectivity to the selected EISZHS environment"
+fi
+
+if [[ ! "$token_http_status" =~ ^2[0-9][0-9]$ ]]; then
+  oauth_error="$(jq -r '.error // "authentication_failed"' "$token_response" 2>/dev/null || printf 'authentication_failed')"
+  structured_error \
+    "$oauth_error" \
+    "The authentication endpoint returned HTTP $token_http_status" \
+    "Verify the dotenv credential pair and licensed environment"
+fi
+
+access_token="$(jq -r '.access_token // empty' "$token_response")"
+token_type="$(jq -r '.token_type // empty | ascii_downcase' "$token_response")"
+token_expires_in="$(jq -r '.expires_in // null' "$token_response")"
+token_scope="$(jq -r '.scope // ""' "$token_response")"
+
+if [[ -z "$access_token" || "$token_type" != "bearer" ]]; then
+  structured_error \
+    "invalid_token_response" \
+    "Authentication succeeded but did not return a Bearer access token" \
+    "Ask EISZHS support to verify the client credentials flow for this account"
+fi
+
+auth_header_file="$temporary_directory/authorization-header"
+printf 'Authorization: Bearer %s\n' "$access_token" >"$auth_header_file"
+
+check_ids=()
+check_states=()
+check_http_statuses=()
+check_totals=()
+check_pages=()
+check_details=()
+request_count=0
+quota_request_count=0
+first_construction_object_id=""
+
+probe_get() {
+  local check_id="$1"
+  local path="$2"
+  local response_kind="$3"
+  local response_file="$temporary_directory/${check_id}.json"
+  local error_file="$temporary_directory/${check_id}.error"
+  local http_status
+  local curl_status
+  local state="error"
+  local total="null"
+  local pages="null"
+  local detail=""
+
+  ((request_count < request_budget)) || structured_error \
+    "request_budget_exhausted" \
+    "The explicit API request budget was exhausted before the next request" \
+    "Review the planned request count before authorizing a larger budget"
+
+  if [[ "$full_probe" == "true" && $request_count -gt 0 ]]; then
+    sleep 7
+  fi
+
+  set +e
+  http_status="$(curl \
+    --silent \
+    --show-error \
+    --max-time 45 \
+    --output "$response_file" \
+    --write-out '%{http_code}' \
+    --header @"$auth_header_file" \
+    --header 'Accept: application/json; charset=UTF-8' \
+    "$api_base_url$path" 2>"$error_file")"
+  curl_status=$?
+  set -e
+  request_count=$((request_count + 1))
+
+  if [[ $curl_status -ne 0 ]]; then
+    http_status="0"
+    state="network_error"
+  elif [[ "$http_status" == "200" ]]; then
+    state="ok"
+    quota_request_count=$((quota_request_count + 1))
+    case "$response_kind" in
+      version)
+        detail="$(jq -r '.projectVersion // .version // ""' "$response_file" 2>/dev/null || true)"
+        ;;
+      list)
+        total="$(jq -r '.total // null' "$response_file" 2>/dev/null || printf 'null')"
+        if [[ "$total" =~ ^[0-9]+$ ]]; then
+          pages=$(((total + 49) / 50))
+        fi
+        if [[ "$check_id" == "construction_objects" ]]; then
+          first_construction_object_id="$(jq -r '.elements.constructionObjectShortInfo[0].objectId // empty' "$response_file" 2>/dev/null || true)"
+        fi
+        ;;
+      detail)
+        detail="available"
+        ;;
+    esac
+  elif [[ "$http_status" == "204" ]]; then
+    state="empty"
+    quota_request_count=$((quota_request_count + 1))
+    total="0"
+    pages="0"
+  elif [[ "$http_status" == "401" ]]; then
+    state="unauthorized"
+  elif [[ "$http_status" == "403" ]]; then
+    state="forbidden"
+  elif [[ "$http_status" == "429" ]]; then
+    state="rate_limited"
+  else
+    state="http_error"
+  fi
+
+  check_ids+=("$check_id")
+  check_states+=("$state")
+  check_http_statuses+=("$http_status")
+  check_totals+=("$total")
+  check_pages+=("$pages")
+  check_details+=("$detail")
+}
+
+probe_get "version" "/version" "version"
+probe_get "construction_objects" "/construction-objects?page=0&size=1" "list"
+
+if [[ "$full_probe" == "true" ]]; then
+  probe_get "complexes" "/complexes?page=0&size=1" "list"
+  probe_get "developers" "/developers?page=0&size=1" "list"
+  probe_get "company_groups" "/company-groups?page=0&size=1" "list"
+  probe_get "problem_objects" "/problem-objects?page=0&size=1" "list"
+  probe_get "general_contractors" "/general-contractor?page=0&size=1" "list"
+  probe_get "individual_construction_objects" "/construction-objects-individual?page=0&size=1" "list"
+  probe_get "individual_contractors" "/contractors?page=0&size=1" "list"
+  probe_get "individual_projects" "/projects?page=0&size=1" "list"
+
+  if [[ -n "$first_construction_object_id" ]]; then
+    probe_get \
+      "construction_object_versions" \
+      "/construction-objects/$first_construction_object_id/versions" \
+      "detail"
+    probe_get \
+      "construction_object_extended" \
+      "/construction-objects/$first_construction_object_id/extended" \
+      "detail"
+  fi
+fi
+
+print_identity
+printf 'probe:\n'
+printf '  environment: %s\n' "$(toon_quote "$environment")"
+printf '  authentication: ok\n'
+printf '  token_expires_in_seconds: %s\n' "$token_expires_in"
+printf '  scope: %s\n' "$(toon_quote "$token_scope")"
+printf 'quota:\n'
+printf '  annual_requests: %s\n' "$ANNUAL_REQUEST_QUOTA"
+printf '  authorized_for_this_run: %s\n' "$request_budget"
+printf '  api_requests_sent: %s\n' "$request_count"
+printf '  successful_requests_counted: %s\n' "$quota_request_count"
+printf 'checks[%s]{id,status,http,total,pages,detail}:\n' "${#check_ids[@]}"
+for ((index = 0; index < ${#check_ids[@]}; index++)); do
+  printf '  %s,%s,%s,%s,%s,%s\n' \
+    "$(toon_quote "${check_ids[$index]}")" \
+    "$(toon_quote "${check_states[$index]}")" \
+    "${check_http_statuses[$index]}" \
+    "${check_totals[$index]}" \
+    "${check_pages[$index]}" \
+    "$(toon_quote "${check_details[$index]}")"
+done
+
+if [[ "$full_probe" == "false" ]]; then
+  printf 'help: %s\n' "$(toon_quote "Run $program_display --environment $environment --env-file $env_file --request-budget 12 --full only when a full probe is justified")"
+fi
