@@ -1,0 +1,37 @@
+[
+  {
+    "command": "/bin/zsh -lc \"pwd; rg --files -g 'CONTEXT.md' -g 'REPO_MAP.md' -g 'docs/project.md' -g 'docs/architecture.md' -g 'docs/development.md' -g 'fixtures/ddu-snapshots.json'\"",
+    "exit_code": 0,
+    "output_characters": 204
+  },
+  {
+    "command": "/bin/zsh -lc 'cat docs/project.md'",
+    "exit_code": 0,
+    "output_characters": 626
+  },
+  {
+    "command": "/bin/zsh -lc 'cat CONTEXT.md'",
+    "exit_code": 0,
+    "output_characters": 2313
+  },
+  {
+    "command": "/bin/zsh -lc 'cat fixtures/ddu-snapshots.json'",
+    "exit_code": 0,
+    "output_characters": 639
+  },
+  {
+    "command": "/bin/zsh -lc 'cat REPO_MAP.md'",
+    "exit_code": 0,
+    "output_characters": 1955
+  },
+  {
+    "command": "/bin/zsh -lc 'cat docs/architecture.md'",
+    "exit_code": 0,
+    "output_characters": 1789
+  },
+  {
+    "command": "/bin/zsh -lc \"python3 -c 'import json; d=json.load(open(\\\"fixtures/ddu-snapshots.json\\\")); known=0; delta=0; missing=[]; pairs=[]\nfor o in d[\\\"constructionObjects\\\"]:\n s={x[\\\"date\\\"]:x.get(\\\"registeredDduCount\\\") for x in o[\\\"snapshots\\\"]}; a=s.get(\\\"2026-08-31\\\"); b=s.get(\\\"2026-09-30\\\")\n if b is None: missing.append(o[\\\"objectId\\\"])\n else: known+=b\n if a is not None and b is not None: delta+=b-a; pairs.append({\\\"objectId\\\":o[\\\"objectId\\\"],\\\"delta\\\":b-a})\nprint(json.dumps({\\\"known_sum\\\":known,\\\"comparable_delta\\\":delta,\\\"pairs\\\":pairs,\\\"unavailable\\\":missing}))'\"",
+    "exit_code": 0,
+    "output_characters": 1259
+  }
+]

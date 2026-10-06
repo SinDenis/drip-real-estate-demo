@@ -1,0 +1,17 @@
+[
+  {
+    "command": "/bin/zsh -lc \"pwd; rg --files -g 'AGENTS.md' -g 'CONTEXT.md' -g 'REPO_MAP.md' -g 'docs/**' -g 'fixtures/ddu-snapshots.json'\"",
+    "exit_code": 0,
+    "output_characters": 214
+  },
+  {
+    "command": "/bin/zsh -lc 'cat AGENTS.md CONTEXT.md REPO_MAP.md docs/project.md docs/architecture.md docs/development.md fixtures/ddu-snapshots.json'",
+    "exit_code": 0,
+    "output_characters": 11546
+  },
+  {
+    "command": "/bin/zsh -lc \"python3 -B -c 'import json; from pathlib import Path; x=json.loads(Path(\\\"fixtures/ddu-snapshots.json\\\").read_text()); rows=[(o[\\\"objectId\\\"], {s[\\\"date\\\"]:s.get(\\\"registeredDduCount\\\") for s in o[\\\"snapshots\\\"]}) for o in x[\\\"constructionObjects\\\"]]; known=[s[\\\"2026-09-30\\\"] for _,s in rows if s[\\\"2026-09-30\\\"] is not None]; pairs=[(i,s[\\\"2026-09-30\\\"]-s[\\\"2026-08-31\\\"]) for i,s in rows if s[\\\"2026-09-30\\\"] is not None and s[\\\"2026-08-31\\\"] is not None]; print(json.dumps({\\\"current_ddu_known_sum\\\":sum(known),\\\"available_current_objects\\\":len(known),\\\"total_objects\\\":len(rows),\\\"comparable_pairs\\\":pairs,\\\"comparable_pairs_delta\\\":sum(d for _,d in pairs),\\\"unavailable_object_ids\\\":[i for i,s in rows if s[\\\"2026-09-30\\\"] is None]},ensure_ascii=False))'\"",
+    "exit_code": 0,
+    "output_characters": 1309
+  }
+]

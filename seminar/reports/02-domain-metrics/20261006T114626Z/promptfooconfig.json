@@ -1,0 +1,195 @@
+{
+  "description": "Context engineering: Доменный язык и недоступные показатели",
+  "prompts": [
+    "file:///Users/densin/Documents/ChatGPT/Мультиагентные системы/drip-real-estate-demo/seminar/examples/02-domain-metrics/prompt.txt"
+  ],
+  "providers": [
+    {
+      "id": "openai:codex-sdk",
+      "label": "gpt-6.1-sol / low",
+      "config": {
+        "model": "gpt-6.1-sol",
+        "model_reasoning_effort": "low",
+        "working_dir": "{{workspaceDir}}",
+        "sandbox_mode": "read-only",
+        "approval_policy": "never",
+        "network_access_enabled": false,
+        "web_search_mode": "disabled",
+        "persist_threads": false,
+        "enable_streaming": true,
+        "codex_path_override": "/Users/densin/.local/bin/codex",
+        "cli_env": {
+          "CODEX_HOME": "/Users/densin/Documents/ChatGPT/Мультиагентные системы/drip-real-estate-demo/seminar/runtime/codex-home",
+          "PATH": "/Users/densin/.npm/_npx/78441fa2ededf7cf/node_modules/.bin:/Users/densin/.local/bin:/usr/local/bin:/System/Cryptexes/App/usr/bin:/usr/bin:/bin:/usr/sbin:/sbin:/var/run/com.apple.security.cryptexd/codex.system/bootstrap/usr/local/bin:/var/run/com.apple.security.cryptexd/codex.system/bootstrap/usr/bin:/var/run/com.apple.security.cryptexd/codex.system/bootstrap/usr/appleinternal/bin:/pkg/env/global/bin:/Library/Apple/usr/bin:/opt/homebrew/bin:/Users/densin/.local/bin:/Applications/ChatGPT.app/Contents/Resources/codex-cli/codex-path:/Users/densin/.codex/tmp/arg0/codex-arg0LJtnpN:/Users/densin/.cache/codex-runtimes/codex-primary-runtime/dependencies/bin/override:/Users/densin/.cargo/bin:/Users/densin/.cache/codex-runtimes/codex-primary-runtime/dependencies/bin/fallback:/Applications/ChatGPT.app/Contents/Resources:/Applications/ChatGPT.app/Contents/Resources/codex-cli/CodexCLI.app/Contents/MacOS",
+          "GOCACHE": "/Users/densin/Documents/ChatGPT/Мультиагентные системы/drip-real-estate-demo/seminar/runtime/cache/go-build"
+        },
+        "additional_directories": [
+          "/Users/densin/Documents/ChatGPT/Мультиагентные системы/drip-real-estate-demo/seminar/runtime/cache/go-build",
+          "/Users/densin/.npm",
+          "/Users/densin/Library/pnpm"
+        ],
+        "output_schema": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "monthly_sales",
+            "current_ddu_known_sum",
+            "current_ddu_all_objects",
+            "comparable_pairs_delta",
+            "unavailable_object_ids",
+            "terms",
+            "limitations"
+          ],
+          "properties": {
+            "monthly_sales": {
+              "type": [
+                "number",
+                "null"
+              ]
+            },
+            "current_ddu_known_sum": {
+              "type": [
+                "number",
+                "null"
+              ]
+            },
+            "current_ddu_all_objects": {
+              "type": [
+                "number",
+                "null"
+              ]
+            },
+            "comparable_pairs_delta": {
+              "type": [
+                "number",
+                "null"
+              ]
+            },
+            "unavailable_object_ids": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            },
+            "terms": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            },
+            "limitations": {
+              "type": "string"
+            }
+          }
+        }
+      }
+    }
+  ],
+  "tests": [
+    {
+      "description": "before, повтор 1",
+      "vars": {
+        "exampleId": "02-domain-metrics",
+        "workspaceDir": "/var/folders/27/zdjjn2mn28g85vwxyyj50x6w0000gn/T/ce-seminar-before-r1-w756qqic/workspace",
+        "reportDir": "/Users/densin/Documents/ChatGPT/Мультиагентные системы/drip-real-estate-demo/seminar/reports/02-domain-metrics/20261006T114626Z/before-r1",
+        "baseCommit": "d037c2cee00ca26a7674e4da13e2308eca22bbaf",
+        "condition": "before",
+        "replica": 1
+      },
+      "assert": [
+        {
+          "type": "javascript",
+          "value": "file:///Users/densin/Documents/ChatGPT/Мультиагентные системы/drip-real-estate-demo/seminar/reports/02-domain-metrics/20261006T114626Z/evaluator/grade.cjs"
+        }
+      ]
+    },
+    {
+      "description": "after, повтор 1",
+      "vars": {
+        "exampleId": "02-domain-metrics",
+        "workspaceDir": "/var/folders/27/zdjjn2mn28g85vwxyyj50x6w0000gn/T/ce-seminar-after-r1-mfan2p8e/workspace",
+        "reportDir": "/Users/densin/Documents/ChatGPT/Мультиагентные системы/drip-real-estate-demo/seminar/reports/02-domain-metrics/20261006T114626Z/after-r1",
+        "baseCommit": "d037c2cee00ca26a7674e4da13e2308eca22bbaf",
+        "condition": "after",
+        "replica": 1
+      },
+      "assert": [
+        {
+          "type": "javascript",
+          "value": "file:///Users/densin/Documents/ChatGPT/Мультиагентные системы/drip-real-estate-demo/seminar/reports/02-domain-metrics/20261006T114626Z/evaluator/grade.cjs"
+        }
+      ]
+    },
+    {
+      "description": "after, повтор 2",
+      "vars": {
+        "exampleId": "02-domain-metrics",
+        "workspaceDir": "/var/folders/27/zdjjn2mn28g85vwxyyj50x6w0000gn/T/ce-seminar-after-r2-nwmghl6t/workspace",
+        "reportDir": "/Users/densin/Documents/ChatGPT/Мультиагентные системы/drip-real-estate-demo/seminar/reports/02-domain-metrics/20261006T114626Z/after-r2",
+        "baseCommit": "d037c2cee00ca26a7674e4da13e2308eca22bbaf",
+        "condition": "after",
+        "replica": 2
+      },
+      "assert": [
+        {
+          "type": "javascript",
+          "value": "file:///Users/densin/Documents/ChatGPT/Мультиагентные системы/drip-real-estate-demo/seminar/reports/02-domain-metrics/20261006T114626Z/evaluator/grade.cjs"
+        }
+      ]
+    },
+    {
+      "description": "before, повтор 2",
+      "vars": {
+        "exampleId": "02-domain-metrics",
+        "workspaceDir": "/var/folders/27/zdjjn2mn28g85vwxyyj50x6w0000gn/T/ce-seminar-before-r2-nfohbei1/workspace",
+        "reportDir": "/Users/densin/Documents/ChatGPT/Мультиагентные системы/drip-real-estate-demo/seminar/reports/02-domain-metrics/20261006T114626Z/before-r2",
+        "baseCommit": "d037c2cee00ca26a7674e4da13e2308eca22bbaf",
+        "condition": "before",
+        "replica": 2
+      },
+      "assert": [
+        {
+          "type": "javascript",
+          "value": "file:///Users/densin/Documents/ChatGPT/Мультиагентные системы/drip-real-estate-demo/seminar/reports/02-domain-metrics/20261006T114626Z/evaluator/grade.cjs"
+        }
+      ]
+    },
+    {
+      "description": "before, повтор 3",
+      "vars": {
+        "exampleId": "02-domain-metrics",
+        "workspaceDir": "/var/folders/27/zdjjn2mn28g85vwxyyj50x6w0000gn/T/ce-seminar-before-r3-1mxjkuw5/workspace",
+        "reportDir": "/Users/densin/Documents/ChatGPT/Мультиагентные системы/drip-real-estate-demo/seminar/reports/02-domain-metrics/20261006T114626Z/before-r3",
+        "baseCommit": "d037c2cee00ca26a7674e4da13e2308eca22bbaf",
+        "condition": "before",
+        "replica": 3
+      },
+      "assert": [
+        {
+          "type": "javascript",
+          "value": "file:///Users/densin/Documents/ChatGPT/Мультиагентные системы/drip-real-estate-demo/seminar/reports/02-domain-metrics/20261006T114626Z/evaluator/grade.cjs"
+        }
+      ]
+    },
+    {
+      "description": "after, повтор 3",
+      "vars": {
+        "exampleId": "02-domain-metrics",
+        "workspaceDir": "/var/folders/27/zdjjn2mn28g85vwxyyj50x6w0000gn/T/ce-seminar-after-r3-pd2dpfes/workspace",
+        "reportDir": "/Users/densin/Documents/ChatGPT/Мультиагентные системы/drip-real-estate-demo/seminar/reports/02-domain-metrics/20261006T114626Z/after-r3",
+        "baseCommit": "d037c2cee00ca26a7674e4da13e2308eca22bbaf",
+        "condition": "after",
+        "replica": 3
+      },
+      "assert": [
+        {
+          "type": "javascript",
+          "value": "file:///Users/densin/Documents/ChatGPT/Мультиагентные системы/drip-real-estate-demo/seminar/reports/02-domain-metrics/20261006T114626Z/evaluator/grade.cjs"
+        }
+      ]
+    }
+  ],
+  "evaluateOptions": {
+    "maxConcurrency": 1
+  }
+}

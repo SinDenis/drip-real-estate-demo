@@ -1,0 +1,22 @@
+[
+  {
+    "command": "/bin/zsh -lc \"pwd; rg --files -g 'AGENTS.md' -g '*ddu*' -g 'project.md' -g 'development.md'\"",
+    "exit_code": 0,
+    "output_characters": 171
+  },
+  {
+    "command": "/bin/zsh -lc 'cat fixtures/ddu-snapshots.json docs/project.md docs/development.md AGENTS.md'",
+    "exit_code": 0,
+    "output_characters": 5135
+  },
+  {
+    "command": "/bin/zsh -lc \"rg -n 'ДДУ|ЕИСЖС|ЕИС|registeredDdu|продаж|срез|долев' docs api backend/internal frontend/src fixtures README.md\"",
+    "exit_code": 0,
+    "output_characters": 12886
+  },
+  {
+    "command": "/bin/zsh -lc \"python3 -B -c 'import json; d=json.load(open(\\\"fixtures/ddu-snapshots.json\\\")); known=0; delta=0; missing=[]; pairs=[]\nfor o in d[\\\"constructionObjects\\\"]:\n s={x[\\\"date\\\"]:x.get(\\\"registeredDduCount\\\") for x in o[\\\"snapshots\\\"]}; a=s.get(\\\"2026-08-31\\\"); b=s.get(\\\"2026-09-30\\\")\n if b is None: missing.append(o[\\\"objectId\\\"])\n else: known+=b\n if a is not None and b is not None: delta+=b-a; pairs.append([o[\\\"objectId\\\"],b-a])\nprint(json.dumps({\\\"known_sum\\\":known,\\\"comparable_delta\\\":delta,\\\"pairs\\\":pairs,\\\"unavailable\\\":missing}))'\"",
+    "exit_code": 0,
+    "output_characters": 1217
+  }
+]

@@ -1,0 +1,1161 @@
+{
+  "evalId": "eval-xUr-2026-10-06T11:46:31",
+  "results": {
+    "version": 3,
+    "timestamp": "2026-10-06T11:46:31.231Z",
+    "prompts": [
+      {
+        "raw": "Для рабочего места аналитика оцени продажи за сентябрь по данным fixtures/ddu-snapshots.json. Укажи продажи месяца, известную сумму ДДУ в текущем срезе, полную сумму ДДУ по всем объектам, разность по сопоставимым парам и список объектов с недоступным текущим значением. Объясни ограничения и назови подходящие доменные термины. Не изменяй код и данные; верни ответ по предоставленной JSON-схеме.\n\nРаботай только внутри выданного репозитория. Не используй сеть, реальную БД, внешние отчёты и материалы преподавателя. Если показатель нельзя определить, используй null и объясни причину.",
+        "label": "seminar/examples/02-domain-metrics/prompt.txt: Для рабочего места аналитика оцени продажи за сентябрь по данным fixtures/ddu-snapshots.json. Укажи продажи месяца, известную сумму ДДУ в текущем срезе, полную сумму ДДУ по всем объектам, разность по сопоставимым парам и список объектов с недоступным текущим значением. Объясни ограничения и назови подходящие доменные термины. Не изменяй код и данные; верни ответ по предоставленной JSON-схеме.\n\nРаботай только внутри выданного репозитория. Не используй сеть, реальную БД, внешние отчёты и материалы преподавателя. Если показатель нельзя определить, используй null и объясни причину.",
+        "id": "6947fa17d49b7725604c78a02e372fb7ac2df0bf8166b02f1f269fc73d829ffa",
+        "provider": "gpt-6.1-sol / low",
+        "metrics": {
+          "score": 6,
+          "testPassCount": 6,
+          "testFailCount": 0,
+          "testErrorCount": 0,
+          "assertPassCount": 6,
+          "assertFailCount": 0,
+          "totalLatencyMs": 218943,
+          "tokenUsage": {
+            "prompt": 416337,
+            "completion": 5045,
+            "cached": 300672,
+            "total": 421382,
+            "numRequests": 6,
+            "completionDetails": {
+              "reasoning": 82,
+              "acceptedPrediction": 0,
+              "rejectedPrediction": 0,
+              "cacheReadInputTokens": 0,
+              "cacheCreationInputTokens": 0
+            },
+            "assertions": {
+              "total": 0,
+              "prompt": 0,
+              "completion": 0,
+              "cached": 0,
+              "numRequests": 0,
+              "completionDetails": {
+                "reasoning": 0,
+                "acceptedPrediction": 0,
+                "rejectedPrediction": 0,
+                "cacheReadInputTokens": 0,
+                "cacheCreationInputTokens": 0
+              }
+            }
+          },
+          "namedScores": {},
+          "namedScoresCount": {},
+          "namedScoreWeights": {},
+          "cost": 0.3118472
+        }
+      }
+    ],
+    "results": [
+      {
+        "cost": 0.0520888,
+        "gradingResult": {
+          "pass": true,
+          "score": 1,
+          "reason": "All assertions passed",
+          "namedScores": {},
+          "tokensUsed": {
+            "total": 0,
+            "prompt": 0,
+            "completion": 0,
+            "cached": 0,
+            "numRequests": 0
+          },
+          "componentResults": [
+            {
+              "pass": true,
+              "score": 1,
+              "reason": "monthly_sales_not_identifiable=PASS; known_current_sum=PASS; incomplete_coverage_not_total=PASS; comparable_delta=PASS; missing_not_zero=PASS; limitations_explained=PASS; domain_terms_present=PASS; repository_unchanged=PASS; context_unchanged:AGENTS.md=PASS; context_unchanged:docs/project.md=PASS; context_unchanged:docs/development.md=PASS",
+              "assertion": {
+                "type": "javascript",
+                "value": "file:///Users/densin/Documents/ChatGPT/Мультиагентные системы/drip-real-estate-demo/seminar/reports/02-domain-metrics/20261006T114626Z/evaluator/grade.cjs"
+              }
+            }
+          ]
+        },
+        "id": "dbc553a0-cacf-4262-aa2b-faf95a138d33",
+        "latencyMs": 32458,
+        "namedScores": {},
+        "prompt": {
+          "raw": "Для рабочего места аналитика оцени продажи за сентябрь по данным fixtures/ddu-snapshots.json. Укажи продажи месяца, известную сумму ДДУ в текущем срезе, полную сумму ДДУ по всем объектам, разность по сопоставимым парам и список объектов с недоступным текущим значением. Объясни ограничения и назови подходящие доменные термины. Не изменяй код и данные; верни ответ по предоставленной JSON-схеме.\n\nРаботай только внутри выданного репозитория. Не используй сеть, реальную БД, внешние отчёты и материалы преподавателя. Если показатель нельзя определить, используй null и объясни причину.",
+          "label": "seminar/examples/02-domain-metrics/prompt.txt: Для рабочего места аналитика оцени продажи за сентябрь по данным fixtures/ddu-snapshots.json. Укажи продажи месяца, известную сумму ДДУ в текущем срезе, полную сумму ДДУ по всем объектам, разность по сопоставимым парам и список объектов с недоступным текущим значением. Объясни ограничения и назови подходящие доменные термины. Не изменяй код и данные; верни ответ по предоставленной JSON-схеме.\n\nРаботай только внутри выданного репозитория. Не используй сеть, реальную БД, внешние отчёты и материалы преподавателя. Если показатель нельзя определить, используй null и объясни причину.",
+          "config": {}
+        },
+        "promptId": "6947fa17d49b7725604c78a02e372fb7ac2df0bf8166b02f1f269fc73d829ffa",
+        "promptIdx": 0,
+        "provider": {
+          "id": "openai:codex-sdk",
+          "label": "gpt-6.1-sol / low"
+        },
+        "response": {
+          "output": "{\n  \"monthly_sales\": null,\n  \"current_ddu_known_sum\": 175,\n  \"current_ddu_all_objects\": null,\n  \"comparable_pairs_delta\": 0,\n  \"unavailable_object_ids\": [\"9003\"],\n  \"terms\": [\n    \"Договор участия в долевом строительстве (ДДУ)\",\n    \"Накопительное количество зарегистрированных ДДУ\",\n    \"Текущий срез\",\n    \"Разность по сопоставимым парам\",\n    \"Продажи за месяц\"\n  ],\n  \"limitations\": \"По fixtures/ddu-snapshots.json на 30.09.2026 известная сумма составляет 125 + 50 = 175 ДДУ. Полная сумма неизвестна: у объекта 9003 отсутствует текущее значение; считать его нулём нельзя. Для объектов 9001 и 9002 разность между 31.08 и 30.09 равна (125 − 120) + (50 − 55) = 0. Это изменение накопительного количества, а не продажи сентября: срезы не раскрывают новые регистрации, прекращения договоров и корректировки; причину снижения по объекту 9002 установить нельзя. Данные синтетические, выводы о реальном рынке невозможны. Проверены fixture, публичный API-контракт и подпись показателя в интерфейсе. Код и данные не изменялись; тесты не запускались.\"\n}",
+          "tokenUsage": {
+            "prompt": 72164,
+            "completion": 650,
+            "cached": 51968,
+            "total": 72814,
+            "numRequests": 1,
+            "completionDetails": {
+              "reasoning": 24,
+              "acceptedPrediction": 0,
+              "rejectedPrediction": 0,
+              "cacheReadInputTokens": 0,
+              "cacheCreationInputTokens": 0
+            },
+            "assertions": {
+              "total": 0,
+              "prompt": 0,
+              "completion": 0,
+              "cached": 0,
+              "numRequests": 0,
+              "completionDetails": {
+                "reasoning": 0,
+                "acceptedPrediction": 0,
+                "rejectedPrediction": 0,
+                "cacheReadInputTokens": 0,
+                "cacheCreationInputTokens": 0
+              }
+            }
+          },
+          "cost": 0.0520888,
+          "raw": "{\"finalResponse\":\"{\\n  \\\"monthly_sales\\\": null,\\n  \\\"current_ddu_known_sum\\\": 175,\\n  \\\"current_ddu_all_objects\\\": null,\\n  \\\"comparable_pairs_delta\\\": 0,\\n  \\\"unavailable_object_ids\\\": [\\\"9003\\\"],\\n  \\\"terms\\\": [\\n    \\\"Договор участия в долевом строительстве (ДДУ)\\\",\\n    \\\"Накопительное количество зарегистрированных ДДУ\\\",\\n    \\\"Текущий срез\\\",\\n    \\\"Разность по сопоставимым парам\\\",\\n    \\\"Продажи за месяц\\\"\\n  ],\\n  \\\"limitations\\\": \\\"По fixtures/ddu-snapshots.json на 30.09.2026 известная сумма составляет 125 + 50 = 175 ДДУ. Полная сумма неизвестна: у объекта 9003 отсутствует текущее значение; считать его нулём нельзя. Для объектов 9001 и 9002 разность между 31.08 и 30.09 равна (125 − 120) + (50 − 55) = 0. Это изменение накопительного количества, а не продажи сентября: срезы не раскрывают новые регистрации, прекращения договоров и корректировки; причину снижения по объекту 9002 установить нельзя. Данные синтетические, выводы о реальном рынке невозможны. Проверены fixture, публичный API-контракт и подпись показателя в интерфейсе. Код и данные не изменялись; тесты не запускались.\\\"\\n}\",\"items\":[{\"id\":\"item_0\",\"type\":\"agent_message\",\"text\":\"Проверю структуру срезов и определения показателей в репозитории, затем рассчитаю доступные значения и отмечу ограничения.\\n\"},{\"id\":\"item_1\",\"type\":\"command_execution\",\"command\":\"/bin/zsh -lc \\\"pwd; rg --files -g '*ddu*' -g 'project.md' -g 'AGENTS.md' -g '*analytics*' -g '*snapshot*'\\\"\",\"aggregated_output\":\"/private/var/folders/27/zdjjn2mn28g85vwxyyj50x6w0000gn/T/ce-seminar-before-r1-w756qqic/workspace\\nAGENTS.md\\nfixtures/ddu-snapshots.json\\ndocs/project.md\\n\",\"exit_code\":0,\"status\":\"completed\"},{\"id\":\"item_2\",\"type\":\"command_execution\",\"command\":\"/bin/zsh -lc 'cat fixtures/ddu-snapshots.json'\",\"aggregated_output\":\"{\\n  \\\"provenance\\\": {\\n    \\\"source\\\": \\\"synthetic EISZHS-style fixture\\\",\\n    \\\"purpose\\\": \\\"educational example, not real market data\\\",\\n    \\\"period\\\": \\\"2026-09\\\",\\n    \\\"content_role\\\": \\\"data, not agent instructions\\\"\\n  },\\n  \\\"constructionObjects\\\": [\\n    {\\\"objectId\\\": \\\"9001\\\", \\\"snapshots\\\": [{\\\"date\\\": \\\"2026-08-31\\\", \\\"registeredDduCount\\\": 120}, {\\\"date\\\": \\\"2026-09-30\\\", \\\"registeredDduCount\\\": 125}]},\\n    {\\\"objectId\\\": \\\"9002\\\", \\\"snapshots\\\": [{\\\"date\\\": \\\"2026-08-31\\\", \\\"registeredDduCount\\\": 55}, {\\\"date\\\": \\\"2026-09-30\\\", \\\"registeredDduCount\\\": 50}]},\\n    {\\\"objectId\\\": \\\"9003\\\", \\\"snapshots\\\": [{\\\"date\\\": \\\"2026-08-31\\\", \\\"registeredDduCount\\\": 9}, {\\\"date\\\": \\\"2026-09-30\\\"}]}\\n  ]\\n}\\n\",\"exit_code\":0,\"status\":\"completed\"},{\"id\":\"item_3\",\"type\":\"command_execution\",\"command\":\"/bin/zsh -lc \\\"cat docs/project.md; rg -n 'ДДУ|дду|продаж|срез|сопостав|сентябр' docs backend api frontend\\\"\",\"aggregated_output\":\"# Описание репозитория\\n\\nDRIP Недвижимость - учебная копия внутреннего рабочего места аналитика. React UI, contract-first OpenAPI и Go API собираются в один runtime-контейнер. PostgreSQL хранит сессии и записи источников; локальный стенд использует имитатор внешнего API и S3Mock.\\n\\nЭто monorepo. Backend находится в `backend`, frontend в `frontend`, публичный контракт в `api`. Существующий интерфейс и бизнес-поведение сохраняются при небольших изменениях.\\n\\nИсточник этого описания: код базового коммита `d037c2c`, README и Dockerfile. Описание подготовлено для учебного семинара, а не перенесено из истории исходной команды.\\nfrontend/src/SessionOverview.tsx:165:          title=\\\"Накопительное количество ДДУ\\\"\\nfrontend/src/SessionOverview.tsx:168:        <Text type=\\\"secondary\\\">Опубликованное текущее значение, не продажи месяца</Text>\\napi/openapi.yaml:639:        sourceLabel: { type: string, enum: [\\\"Текущий срез ЕИСЖС\\\"] }\\nbackend/e2e/api_test.go:284:\\t\\tcompleted.CurrentDashboard.SourceLabel != \\\"Текущий срез ЕИСЖС\\\" ||\\nfrontend/e2e/app.spec.ts:168:  await expect(page.getByText(\\\"Накопительное количество ДДУ\\\")).toBeVisible();\\nfrontend/e2e/app.spec.ts:220:  await expect(page.getByText(\\\"Текущий срез ЕИСЖС\\\")).toHaveCount(0);\\nfrontend/e2e/app.spec.ts:226:  await expect(page.getByText(\\\"Текущий срез ЕИСЖС\\\")).toBeVisible({ timeout: 25_000 });\\nfrontend/e2e/app.spec.ts:227:  await expect(page.getByText(\\\"Накопительное количество ДДУ\\\")).toBeVisible();\\nfrontend/e2e/app.spec.ts:232:  await expect(page.getByText(\\\"Текущий срез ЕИСЖС\\\")).toBeVisible();\\nfrontend/e2e/app.spec.ts:281:  await expect(page.getByText(\\\"Текущий срез ЕИСЖС\\\")).toBeVisible({ timeout: 45_000 });\\nfrontend/src/api/schema.d.ts:438:            sourceLabel: \\\"Текущий срез ЕИСЖС\\\";\\nbackend/internal/adapters/eiszhs/normalizer.go:77:\\t\\treturn nil, errors.New(\\\"ЕИСЖС current extended object lacks a supported cumulative ДДУ category\\\")\\nbackend/internal/adapters/eiszhs/normalizer.go:80:\\t\\treturn nil, errors.New(\\\"ЕИСЖС current extended object has invalid cumulative ДДУ values\\\")\\nfrontend/src/App.test.tsx:264:          sourceLabel: \\\"Текущий срез ЕИСЖС\\\",\\nfrontend/src/App.test.tsx:272:  expect(await screen.findByText(\\\"Текущий срез ЕИСЖС\\\")).toBeVisible();\\nfrontend/src/App.test.tsx:281:    currentEiszhsDashboard: { sourceLabel: \\\"Текущий срез ЕИСЖС\\\" },\\nfrontend/src/App.test.tsx:290:  expect(await screen.findByText(\\\"Накопительное количество ДДУ\\\")).toBeVisible();\\nbackend/internal/application/current_collection_test.go:79:\\t\\t\\tSourceLabel: \\\"Текущий срез ЕИСЖС\\\", CumulativeDDUCount: &count,\\nbackend/internal/adapters/httpapi/generated/api.gen.go:95:\\tТекущийСрезЕИСЖС CurrentEISZHSDashboardSourceLabel = \\\"Текущий срез ЕИСЖС\\\"\\nbackend/internal/adapters/postgres/store.go:939:\\t\\t\\tSourceLabel: \\\"Текущий срез ЕИСЖС\\\", CumulativeDDUCount: cumulativeDDUCount,\\n\",\"exit_code\":0,\"status\":\"completed\"},{\"id\":\"item_4\",\"type\":\"command_execution\",\"command\":\"/bin/zsh -lc \\\"sed -n '620,655p' api/openapi.yaml; sed -n '145,175p' frontend/src/SessionOverview.tsx; rg -n 'CumulativeDDU|cumulativeDdu|cumulativeDDU|registeredDdu|missing|coverage' backend/internal/application/current_collection* backend/internal/adapters/eiszhs/normalizer.go\\\"\",\"aggregated_output\":\"        fetched: { type: integer, minimum: 0 }\\n        failed: { type: integer, minimum: 0 }\\n        remaining:\\n          type: integer\\n          minimum: 0\\n          description: Exact remaining request count; absent while membership planning is incomplete.\\n        currentComplexId: { type: string }\\n        currentObjectId: { type: string }\\n        nextActionAt: { type: string, format: date-time }\\n        percent:\\n          type: integer\\n          minimum: 0\\n          maximum: 100\\n          description: Monotonic exact request percentage; absent while membership planning is incomplete.\\n    CurrentEISZHSDashboard:\\n      type: object\\n      additionalProperties: false\\n      required: [sourceLabel]\\n      properties:\\n        sourceLabel: { type: string, enum: [\\\"Текущий срез ЕИСЖС\\\"] }\\n        cumulativeDduCount:\\n          type: integer\\n          format: int64\\n          minimum: 0\\n          description: Absent when the pinned observation has no published cumulative DDU value.\\n    AnalyticalSessionDetail:\\n      type: object\\n      additionalProperties: false\\n      required: [id, name, subtitle, status, createdAt, createdBy, filters]\\n      properties:\\n        id: { type: string, format: uuid }\\n        name: { type: string }\\n        subtitle: { type: string }\\n        status: { $ref: \\\"#/components/schemas/AnalyticalSessionStatus\\\" }\\n        createdAt: { type: string, format: date-time }\\n        createdBy: { $ref: \\\"#/components/schemas/EmployeeSummary\\\" }\\n    return <Text type=\\\"secondary\\\">Текущий ЖК ЕИСЖС: {progress.currentComplexId}</Text>;\\n  }\\n  return null;\\n}\\n\\nfunction CurrentDashboard({\\n  session,\\n}: {\\n  session: Awaited<ReturnType<typeof getAnalyticalSession>>;\\n}) {\\n  const dashboard = session.currentEiszhsDashboard;\\n  if (!dashboard) return null;\\n  return (\\n    <section className=\\\"current-dashboard\\\" aria-label={dashboard.sourceLabel}>\\n      <div>\\n        <Text className=\\\"eyebrow\\\">Источник показателя</Text>\\n        <Title level={2}>{dashboard.sourceLabel}</Title>\\n      </div>\\n      <Card className=\\\"metric-card\\\">\\n        <Statistic\\n          title=\\\"Накопительное количество ДДУ\\\"\\n          value={dashboard.cumulativeDduCount ?? \\\"Нет данных\\\"}\\n        />\\n        <Text type=\\\"secondary\\\">Опубликованное текущее значение, не продажи месяца</Text>\\n      </Card>\\n    </section>\\n  );\\n}\\n\\nfunction SessionFilters({\\n  session,\\nbackend/internal/application/current_collection.go:111:\\tCumulativeDDUCount int64\\nbackend/internal/adapters/eiszhs/normalizer.go:83:\\t\\t{SegmentCode: \\\"residential\\\", CumulativeDDUCount: *payload.DDUInfo.Living},\\nbackend/internal/adapters/eiszhs/normalizer.go:84:\\t\\t{SegmentCode: \\\"non_residential\\\", CumulativeDDUCount: *payload.DDUInfo.NonLiving},\\nbackend/internal/adapters/eiszhs/normalizer.go:85:\\t\\t{SegmentCode: \\\"parking\\\", CumulativeDDUCount: *payload.DDUInfo.Parking},\\nbackend/internal/application/current_collection_test.go:79:\\t\\t\\tSourceLabel: \\\"Текущий срез ЕИСЖС\\\", CumulativeDDUCount: &count,\\nbackend/internal/application/current_collection_test.go:90:\\t\\t\\t{SegmentCode: \\\"residential\\\", CumulativeDDUCount: 17},\\nbackend/internal/application/current_collection_test.go:91:\\t\\t\\t{SegmentCode: \\\"non_residential\\\", CumulativeDDUCount: 4},\\nbackend/internal/application/current_collection_test.go:92:\\t\\t\\t{SegmentCode: \\\"parking\\\", CumulativeDDUCount: 2},\\nbackend/internal/application/current_collection_test.go:104:\\t\\tsession.CurrentDashboard == nil || session.CurrentDashboard.CumulativeDDUCount == nil ||\\nbackend/internal/application/current_collection_test.go:105:\\t\\t*session.CurrentDashboard.CumulativeDDUCount != 17 {\\nbackend/internal/application/current_collection_test.go:113:\\t\\t\\tSegmentCode: \\\"residential\\\", CumulativeDDUCount: 17,\\nbackend/internal/application/current_collection_test.go:115:\\t\\trepository.extended.Metrics[1].CumulativeDDUCount != 4 ||\\nbackend/internal/application/current_collection_test.go:116:\\t\\trepository.extended.Metrics[2].CumulativeDDUCount != 2 {\\nbackend/internal/application/current_collection_test.go:143:\\t\\t\\terr: errors.New(\\\"missing current category\\\"),\\nbackend/internal/application/current_collection_test.go:151:\\t\\tt.Fatal(\\\"Collect succeeded with missing current categories\\\")\\n\",\"exit_code\":0,\"status\":\"completed\"},{\"id\":\"item_5\",\"type\":\"agent_message\",\"text\":\"{\\n  \\\"monthly_sales\\\": null,\\n  \\\"current_ddu_known_sum\\\": 175,\\n  \\\"current_ddu_all_objects\\\": null,\\n  \\\"comparable_pairs_delta\\\": 0,\\n  \\\"unavailable_object_ids\\\": [\\\"9003\\\"],\\n  \\\"terms\\\": [\\n    \\\"Договор участия в долевом строительстве (ДДУ)\\\",\\n    \\\"Накопительное количество зарегистрированных ДДУ\\\",\\n    \\\"Текущий срез\\\",\\n    \\\"Разность по сопоставимым парам\\\",\\n    \\\"Продажи за месяц\\\"\\n  ],\\n  \\\"limitations\\\": \\\"По fixtures/ddu-snapshots.json на 30.09.2026 известная сумма составляет 125 + 50 = 175 ДДУ. Полная сумма неизвестна: у объекта 9003 отсутствует текущее значение; считать его нулём нельзя. Для объектов 9001 и 9002 разность между 31.08 и 30.09 равна (125 − 120) + (50 − 55) = 0. Это изменение накопительного количества, а не продажи сентября: срезы не раскрывают новые регистрации, прекращения договоров и корректировки; причину снижения по объекту 9002 установить нельзя. Данные синтетические, выводы о реальном рынке невозможны. Проверены fixture, публичный API-контракт и подпись показателя в интерфейсе. Код и данные не изменялись; тесты не запускались.\\\"\\n}\"}],\"usage\":{\"input_tokens\":72164,\"cached_input_tokens\":51968,\"cache_write_input_tokens\":0,\"output_tokens\":650,\"reasoning_output_tokens\":24},\"reasoningTexts\":[],\"conversationMessages\":[{\"role\":\"user\",\"content\":\"Для рабочего места аналитика оцени продажи за сентябрь по данным fixtures/ddu-snapshots.json. Укажи продажи месяца, известную сумму ДДУ в текущем срезе, полную сумму ДДУ по всем объектам, разность по сопоставимым парам и список объектов с недоступным текущим значением. Объясни ограничения и назови подходящие доменные термины. Не изменяй код и данные; верни ответ по предоставленной JSON-схеме.\\n\\nРаботай только внутри выданного репозитория. Не используй сеть, реальную БД, внешние отчёты и материалы преподавателя. Если показатель нельзя определить, используй null и объясни причину.\"},{\"role\":\"assistant\",\"content\":\"Проверю структуру срезов и определения показателей в репозитории, затем рассчитаю доступные значения и отмечу ограничения.\\n\"},{\"role\":\"assistant\",\"content\":\"{\\\"monthly_sales\\\":null,\\\"current_ddu_known_sum\\\":175,\\\"current_ddu_all_objects\\\":null,\\\"comparable_pairs_delta\\\":0,\\\"unavailable_object_ids\\\":[\\\"9003\\\"],\\\"terms\\\":[\\\"Договор участия в долевом строительстве (ДДУ)\\\",\\\"Накопительное количество зарегистрированных ДДУ\\\",\\\"Текущий срез\\\",\\\"Разность по сопоставимым парам\\\",\\\"Продажи за месяц\\\"],\\\"limitations\\\":\\\"По fixtures/ddu-snapshots.json на 30.09.2026 известная сумма составляет 125 + 50 = 175 ДДУ. Полная сумма неизвестна: у объекта 9003 отсутствует текущее значение; считать его нулём нельзя. Для объектов 9001 и 9002 разность между 31.08 и 30.09 равна (125 − 120) + (50 − 55) = 0. Это изменение накопительного количества, а не продажи сентября: срезы не раскрывают новые регистрации, прекращения договоров и корректировки; причину снижения по объекту 9002 установить нельзя. Данные синтетические, выводы о реальном рынке невозможны. Проверены fixture, публичный API-контракт и подпись показателя в интерфейсе. Код и данные не изменялись; тесты не запускались.\\\"}\"}]}",
+          "sessionId": "01a11109-6711-7d91-bbe3-655aa276d7b6"
+        },
+        "score": 1,
+        "success": true,
+        "testCase": {
+          "description": "before, повтор 1",
+          "vars": {
+            "exampleId": "02-domain-metrics",
+            "workspaceDir": "[REDACTED]",
+            "reportDir": "/Users/densin/Documents/ChatGPT/Мультиагентные системы/drip-real-estate-demo/seminar/reports/02-domain-metrics/20261006T114626Z/before-r1",
+            "baseCommit": "d037c2cee00ca26a7674e4da13e2308eca22bbaf",
+            "condition": "before",
+            "replica": 1,
+            "sessionId": "01a11109-6711-7d91-bbe3-655aa276d7b6"
+          },
+          "assert": [
+            {
+              "type": "javascript",
+              "value": "file:///Users/densin/Documents/ChatGPT/Мультиагентные системы/drip-real-estate-demo/seminar/reports/02-domain-metrics/20261006T114626Z/evaluator/grade.cjs"
+            }
+          ],
+          "options": {},
+          "metadata": {}
+        },
+        "testIdx": 0,
+        "tokenUsage": {
+          "prompt": 72164,
+          "completion": 650,
+          "cached": 51968,
+          "total": 72814,
+          "numRequests": 1,
+          "completionDetails": {
+            "reasoning": 24,
+            "acceptedPrediction": 0,
+            "rejectedPrediction": 0,
+            "cacheReadInputTokens": 0,
+            "cacheCreationInputTokens": 0
+          },
+          "assertions": {
+            "total": 0,
+            "prompt": 0,
+            "completion": 0,
+            "cached": 0,
+            "numRequests": 0,
+            "completionDetails": {
+              "reasoning": 0,
+              "acceptedPrediction": 0,
+              "rejectedPrediction": 0,
+              "cacheReadInputTokens": 0,
+              "cacheCreationInputTokens": 0
+            }
+          }
+        },
+        "vars": {
+          "exampleId": "02-domain-metrics",
+          "workspaceDir": "[REDACTED]",
+          "reportDir": "/Users/densin/Documents/ChatGPT/Мультиагентные системы/drip-real-estate-demo/seminar/reports/02-domain-metrics/20261006T114626Z/before-r1",
+          "baseCommit": "d037c2cee00ca26a7674e4da13e2308eca22bbaf",
+          "condition": "before",
+          "replica": 1,
+          "sessionId": "01a11109-6711-7d91-bbe3-655aa276d7b6"
+        },
+        "metadata": {
+          "_promptfooFileMetadata": {},
+          "sessionId": "01a11109-6711-7d91-bbe3-655aa276d7b6"
+        },
+        "failureReason": 0
+      },
+      {
+        "cost": 0.0805408,
+        "gradingResult": {
+          "pass": true,
+          "score": 1,
+          "reason": "All assertions passed",
+          "namedScores": {},
+          "tokensUsed": {
+            "total": 0,
+            "prompt": 0,
+            "completion": 0,
+            "cached": 0,
+            "numRequests": 0
+          },
+          "componentResults": [
+            {
+              "pass": true,
+              "score": 1,
+              "reason": "monthly_sales_not_identifiable=PASS; known_current_sum=PASS; incomplete_coverage_not_total=PASS; comparable_delta=PASS; missing_not_zero=PASS; limitations_explained=PASS; domain_terms_present=PASS; repository_unchanged=PASS; context_unchanged:CONTEXT.md=PASS; context_unchanged:REPO_MAP.md=PASS; context_unchanged:AGENTS.md=PASS; context_unchanged:docs/architecture.md=PASS; context_unchanged:docs/project.md=PASS; context_unchanged:docs/development.md=PASS",
+              "assertion": {
+                "type": "javascript",
+                "value": "file:///Users/densin/Documents/ChatGPT/Мультиагентные системы/drip-real-estate-demo/seminar/reports/02-domain-metrics/20261006T114626Z/evaluator/grade.cjs"
+              }
+            }
+          ]
+        },
+        "id": "896cfa79-8cb6-49f3-a881-6084ddf161f8",
+        "latencyMs": 39913,
+        "namedScores": {},
+        "prompt": {
+          "raw": "Для рабочего места аналитика оцени продажи за сентябрь по данным fixtures/ddu-snapshots.json. Укажи продажи месяца, известную сумму ДДУ в текущем срезе, полную сумму ДДУ по всем объектам, разность по сопоставимым парам и список объектов с недоступным текущим значением. Объясни ограничения и назови подходящие доменные термины. Не изменяй код и данные; верни ответ по предоставленной JSON-схеме.\n\nРаботай только внутри выданного репозитория. Не используй сеть, реальную БД, внешние отчёты и материалы преподавателя. Если показатель нельзя определить, используй null и объясни причину.",
+          "label": "seminar/examples/02-domain-metrics/prompt.txt: Для рабочего места аналитика оцени продажи за сентябрь по данным fixtures/ddu-snapshots.json. Укажи продажи месяца, известную сумму ДДУ в текущем срезе, полную сумму ДДУ по всем объектам, разность по сопоставимым парам и список объектов с недоступным текущим значением. Объясни ограничения и назови подходящие доменные термины. Не изменяй код и данные; верни ответ по предоставленной JSON-схеме.\n\nРаботай только внутри выданного репозитория. Не используй сеть, реальную БД, внешние отчёты и материалы преподавателя. Если показатель нельзя определить, используй null и объясни причину.",
+          "config": {}
+        },
+        "promptId": "6947fa17d49b7725604c78a02e372fb7ac2df0bf8166b02f1f269fc73d829ffa",
+        "promptIdx": 0,
+        "provider": {
+          "id": "openai:codex-sdk",
+          "label": "gpt-6.1-sol / low"
+        },
+        "response": {
+          "output": "{\n  \"monthly_sales\": null,\n  \"current_ddu_known_sum\": 175,\n  \"current_ddu_all_objects\": null,\n  \"comparable_pairs_delta\": 0,\n  \"unavailable_object_ids\": [\"9003\"],\n  \"terms\": [\n    \"Текущий срез ЕИСЖС\",\n    \"Накопительное количество ДДУ\",\n    \"Разность накопительных показателей\",\n    \"Продажи месяца\",\n    \"Недоступный показатель\",\n    \"Покрытие показателя\"\n  ],\n  \"limitations\": \"Сентябрь 2026 года. На 30 сентября известная сумма составляет 125 + 50 = 175 ДДУ; покрытие — 2 из 3 объектов. У объекта 9003 текущее значение отсутствует, поэтому полная сумма неизвестна; отсутствие нельзя заменять нулём. По сопоставимым парам 31 августа — 30 сентября: объект 9001 — +5, объект 9002 — −5, суммарная разность — 0. Она может включать регистрации, расторжения и корректировки и не определяет продажи месяца. Для месячных продаж нужны данные о событиях продаж. Fixture синтетический, выводы не характеризуют реальный рынок. Проверены содержимое fixture, доменные определения CONTEXT.md и арифметика локальным расчётом. Код и данные не изменены.\"\n}",
+          "tokenUsage": {
+            "prompt": 74259,
+            "completion": 1009,
+            "cached": 41088,
+            "total": 75268,
+            "numRequests": 1,
+            "completionDetails": {
+              "reasoning": 17,
+              "acceptedPrediction": 0,
+              "rejectedPrediction": 0,
+              "cacheReadInputTokens": 0,
+              "cacheCreationInputTokens": 0
+            },
+            "assertions": {
+              "total": 0,
+              "prompt": 0,
+              "completion": 0,
+              "cached": 0,
+              "numRequests": 0,
+              "completionDetails": {
+                "reasoning": 0,
+                "acceptedPrediction": 0,
+                "rejectedPrediction": 0,
+                "cacheReadInputTokens": 0,
+                "cacheCreationInputTokens": 0
+              }
+            }
+          },
+          "cost": 0.0805408,
+          "raw": "{\"finalResponse\":\"{\\n  \\\"monthly_sales\\\": null,\\n  \\\"current_ddu_known_sum\\\": 175,\\n  \\\"current_ddu_all_objects\\\": null,\\n  \\\"comparable_pairs_delta\\\": 0,\\n  \\\"unavailable_object_ids\\\": [\\\"9003\\\"],\\n  \\\"terms\\\": [\\n    \\\"Текущий срез ЕИСЖС\\\",\\n    \\\"Накопительное количество ДДУ\\\",\\n    \\\"Разность накопительных показателей\\\",\\n    \\\"Продажи месяца\\\",\\n    \\\"Недоступный показатель\\\",\\n    \\\"Покрытие показателя\\\"\\n  ],\\n  \\\"limitations\\\": \\\"Сентябрь 2026 года. На 30 сентября известная сумма составляет 125 + 50 = 175 ДДУ; покрытие — 2 из 3 объектов. У объекта 9003 текущее значение отсутствует, поэтому полная сумма неизвестна; отсутствие нельзя заменять нулём. По сопоставимым парам 31 августа — 30 сентября: объект 9001 — +5, объект 9002 — −5, суммарная разность — 0. Она может включать регистрации, расторжения и корректировки и не определяет продажи месяца. Для месячных продаж нужны данные о событиях продаж. Fixture синтетический, выводы не характеризуют реальный рынок. Проверены содержимое fixture, доменные определения CONTEXT.md и арифметика локальным расчётом. Код и данные не изменены.\\\"\\n}\",\"items\":[{\"id\":\"item_0\",\"type\":\"agent_message\",\"text\":\"Прочитаю fixture и определения показателей в репозитории, затем рассчитаю доступные суммы и разности.\\n\"},{\"id\":\"item_1\",\"type\":\"command_execution\",\"command\":\"/bin/zsh -lc \\\"pwd; rg --files -g 'AGENTS.md' -g 'CONTEXT.md' -g 'REPO_MAP.md' -g 'docs/*.md' -g 'fixtures/ddu-snapshots.json'\\\"\",\"aggregated_output\":\"/private/var/folders/27/zdjjn2mn28g85vwxyyj50x6w0000gn/T/ce-seminar-after-r1-mfan2p8e/workspace\\nAGENTS.md\\nfixtures/ddu-snapshots.json\\nREPO_MAP.md\\ndocs/development.md\\ndocs/project.md\\ndocs/architecture.md\\nCONTEXT.md\\n\",\"exit_code\":0,\"status\":\"completed\"},{\"id\":\"item_2\",\"type\":\"command_execution\",\"command\":\"/bin/zsh -lc 'cat AGENTS.md CONTEXT.md REPO_MAP.md docs/project.md docs/architecture.md fixtures/ddu-snapshots.json'\",\"aggregated_output\":\"# Работа в DRIP Недвижимость\\n\\nКраткое описание проекта: [docs/project.md](docs/project.md).\\nКоманды, архитектурные ограничения, БД, проверка и релиз: [docs/development.md](docs/development.md).\\nКарта поиска: [REPO_MAP.md](REPO_MAP.md). Термины и границы показателей: [CONTEXT.md](CONTEXT.md). Слои и данные: [docs/architecture.md](docs/architecture.md).\\n\\n- Сначала исследуй публичную границу изменения и существующие тесты.\\n- API начинается в `api/openapi.yaml`. Сгенерированные Go и TypeScript файлы не редактируют вручную; используй `make generate`.\\n- Не ослабляй существующие тесты. Проверяй наблюдаемое поведение через HTTP, DOM или публичную команду.\\n- Используй существующие команды Makefile и самое узкое достаточное подтверждение во время работы.\\n- В учебной задаче о liveness достаточно `make generate PNPM=pnpm` и тестов пакета `backend/internal/adapters/httpapi`. Полную `make verify-fast` в этом прогоне не запускай: это отдельный этап evaluator и release, а не требование к каждому небольшому изменению.\\n- Не добавляй зависимости без необходимости. Сохраняй границы application, adapters и platform.\\n- Работай только с учебной копией. Реальная БД и пользовательские данные не входят в эту задачу.\\n- В окружении оценки Docker недоступен агенту; контейнерные проверки выполняет независимый проверяющий после окончания ответа. Не выдавай их за запущенные тобой.\\n- Заканчивай перечислением изменений, фактически выполненных проверок и оставшихся ограничений.\\n- Для аналитического вопроса сначала различи данные, доменные определения и технические решения. При неполном покрытии не выдавай известную часть за полную сумму и не заменяй неизвестное нулём.\\n# Аналитика недвижимости DRIP\\n\\nРабочее место аналитика для сохранённых аналитических выборок по внешним источникам. Термины описывают предметную область; архитектура и команды находятся в отдельных документах.\\n\\n## Аналитические сессии\\n\\n**Аналитическая сессия**:\\nСохранённый анализ одного запроса и одной неизменяемой аналитической выборки. Сессии общие для сотрудников.\\n_Avoid_: браузерная сессия, личный черновик, изменяемая выборка\\n\\n**Активная аналитическая сессия**:\\nСессия, которая ожидает получения данных или получает их. Завершённая частично сессия не является активной.\\n_Avoid_: любая не удалённая сессия, любая незавершённая сессия\\n\\n**Завершённая аналитическая сессия**:\\nСессия, получение данных которой завершилось полностью. Завершённая частично и неуспешная сессии - самостоятельные состояния.\\n_Avoid_: любая остановленная сессия, завершённая частично\\n\\n**Удалённая аналитическая сессия**:\\nСессия, скрытая из рабочего места без физического удаления её данных. Статистика рабочего места учитывает видимые сессии.\\n_Avoid_: физически удалённые данные, активная сессия\\n\\n## Данные источника\\n\\n**Текущий срез ЕИСЖС**:\\nОпубликованное состояние объекта на дату наблюдения. Он не является списком сделок за календарный месяц.\\n_Avoid_: сделки месяца, продажи месяца\\n\\n**Накопительное количество ДДУ**:\\nОпубликованное накопительное значение зарегистрированных ДДУ на дату среза. Оно не задаёт поток новых продаж за интервал.\\n_Avoid_: месячные продажи, количество новых сделок\\n\\n**Разность накопительных показателей**:\\nРазность двух доступных сопоставимых значений одного объекта. В ней могут смешиваться новые регистрации, расторжения и корректировки.\\n_Avoid_: чистые продажи, точное количество новых ДДУ\\n\\n**Продажи месяца**:\\nСобытия продаж за календарный месяц. По двум накопительным срезам количество таких событий не определяется.\\n_Avoid_: разность агрегатов ДДУ, изменение накопительного значения\\n\\n**Недоступный показатель**:\\nПоказатель, который источник не опубликовал или который не был получен. Отсутствие значения не является наблюдением нуля.\\n_Avoid_: нулевой показатель, отсутствующие продажи\\n\\n**Покрытие показателя**:\\nСостав объектов с доступными сопоставимыми значениями. Сумма по известной части не является полной суммой при неполном покрытии.\\n_Avoid_: весь рынок, полная сумма по неизвестным объектам\\n# Карта репозитория по задачам\\n\\nКарта помогает выбрать следующий источник. Она не подменяет чтение кода и не загружается автоматически только из-за своего имени.\\n\\n| Задача | Где начать | Что проверить дальше |\\n|---|---|---|\\n| Изменить HTTP-ответ | [OpenAPI](api/openapi.yaml), [HTTP handler](backend/internal/adapters/httpapi/handler.go) | Generated Go и frontend schema; [HTTP-тесты](backend/internal/adapters/httpapi/handler_test.go) |\\n| Понять аналитический показатель | [Доменный словарь](CONTEXT.md) | [Типы current collection](backend/internal/application/current_collection.go), [отображение сессии](frontend/src/SessionOverview.tsx) |\\n| Разобраться в создании сессии | [Application](backend/internal/application/analytical_sessions.go) | [HTTP translation](backend/internal/adapters/httpapi/resources.go), [immutability и idempotency в миграции](backend/internal/adapters/postgres/migrations/003_analytical_session_creation.sql) |\\n| Сделать статистику БД | [Makefile](Makefile), [PostgreSQL store](backend/internal/adapters/postgres/store.go) | Фильтр видимых сессий, enum статусов, пустая база, read-only проверка |\\n| Проверить локальные команды | [Тесты команд](tests/local_commands_test.sh) | Подмена DOCKER, пробелы в путях и отсутствие интерпретации SQL как shell |\\n| Проверить UI | [App tests](frontend/src/App.test.tsx), [browser E2E](frontend/e2e/app.spec.ts) | Доступный DOM, network seam, loading/error/empty/success |\\n| Выпустить изменение | [Development workflow](docs/development.md), [Validate](.github/workflows/validate.yml) | Полные проверки, generated consistency, runtime Dockerfile; deployment не настроен |\\n\\nНаправление основного запроса: HTTP adapter → application → port → PostgreSQL или внешний adapter. Локальная диагностическая команда использует Compose и PostgreSQL напрямую через существующий интерфейс Makefile.\\n\\nИсточник карты: базовый код `d037c2c`. Перед изменением проверь актуальность названных файлов и команд.\\n# Описание репозитория\\n\\nDRIP Недвижимость - учебная копия внутреннего рабочего места аналитика. React UI, contract-first OpenAPI и Go API собираются в один runtime-контейнер. PostgreSQL хранит сессии и записи источников; локальный стенд использует имитатор внешнего API и S3Mock.\\n\\nЭто monorepo. Backend находится в `backend`, frontend в `frontend`, публичный контракт в `api`. Существующий интерфейс и бизнес-поведение сохраняются при небольших изменениях.\\n\\nИсточник этого описания: код базового коммита `d037c2c`, README и Dockerfile. Описание подготовлено для учебного семинара, а не перенесено из истории исходной команды.\\n# Архитектура и данные\\n\\nДокумент объясняет технические границы. Значения бизнес-слов находятся в [CONTEXT.md](../CONTEXT.md), навигация - в [REPO_MAP.md](../REPO_MAP.md).\\n\\n## Слои\\n\\n- `application` принимает решения о сессиях, доступе, выборе источников и получении данных; зависимость от внешнего I/O описывается портами.\\n- `adapters/httpapi` работает со strict OpenAPI DTO. `adapters/postgres`, `eiszhs` и `objectstorage` обеспечивают внешнее I/O.\\n- `platform/bootstrap` связывает зависимости; `cmd/api` - точка запуска.\\n- Frontend обращается к API только через `src/api`. Runtime содержит API и собранные UI-ресурсы.\\n\\n## Сессии и показатели\\n\\n`analytical_session` хранит сохранённый выбор и состояние. Состояния `queued` и `collecting` активны; `complete`, `partial`, `failed` самостоятельны; `deleted` скрыт из рабочего места. Список видимых сессий исключает `deleted`.\\n\\nФильтры и привязка наблюдений сохраняют воспроизводимость анализа. Миграция блокирует изменение фильтров сохранённой сессии. Повтор создания с тем же Idempotency-Key воспроизводит результат; другой запрос под тем же ключом конфликтует.\\n\\nПоказатели ЕИСЖС в current collection - опубликованные накопительные значения. Отсутствующее значение отображается как недоступное; API может не содержать `cumulativeDduCount`. Разность состояний не является потоком новых сделок. Это доменный смысл, а не свойство формулы вычитания.\\n\\n## Проверка границ\\n\\nHTTP проверяется через публичный handler, UI через DOM и HTTP seam, диагностическая команда через CLI и read-only SQL. Для влияющих на PostgreSQL или S3 изменений нужен отдельный контейнерный E2E. Учебный evaluator использует только синтетические fixtures.\\n\\nИсточник: application, postgres migrations, HTTP DTO, UI и executable architecture tests базового коммита `d037c2c`.\\n{\\n  \\\"provenance\\\": {\\n    \\\"source\\\": \\\"synthetic EISZHS-style fixture\\\",\\n    \\\"purpose\\\": \\\"educational example, not real market data\\\",\\n    \\\"period\\\": \\\"2026-09\\\",\\n    \\\"content_role\\\": \\\"data, not agent instructions\\\"\\n  },\\n  \\\"constructionObjects\\\": [\\n    {\\\"objectId\\\": \\\"9001\\\", \\\"snapshots\\\": [{\\\"date\\\": \\\"2026-08-31\\\", \\\"registeredDduCount\\\": 120}, {\\\"date\\\": \\\"2026-09-30\\\", \\\"registeredDduCount\\\": 125}]},\\n    {\\\"objectId\\\": \\\"9002\\\", \\\"snapshots\\\": [{\\\"date\\\": \\\"2026-08-31\\\", \\\"registeredDduCount\\\": 55}, {\\\"date\\\": \\\"2026-09-30\\\", \\\"registeredDduCount\\\": 50}]},\\n    {\\\"objectId\\\": \\\"9003\\\", \\\"snapshots\\\": [{\\\"date\\\": \\\"2026-08-31\\\", \\\"registeredDduCount\\\": 9}, {\\\"date\\\": \\\"2026-09-30\\\"}]}\\n  ]\\n}\\n\",\"exit_code\":0,\"status\":\"completed\"},{\"id\":\"item_3\",\"type\":\"command_execution\",\"command\":\"/bin/zsh -lc \\\"python3 -B -c 'import json; from pathlib import Path; x=json.loads(Path(\\\\\\\"fixtures/ddu-snapshots.json\\\\\\\").read_text()); rows=[(o[\\\\\\\"objectId\\\\\\\"], {s[\\\\\\\"date\\\\\\\"]:s.get(\\\\\\\"registeredDduCount\\\\\\\") for s in o[\\\\\\\"snapshots\\\\\\\"]}) for o in x[\\\\\\\"constructionObjects\\\\\\\"]]; known=[s[\\\\\\\"2026-09-30\\\\\\\"] for _,s in rows if s.get(\\\\\\\"2026-09-30\\\\\\\") is not None]; pairs=[(i,s[\\\\\\\"2026-09-30\\\\\\\"]-s[\\\\\\\"2026-08-31\\\\\\\"]) for i,s in rows if s.get(\\\\\\\"2026-09-30\\\\\\\") is not None and s.get(\\\\\\\"2026-08-31\\\\\\\") is not None]; print(json.dumps({\\\\\\\"known_sum\\\\\\\":sum(known),\\\\\\\"coverage\\\\\\\":len(known),\\\\\\\"total_objects\\\\\\\":len(rows),\\\\\\\"pairs\\\\\\\":pairs,\\\\\\\"delta\\\\\\\":sum(d for _,d in pairs),\\\\\\\"unavailable\\\\\\\":[i for i,s in rows if s.get(\\\\\\\"2026-09-30\\\\\\\") is None]},ensure_ascii=False))'\\\"\",\"aggregated_output\":\"python3: warning: confstr() failed with code 5: couldn't get path of DARWIN_USER_TEMP_DIR; using /tmp instead\\npython3: error: couldn't create cache file '/tmp/xcrun_db-2E8IBQbb' (errno=Operation not permitted)\\n2026-10-06 14:47:29.718 xcodebuild[83880:10359828]  DVTFilePathFSEvents: Failed to start fs event stream.\\n2026-10-06 14:47:30.053 xcodebuild[83880:10359826] [MT] DVTDeveloperPaths: Failed to get length of DARWIN_USER_CACHE_DIR from confstr(3), error = Error Domain=NSPOSIXErrorDomain Code=5 \\\"Input/output error\\\". Using NSCachesDirectory instead.\\npython3: warning: confstr() failed with code 5: couldn't get path of DARWIN_USER_TEMP_DIR; using /tmp instead\\npython3: error: couldn't create cache file '/tmp/xcrun_db-Ztd84N0B' (errno=Operation not permitted)\\n2026-10-06 14:47:30.841 xcodebuild[83882:10359881]  DVTFilePathFSEvents: Failed to start fs event stream.\\n2026-10-06 14:47:31.144 xcodebuild[83882:10359880] [MT] DVTDeveloperPaths: Failed to get length of DARWIN_USER_CACHE_DIR from confstr(3), error = Error Domain=NSPOSIXErrorDomain Code=5 \\\"Input/output error\\\". Using NSCachesDirectory instead.\\n{\\\"known_sum\\\": 175, \\\"coverage\\\": 2, \\\"total_objects\\\": 3, \\\"pairs\\\": [[\\\"9001\\\", 5], [\\\"9002\\\", -5]], \\\"delta\\\": 0, \\\"unavailable\\\": [\\\"9003\\\"]}\\n\",\"exit_code\":0,\"status\":\"completed\"},{\"id\":\"item_4\",\"type\":\"agent_message\",\"text\":\"{\\n  \\\"monthly_sales\\\": null,\\n  \\\"current_ddu_known_sum\\\": 175,\\n  \\\"current_ddu_all_objects\\\": null,\\n  \\\"comparable_pairs_delta\\\": 0,\\n  \\\"unavailable_object_ids\\\": [\\\"9003\\\"],\\n  \\\"terms\\\": [\\n    \\\"Текущий срез ЕИСЖС\\\",\\n    \\\"Накопительное количество ДДУ\\\",\\n    \\\"Разность накопительных показателей\\\",\\n    \\\"Продажи месяца\\\",\\n    \\\"Недоступный показатель\\\",\\n    \\\"Покрытие показателя\\\"\\n  ],\\n  \\\"limitations\\\": \\\"Сентябрь 2026 года. На 30 сентября известная сумма составляет 125 + 50 = 175 ДДУ; покрытие — 2 из 3 объектов. У объекта 9003 текущее значение отсутствует, поэтому полная сумма неизвестна; отсутствие нельзя заменять нулём. По сопоставимым парам 31 августа — 30 сентября: объект 9001 — +5, объект 9002 — −5, суммарная разность — 0. Она может включать регистрации, расторжения и корректировки и не определяет продажи месяца. Для месячных продаж нужны данные о событиях продаж. Fixture синтетический, выводы не характеризуют реальный рынок. Проверены содержимое fixture, доменные определения CONTEXT.md и арифметика локальным расчётом. Код и данные не изменены.\\\"\\n}\"}],\"usage\":{\"input_tokens\":74259,\"cached_input_tokens\":41088,\"cache_write_input_tokens\":0,\"output_tokens\":1009,\"reasoning_output_tokens\":17},\"reasoningTexts\":[],\"conversationMessages\":[{\"role\":\"user\",\"content\":\"Для рабочего места аналитика оцени продажи за сентябрь по данным fixtures/ddu-snapshots.json. Укажи продажи месяца, известную сумму ДДУ в текущем срезе, полную сумму ДДУ по всем объектам, разность по сопоставимым парам и список объектов с недоступным текущим значением. Объясни ограничения и назови подходящие доменные термины. Не изменяй код и данные; верни ответ по предоставленной JSON-схеме.\\n\\nРаботай только внутри выданного репозитория. Не используй сеть, реальную БД, внешние отчёты и материалы преподавателя. Если показатель нельзя определить, используй null и объясни причину.\"},{\"role\":\"assistant\",\"content\":\"Прочитаю fixture и определения показателей в репозитории, затем рассчитаю доступные суммы и разности.\\n\"},{\"role\":\"assistant\",\"content\":\"{\\\"monthly_sales\\\":null,\\\"current_ddu_known_sum\\\":175,\\\"current_ddu_all_objects\\\":null,\\\"comparable_pairs_delta\\\":0,\\\"unavailable_object_ids\\\":[\\\"9003\\\"],\\\"terms\\\":[\\\"Текущий срез ЕИСЖС\\\",\\\"Накопительное количество ДДУ\\\",\\\"Разность накопительных показателей\\\",\\\"Продажи месяца\\\",\\\"Недоступный показатель\\\",\\\"Покрытие показателя\\\"],\\\"limitations\\\":\\\"Сентябрь 2026 года. На 30 сентября известная сумма составляет 125 + 50 = 175 ДДУ; покрытие — 2 из 3 объектов. У объекта 9003 текущее значение отсутствует, поэтому полная сумма неизвестна; отсутствие нельзя заменять нулём. По сопоставимым парам 31 августа — 30 сентября: объект 9001 — +5, объект 9002 — −5, суммарная разность — 0. Она может включать регистрации, расторжения и корректировки и не определяет продажи месяца. Для месячных продаж нужны данные о событиях продаж. Fixture синтетический, выводы не характеризуют реальный рынок. Проверены содержимое fixture, доменные определения CONTEXT.md и арифметика локальным расчётом. Код и данные не изменены.\\\"}\"}]}",
+          "sessionId": "01a11109-e674-7652-bca5-80e5574b949d"
+        },
+        "score": 1,
+        "success": true,
+        "testCase": {
+          "description": "after, повтор 1",
+          "vars": {
+            "exampleId": "02-domain-metrics",
+            "workspaceDir": "[REDACTED]",
+            "reportDir": "/Users/densin/Documents/ChatGPT/Мультиагентные системы/drip-real-estate-demo/seminar/reports/02-domain-metrics/20261006T114626Z/after-r1",
+            "baseCommit": "d037c2cee00ca26a7674e4da13e2308eca22bbaf",
+            "condition": "after",
+            "replica": 1,
+            "sessionId": "01a11109-e674-7652-bca5-80e5574b949d"
+          },
+          "assert": [
+            {
+              "type": "javascript",
+              "value": "file:///Users/densin/Documents/ChatGPT/Мультиагентные системы/drip-real-estate-demo/seminar/reports/02-domain-metrics/20261006T114626Z/evaluator/grade.cjs"
+            }
+          ],
+          "options": {},
+          "metadata": {}
+        },
+        "testIdx": 1,
+        "tokenUsage": {
+          "prompt": 74259,
+          "completion": 1009,
+          "cached": 41088,
+          "total": 75268,
+          "numRequests": 1,
+          "completionDetails": {
+            "reasoning": 17,
+            "acceptedPrediction": 0,
+            "rejectedPrediction": 0,
+            "cacheReadInputTokens": 0,
+            "cacheCreationInputTokens": 0
+          },
+          "assertions": {
+            "total": 0,
+            "prompt": 0,
+            "completion": 0,
+            "cached": 0,
+            "numRequests": 0,
+            "completionDetails": {
+              "reasoning": 0,
+              "acceptedPrediction": 0,
+              "rejectedPrediction": 0,
+              "cacheReadInputTokens": 0,
+              "cacheCreationInputTokens": 0
+            }
+          }
+        },
+        "vars": {
+          "exampleId": "02-domain-metrics",
+          "workspaceDir": "[REDACTED]",
+          "reportDir": "/Users/densin/Documents/ChatGPT/Мультиагентные системы/drip-real-estate-demo/seminar/reports/02-domain-metrics/20261006T114626Z/after-r1",
+          "baseCommit": "d037c2cee00ca26a7674e4da13e2308eca22bbaf",
+          "condition": "after",
+          "replica": 1,
+          "sessionId": "01a11109-e674-7652-bca5-80e5574b949d"
+        },
+        "metadata": {
+          "_promptfooFileMetadata": {},
+          "sessionId": "01a11109-e674-7652-bca5-80e5574b949d"
+        },
+        "failureReason": 0
+      },
+      {
+        "cost": 0.052222,
+        "gradingResult": {
+          "pass": true,
+          "score": 1,
+          "reason": "All assertions passed",
+          "namedScores": {},
+          "tokensUsed": {
+            "total": 0,
+            "prompt": 0,
+            "completion": 0,
+            "cached": 0,
+            "numRequests": 0
+          },
+          "componentResults": [
+            {
+              "pass": true,
+              "score": 1,
+              "reason": "monthly_sales_not_identifiable=PASS; known_current_sum=PASS; incomplete_coverage_not_total=PASS; comparable_delta=PASS; missing_not_zero=PASS; limitations_explained=PASS; domain_terms_present=PASS; repository_unchanged=PASS; context_unchanged:CONTEXT.md=PASS; context_unchanged:REPO_MAP.md=PASS; context_unchanged:AGENTS.md=PASS; context_unchanged:docs/architecture.md=PASS; context_unchanged:docs/project.md=PASS; context_unchanged:docs/development.md=PASS",
+              "assertion": {
+                "type": "javascript",
+                "value": "file:///Users/densin/Documents/ChatGPT/Мультиагентные системы/drip-real-estate-demo/seminar/reports/02-domain-metrics/20261006T114626Z/evaluator/grade.cjs"
+              }
+            }
+          ]
+        },
+        "id": "800920fd-2dd4-4df9-a632-026f2f21f588",
+        "latencyMs": 39413,
+        "namedScores": {},
+        "prompt": {
+          "raw": "Для рабочего места аналитика оцени продажи за сентябрь по данным fixtures/ddu-snapshots.json. Укажи продажи месяца, известную сумму ДДУ в текущем срезе, полную сумму ДДУ по всем объектам, разность по сопоставимым парам и список объектов с недоступным текущим значением. Объясни ограничения и назови подходящие доменные термины. Не изменяй код и данные; верни ответ по предоставленной JSON-схеме.\n\nРаботай только внутри выданного репозитория. Не используй сеть, реальную БД, внешние отчёты и материалы преподавателя. Если показатель нельзя определить, используй null и объясни причину.",
+          "label": "seminar/examples/02-domain-metrics/prompt.txt: Для рабочего места аналитика оцени продажи за сентябрь по данным fixtures/ddu-snapshots.json. Укажи продажи месяца, известную сумму ДДУ в текущем срезе, полную сумму ДДУ по всем объектам, разность по сопоставимым парам и список объектов с недоступным текущим значением. Объясни ограничения и назови подходящие доменные термины. Не изменяй код и данные; верни ответ по предоставленной JSON-схеме.\n\nРаботай только внутри выданного репозитория. Не используй сеть, реальную БД, внешние отчёты и материалы преподавателя. Если показатель нельзя определить, используй null и объясни причину.",
+          "config": {}
+        },
+        "promptId": "6947fa17d49b7725604c78a02e372fb7ac2df0bf8166b02f1f269fc73d829ffa",
+        "promptIdx": 0,
+        "provider": {
+          "id": "openai:codex-sdk",
+          "label": "gpt-6.1-sol / low"
+        },
+        "response": {
+          "output": "{\n  \"monthly_sales\": null,\n  \"current_ddu_known_sum\": 175,\n  \"current_ddu_all_objects\": null,\n  \"comparable_pairs_delta\": 0,\n  \"unavailable_object_ids\": [\"9003\"],\n  \"terms\": [\n    \"Текущий срез ЕИСЖС\",\n    \"Накопительное количество ДДУ\",\n    \"Разность накопительных показателей\",\n    \"Продажи месяца\",\n    \"Недоступный показатель\",\n    \"Покрытие показателя\"\n  ],\n  \"limitations\": \"За сентябрь 2026 продажи определить нельзя: fixture содержит накопительные срезы на 31.08 и 30.09, а не события продаж. Известная сумма на 30.09: 125 + 50 = 175 ДДУ по 2 из 3 объектов. Полная сумма неизвестна: текущее значение объекта 9003 отсутствует и не заменяется нулём. По сопоставимым парам: объект 9001 — +5, объект 9002 — −5; суммарная разность — 0. Она может включать регистрации, расторжения и корректировки и не означает отсутствие продаж. Данные синтетические, выводы ограничены объектами fixture. Код и данные не изменены; JSON прочитан, суммы и разности проверены вычислением. Тесты приложения не запускались.\"\n}",
+          "tokenUsage": {
+            "prompt": 76364,
+            "completion": 1015,
+            "cached": 58240,
+            "total": 77379,
+            "numRequests": 1,
+            "completionDetails": {
+              "reasoning": 0,
+              "acceptedPrediction": 0,
+              "rejectedPrediction": 0,
+              "cacheReadInputTokens": 0,
+              "cacheCreationInputTokens": 0
+            },
+            "assertions": {
+              "total": 0,
+              "prompt": 0,
+              "completion": 0,
+              "cached": 0,
+              "numRequests": 0,
+              "completionDetails": {
+                "reasoning": 0,
+                "acceptedPrediction": 0,
+                "rejectedPrediction": 0,
+                "cacheReadInputTokens": 0,
+                "cacheCreationInputTokens": 0
+              }
+            }
+          },
+          "cost": 0.052222,
+          "raw": "{\"finalResponse\":\"{\\n  \\\"monthly_sales\\\": null,\\n  \\\"current_ddu_known_sum\\\": 175,\\n  \\\"current_ddu_all_objects\\\": null,\\n  \\\"comparable_pairs_delta\\\": 0,\\n  \\\"unavailable_object_ids\\\": [\\\"9003\\\"],\\n  \\\"terms\\\": [\\n    \\\"Текущий срез ЕИСЖС\\\",\\n    \\\"Накопительное количество ДДУ\\\",\\n    \\\"Разность накопительных показателей\\\",\\n    \\\"Продажи месяца\\\",\\n    \\\"Недоступный показатель\\\",\\n    \\\"Покрытие показателя\\\"\\n  ],\\n  \\\"limitations\\\": \\\"За сентябрь 2026 продажи определить нельзя: fixture содержит накопительные срезы на 31.08 и 30.09, а не события продаж. Известная сумма на 30.09: 125 + 50 = 175 ДДУ по 2 из 3 объектов. Полная сумма неизвестна: текущее значение объекта 9003 отсутствует и не заменяется нулём. По сопоставимым парам: объект 9001 — +5, объект 9002 — −5; суммарная разность — 0. Она может включать регистрации, расторжения и корректировки и не означает отсутствие продаж. Данные синтетические, выводы ограничены объектами fixture. Код и данные не изменены; JSON прочитан, суммы и разности проверены вычислением. Тесты приложения не запускались.\\\"\\n}\",\"items\":[{\"id\":\"item_0\",\"type\":\"agent_message\",\"text\":\"Проверю определения показателей и данные срезов в репозитории, затем рассчитаю значения с учётом доступности данных.\\n\"},{\"id\":\"item_1\",\"type\":\"command_execution\",\"command\":\"/bin/zsh -lc \\\"pwd; rg --files -g 'AGENTS.md' -g 'CONTEXT.md' -g 'REPO_MAP.md' -g 'docs/**' -g 'fixtures/ddu-snapshots.json'\\\"\",\"aggregated_output\":\"/private/var/folders/27/zdjjn2mn28g85vwxyyj50x6w0000gn/T/ce-seminar-after-r2-nwmghl6t/workspace\\nAGENTS.md\\nfixtures/ddu-snapshots.json\\nREPO_MAP.md\\ndocs/development.md\\ndocs/project.md\\ndocs/architecture.md\\nCONTEXT.md\\n\",\"exit_code\":0,\"status\":\"completed\"},{\"id\":\"item_2\",\"type\":\"command_execution\",\"command\":\"/bin/zsh -lc 'cat AGENTS.md CONTEXT.md REPO_MAP.md docs/project.md docs/architecture.md docs/development.md fixtures/ddu-snapshots.json'\",\"aggregated_output\":\"# Работа в DRIP Недвижимость\\n\\nКраткое описание проекта: [docs/project.md](docs/project.md).\\nКоманды, архитектурные ограничения, БД, проверка и релиз: [docs/development.md](docs/development.md).\\nКарта поиска: [REPO_MAP.md](REPO_MAP.md). Термины и границы показателей: [CONTEXT.md](CONTEXT.md). Слои и данные: [docs/architecture.md](docs/architecture.md).\\n\\n- Сначала исследуй публичную границу изменения и существующие тесты.\\n- API начинается в `api/openapi.yaml`. Сгенерированные Go и TypeScript файлы не редактируют вручную; используй `make generate`.\\n- Не ослабляй существующие тесты. Проверяй наблюдаемое поведение через HTTP, DOM или публичную команду.\\n- Используй существующие команды Makefile и самое узкое достаточное подтверждение во время работы.\\n- В учебной задаче о liveness достаточно `make generate PNPM=pnpm` и тестов пакета `backend/internal/adapters/httpapi`. Полную `make verify-fast` в этом прогоне не запускай: это отдельный этап evaluator и release, а не требование к каждому небольшому изменению.\\n- Не добавляй зависимости без необходимости. Сохраняй границы application, adapters и platform.\\n- Работай только с учебной копией. Реальная БД и пользовательские данные не входят в эту задачу.\\n- В окружении оценки Docker недоступен агенту; контейнерные проверки выполняет независимый проверяющий после окончания ответа. Не выдавай их за запущенные тобой.\\n- Заканчивай перечислением изменений, фактически выполненных проверок и оставшихся ограничений.\\n- Для аналитического вопроса сначала различи данные, доменные определения и технические решения. При неполном покрытии не выдавай известную часть за полную сумму и не заменяй неизвестное нулём.\\n# Аналитика недвижимости DRIP\\n\\nРабочее место аналитика для сохранённых аналитических выборок по внешним источникам. Термины описывают предметную область; архитектура и команды находятся в отдельных документах.\\n\\n## Аналитические сессии\\n\\n**Аналитическая сессия**:\\nСохранённый анализ одного запроса и одной неизменяемой аналитической выборки. Сессии общие для сотрудников.\\n_Avoid_: браузерная сессия, личный черновик, изменяемая выборка\\n\\n**Активная аналитическая сессия**:\\nСессия, которая ожидает получения данных или получает их. Завершённая частично сессия не является активной.\\n_Avoid_: любая не удалённая сессия, любая незавершённая сессия\\n\\n**Завершённая аналитическая сессия**:\\nСессия, получение данных которой завершилось полностью. Завершённая частично и неуспешная сессии - самостоятельные состояния.\\n_Avoid_: любая остановленная сессия, завершённая частично\\n\\n**Удалённая аналитическая сессия**:\\nСессия, скрытая из рабочего места без физического удаления её данных. Статистика рабочего места учитывает видимые сессии.\\n_Avoid_: физически удалённые данные, активная сессия\\n\\n## Данные источника\\n\\n**Текущий срез ЕИСЖС**:\\nОпубликованное состояние объекта на дату наблюдения. Он не является списком сделок за календарный месяц.\\n_Avoid_: сделки месяца, продажи месяца\\n\\n**Накопительное количество ДДУ**:\\nОпубликованное накопительное значение зарегистрированных ДДУ на дату среза. Оно не задаёт поток новых продаж за интервал.\\n_Avoid_: месячные продажи, количество новых сделок\\n\\n**Разность накопительных показателей**:\\nРазность двух доступных сопоставимых значений одного объекта. В ней могут смешиваться новые регистрации, расторжения и корректировки.\\n_Avoid_: чистые продажи, точное количество новых ДДУ\\n\\n**Продажи месяца**:\\nСобытия продаж за календарный месяц. По двум накопительным срезам количество таких событий не определяется.\\n_Avoid_: разность агрегатов ДДУ, изменение накопительного значения\\n\\n**Недоступный показатель**:\\nПоказатель, который источник не опубликовал или который не был получен. Отсутствие значения не является наблюдением нуля.\\n_Avoid_: нулевой показатель, отсутствующие продажи\\n\\n**Покрытие показателя**:\\nСостав объектов с доступными сопоставимыми значениями. Сумма по известной части не является полной суммой при неполном покрытии.\\n_Avoid_: весь рынок, полная сумма по неизвестным объектам\\n# Карта репозитория по задачам\\n\\nКарта помогает выбрать следующий источник. Она не подменяет чтение кода и не загружается автоматически только из-за своего имени.\\n\\n| Задача | Где начать | Что проверить дальше |\\n|---|---|---|\\n| Изменить HTTP-ответ | [OpenAPI](api/openapi.yaml), [HTTP handler](backend/internal/adapters/httpapi/handler.go) | Generated Go и frontend schema; [HTTP-тесты](backend/internal/adapters/httpapi/handler_test.go) |\\n| Понять аналитический показатель | [Доменный словарь](CONTEXT.md) | [Типы current collection](backend/internal/application/current_collection.go), [отображение сессии](frontend/src/SessionOverview.tsx) |\\n| Разобраться в создании сессии | [Application](backend/internal/application/analytical_sessions.go) | [HTTP translation](backend/internal/adapters/httpapi/resources.go), [immutability и idempotency в миграции](backend/internal/adapters/postgres/migrations/003_analytical_session_creation.sql) |\\n| Сделать статистику БД | [Makefile](Makefile), [PostgreSQL store](backend/internal/adapters/postgres/store.go) | Фильтр видимых сессий, enum статусов, пустая база, read-only проверка |\\n| Проверить локальные команды | [Тесты команд](tests/local_commands_test.sh) | Подмена DOCKER, пробелы в путях и отсутствие интерпретации SQL как shell |\\n| Проверить UI | [App tests](frontend/src/App.test.tsx), [browser E2E](frontend/e2e/app.spec.ts) | Доступный DOM, network seam, loading/error/empty/success |\\n| Выпустить изменение | [Development workflow](docs/development.md), [Validate](.github/workflows/validate.yml) | Полные проверки, generated consistency, runtime Dockerfile; deployment не настроен |\\n\\nНаправление основного запроса: HTTP adapter → application → port → PostgreSQL или внешний adapter. Локальная диагностическая команда использует Compose и PostgreSQL напрямую через существующий интерфейс Makefile.\\n\\nИсточник карты: базовый код `d037c2c`. Перед изменением проверь актуальность названных файлов и команд.\\n# Описание репозитория\\n\\nDRIP Недвижимость - учебная копия внутреннего рабочего места аналитика. React UI, contract-first OpenAPI и Go API собираются в один runtime-контейнер. PostgreSQL хранит сессии и записи источников; локальный стенд использует имитатор внешнего API и S3Mock.\\n\\nЭто monorepo. Backend находится в `backend`, frontend в `frontend`, публичный контракт в `api`. Существующий интерфейс и бизнес-поведение сохраняются при небольших изменениях.\\n\\nИсточник этого описания: код базового коммита `d037c2c`, README и Dockerfile. Описание подготовлено для учебного семинара, а не перенесено из истории исходной команды.\\n# Архитектура и данные\\n\\nДокумент объясняет технические границы. Значения бизнес-слов находятся в [CONTEXT.md](../CONTEXT.md), навигация - в [REPO_MAP.md](../REPO_MAP.md).\\n\\n## Слои\\n\\n- `application` принимает решения о сессиях, доступе, выборе источников и получении данных; зависимость от внешнего I/O описывается портами.\\n- `adapters/httpapi` работает со strict OpenAPI DTO. `adapters/postgres`, `eiszhs` и `objectstorage` обеспечивают внешнее I/O.\\n- `platform/bootstrap` связывает зависимости; `cmd/api` - точка запуска.\\n- Frontend обращается к API только через `src/api`. Runtime содержит API и собранные UI-ресурсы.\\n\\n## Сессии и показатели\\n\\n`analytical_session` хранит сохранённый выбор и состояние. Состояния `queued` и `collecting` активны; `complete`, `partial`, `failed` самостоятельны; `deleted` скрыт из рабочего места. Список видимых сессий исключает `deleted`.\\n\\nФильтры и привязка наблюдений сохраняют воспроизводимость анализа. Миграция блокирует изменение фильтров сохранённой сессии. Повтор создания с тем же Idempotency-Key воспроизводит результат; другой запрос под тем же ключом конфликтует.\\n\\nПоказатели ЕИСЖС в current collection - опубликованные накопительные значения. Отсутствующее значение отображается как недоступное; API может не содержать `cumulativeDduCount`. Разность состояний не является потоком новых сделок. Это доменный смысл, а не свойство формулы вычитания.\\n\\n## Проверка границ\\n\\nHTTP проверяется через публичный handler, UI через DOM и HTTP seam, диагностическая команда через CLI и read-only SQL. Для влияющих на PostgreSQL или S3 изменений нужен отдельный контейнерный E2E. Учебный evaluator использует только синтетические fixtures.\\n\\nИсточник: application, postgres migrations, HTTP DTO, UI и executable architecture tests базового коммита `d037c2c`.\\n# Разработка, БД, проверка и релиз\\n\\n## Архитектура и соглашения\\n\\n- `backend/internal/application` содержит правила и порты. Он не импортирует HTTP, PostgreSQL или S3-адаптеры.\\n- `backend/internal/adapters/httpapi` переводит HTTP в application. `generated/api.gen.go` создаётся из `api/openapi.yaml`.\\n- `frontend/src/api` - граница production HTTP. `schema.d.ts` создаётся из того же OpenAPI.\\n- Пиши Go с `gofmt`, TypeScript и CSS с установленным Prettier. Не создавай второй механизм для операции, у которой уже есть интерфейс проекта.\\n- Пример изменения контракта: изменить YAML, выполнить `make generate`, проверить HTTP-ответ и актуальность обоих generated-файлов.\\n\\n## Команды\\n\\n| Цель | Команда |\\n|---|---|\\n| Доступные команды | `make help` |\\n| Генерация Go и TypeScript из OpenAPI | `make generate` |\\n| Backend-тесты | `make test-backend` |\\n| Один HTTP-тест | `cd backend && go test ./internal/adapters/httpapi -run TestName -count=1` |\\n| Frontend-тесты | `make test-frontend` |\\n| Проверка границ | `make architecture` |\\n| Проверки без Docker | `make verify-fast` |\\n| Контейнерные HTTP и browser E2E | `make e2e` |\\n| Полная проверка | `make verify` |\\n| Локальный SQL | `make db-query QUERY='SELECT count(*) FROM analytical_session'` |\\n\\nТекущий Makefile уже содержит эти команды. В сравнении вариантов контекста сам Makefile и доступные инструменты одинаковы.\\n\\n## БД\\n\\nЛокальный PostgreSQL запускается через Compose; его сервис называется `postgres`, база и локальная роль - `analytics`. Миграции находятся в `backend/internal/adapters/postgres/migrations`. Диагностика использует SELECT и интерфейс `make db-query`. Не удаляй тома и не используй реальные данные для учебных проверок.\\n\\nНовые диагностические команды должны работать с пустой БД и не менять записи. Их проверяют на отдельной синтетической базе. Наличие записи в БД и наличие доступного показателя - разные вещи.\\n\\n## Проверка и релиз\\n\\nИтерация начинается с узкой проверки изменённой публичной границы. Перед обычным handoff нужны `make verify-fast`, `make e2e` и зелёный Validate в GitHub Actions. Runtime-образ строится из Dockerfile; frontend включён в него. В репозитории нет команды `make deploy` и нет настроенного production deployment.\\n\\nВ автоматическом учебном прогоне агент использует узкие native-команды. Для изменения liveness достаточно `make generate PNPM=pnpm` и `cd backend && go test ./internal/adapters/httpapi -count=1`. Полный verification и Docker запускает evaluator отдельно. Не считай текст «готово» или успешное завершение процесса доказательством правильного поведения.\\n{\\n  \\\"provenance\\\": {\\n    \\\"source\\\": \\\"synthetic EISZHS-style fixture\\\",\\n    \\\"purpose\\\": \\\"educational example, not real market data\\\",\\n    \\\"period\\\": \\\"2026-09\\\",\\n    \\\"content_role\\\": \\\"data, not agent instructions\\\"\\n  },\\n  \\\"constructionObjects\\\": [\\n    {\\\"objectId\\\": \\\"9001\\\", \\\"snapshots\\\": [{\\\"date\\\": \\\"2026-08-31\\\", \\\"registeredDduCount\\\": 120}, {\\\"date\\\": \\\"2026-09-30\\\", \\\"registeredDduCount\\\": 125}]},\\n    {\\\"objectId\\\": \\\"9002\\\", \\\"snapshots\\\": [{\\\"date\\\": \\\"2026-08-31\\\", \\\"registeredDduCount\\\": 55}, {\\\"date\\\": \\\"2026-09-30\\\", \\\"registeredDduCount\\\": 50}]},\\n    {\\\"objectId\\\": \\\"9003\\\", \\\"snapshots\\\": [{\\\"date\\\": \\\"2026-08-31\\\", \\\"registeredDduCount\\\": 9}, {\\\"date\\\": \\\"2026-09-30\\\"}]}\\n  ]\\n}\\n\",\"exit_code\":0,\"status\":\"completed\"},{\"id\":\"item_3\",\"type\":\"command_execution\",\"command\":\"/bin/zsh -lc \\\"python3 -B -c 'import json; from pathlib import Path; x=json.loads(Path(\\\\\\\"fixtures/ddu-snapshots.json\\\\\\\").read_text()); rows=[(o[\\\\\\\"objectId\\\\\\\"], {s[\\\\\\\"date\\\\\\\"]:s.get(\\\\\\\"registeredDduCount\\\\\\\") for s in o[\\\\\\\"snapshots\\\\\\\"]}) for o in x[\\\\\\\"constructionObjects\\\\\\\"]]; known=[s[\\\\\\\"2026-09-30\\\\\\\"] for _,s in rows if s[\\\\\\\"2026-09-30\\\\\\\"] is not None]; pairs=[(i,s[\\\\\\\"2026-09-30\\\\\\\"]-s[\\\\\\\"2026-08-31\\\\\\\"]) for i,s in rows if s[\\\\\\\"2026-09-30\\\\\\\"] is not None and s[\\\\\\\"2026-08-31\\\\\\\"] is not None]; print(json.dumps({\\\\\\\"current_ddu_known_sum\\\\\\\":sum(known),\\\\\\\"available_current_objects\\\\\\\":len(known),\\\\\\\"total_objects\\\\\\\":len(rows),\\\\\\\"comparable_pairs\\\\\\\":pairs,\\\\\\\"comparable_pairs_delta\\\\\\\":sum(d for _,d in pairs),\\\\\\\"unavailable_object_ids\\\\\\\":[i for i,s in rows if s[\\\\\\\"2026-09-30\\\\\\\"] is None]},ensure_ascii=False))'\\\"\",\"aggregated_output\":\"python3: warning: confstr() failed with code 5: couldn't get path of DARWIN_USER_TEMP_DIR; using /tmp instead\\npython3: error: couldn't create cache file '/tmp/xcrun_db-FMRCFk59' (errno=Operation not permitted)\\n2026-10-06 14:48:10.302 xcodebuild[84051:10361010]  DVTFilePathFSEvents: Failed to start fs event stream.\\n2026-10-06 14:48:10.539 xcodebuild[84051:10361009] [MT] DVTDeveloperPaths: Failed to get length of DARWIN_USER_CACHE_DIR from confstr(3), error = Error Domain=NSPOSIXErrorDomain Code=5 \\\"Input/output error\\\". Using NSCachesDirectory instead.\\npython3: warning: confstr() failed with code 5: couldn't get path of DARWIN_USER_TEMP_DIR; using /tmp instead\\npython3: error: couldn't create cache file '/tmp/xcrun_db-DKJ2BFlz' (errno=Operation not permitted)\\n2026-10-06 14:48:11.288 xcodebuild[84053:10361028]  DVTFilePathFSEvents: Failed to start fs event stream.\\n2026-10-06 14:48:11.486 xcodebuild[84053:10361027] [MT] DVTDeveloperPaths: Failed to get length of DARWIN_USER_CACHE_DIR from confstr(3), error = Error Domain=NSPOSIXErrorDomain Code=5 \\\"Input/output error\\\". Using NSCachesDirectory instead.\\n{\\\"current_ddu_known_sum\\\": 175, \\\"available_current_objects\\\": 2, \\\"total_objects\\\": 3, \\\"comparable_pairs\\\": [[\\\"9001\\\", 5], [\\\"9002\\\", -5]], \\\"comparable_pairs_delta\\\": 0, \\\"unavailable_object_ids\\\": [\\\"9003\\\"]}\\n\",\"exit_code\":0,\"status\":\"completed\"},{\"id\":\"item_4\",\"type\":\"agent_message\",\"text\":\"{\\n  \\\"monthly_sales\\\": null,\\n  \\\"current_ddu_known_sum\\\": 175,\\n  \\\"current_ddu_all_objects\\\": null,\\n  \\\"comparable_pairs_delta\\\": 0,\\n  \\\"unavailable_object_ids\\\": [\\\"9003\\\"],\\n  \\\"terms\\\": [\\n    \\\"Текущий срез ЕИСЖС\\\",\\n    \\\"Накопительное количество ДДУ\\\",\\n    \\\"Разность накопительных показателей\\\",\\n    \\\"Продажи месяца\\\",\\n    \\\"Недоступный показатель\\\",\\n    \\\"Покрытие показателя\\\"\\n  ],\\n  \\\"limitations\\\": \\\"За сентябрь 2026 продажи определить нельзя: fixture содержит накопительные срезы на 31.08 и 30.09, а не события продаж. Известная сумма на 30.09: 125 + 50 = 175 ДДУ по 2 из 3 объектов. Полная сумма неизвестна: текущее значение объекта 9003 отсутствует и не заменяется нулём. По сопоставимым парам: объект 9001 — +5, объект 9002 — −5; суммарная разность — 0. Она может включать регистрации, расторжения и корректировки и не означает отсутствие продаж. Данные синтетические, выводы ограничены объектами fixture. Код и данные не изменены; JSON прочитан, суммы и разности проверены вычислением. Тесты приложения не запускались.\\\"\\n}\"}],\"usage\":{\"input_tokens\":76364,\"cached_input_tokens\":58240,\"cache_write_input_tokens\":0,\"output_tokens\":1015,\"reasoning_output_tokens\":0},\"reasoningTexts\":[],\"conversationMessages\":[{\"role\":\"user\",\"content\":\"Для рабочего места аналитика оцени продажи за сентябрь по данным fixtures/ddu-snapshots.json. Укажи продажи месяца, известную сумму ДДУ в текущем срезе, полную сумму ДДУ по всем объектам, разность по сопоставимым парам и список объектов с недоступным текущим значением. Объясни ограничения и назови подходящие доменные термины. Не изменяй код и данные; верни ответ по предоставленной JSON-схеме.\\n\\nРаботай только внутри выданного репозитория. Не используй сеть, реальную БД, внешние отчёты и материалы преподавателя. Если показатель нельзя определить, используй null и объясни причину.\"},{\"role\":\"assistant\",\"content\":\"Проверю определения показателей и данные срезов в репозитории, затем рассчитаю значения с учётом доступности данных.\\n\"},{\"role\":\"assistant\",\"content\":\"{\\\"monthly_sales\\\":null,\\\"current_ddu_known_sum\\\":175,\\\"current_ddu_all_objects\\\":null,\\\"comparable_pairs_delta\\\":0,\\\"unavailable_object_ids\\\":[\\\"9003\\\"],\\\"terms\\\":[\\\"Текущий срез ЕИСЖС\\\",\\\"Накопительное количество ДДУ\\\",\\\"Разность накопительных показателей\\\",\\\"Продажи месяца\\\",\\\"Недоступный показатель\\\",\\\"Покрытие показателя\\\"],\\\"limitations\\\":\\\"За сентябрь 2026 продажи определить нельзя: fixture содержит накопительные срезы на 31.08 и 30.09, а не события продаж. Известная сумма на 30.09: 125 + 50 = 175 ДДУ по 2 из 3 объектов. Полная сумма неизвестна: текущее значение объекта 9003 отсутствует и не заменяется нулём. По сопоставимым парам: объект 9001 — +5, объект 9002 — −5; суммарная разность — 0. Она может включать регистрации, расторжения и корректировки и не означает отсутствие продаж. Данные синтетические, выводы ограничены объектами fixture. Код и данные не изменены; JSON прочитан, суммы и разности проверены вычислением. Тесты приложения не запускались.\\\"}\"}]}",
+          "sessionId": "01a1110a-8306-79c1-8ca1-96e57d471eba"
+        },
+        "score": 1,
+        "success": true,
+        "testCase": {
+          "description": "after, повтор 2",
+          "vars": {
+            "exampleId": "02-domain-metrics",
+            "workspaceDir": "[REDACTED]",
+            "reportDir": "/Users/densin/Documents/ChatGPT/Мультиагентные системы/drip-real-estate-demo/seminar/reports/02-domain-metrics/20261006T114626Z/after-r2",
+            "baseCommit": "d037c2cee00ca26a7674e4da13e2308eca22bbaf",
+            "condition": "after",
+            "replica": 2,
+            "sessionId": "01a1110a-8306-79c1-8ca1-96e57d471eba"
+          },
+          "assert": [
+            {
+              "type": "javascript",
+              "value": "file:///Users/densin/Documents/ChatGPT/Мультиагентные системы/drip-real-estate-demo/seminar/reports/02-domain-metrics/20261006T114626Z/evaluator/grade.cjs"
+            }
+          ],
+          "options": {},
+          "metadata": {}
+        },
+        "testIdx": 2,
+        "tokenUsage": {
+          "prompt": 76364,
+          "completion": 1015,
+          "cached": 58240,
+          "total": 77379,
+          "numRequests": 1,
+          "completionDetails": {
+            "reasoning": 0,
+            "acceptedPrediction": 0,
+            "rejectedPrediction": 0,
+            "cacheReadInputTokens": 0,
+            "cacheCreationInputTokens": 0
+          },
+          "assertions": {
+            "total": 0,
+            "prompt": 0,
+            "completion": 0,
+            "cached": 0,
+            "numRequests": 0,
+            "completionDetails": {
+              "reasoning": 0,
+              "acceptedPrediction": 0,
+              "rejectedPrediction": 0,
+              "cacheReadInputTokens": 0,
+              "cacheCreationInputTokens": 0
+            }
+          }
+        },
+        "vars": {
+          "exampleId": "02-domain-metrics",
+          "workspaceDir": "[REDACTED]",
+          "reportDir": "/Users/densin/Documents/ChatGPT/Мультиагентные системы/drip-real-estate-demo/seminar/reports/02-domain-metrics/20261006T114626Z/after-r2",
+          "baseCommit": "d037c2cee00ca26a7674e4da13e2308eca22bbaf",
+          "condition": "after",
+          "replica": 2,
+          "sessionId": "01a1110a-8306-79c1-8ca1-96e57d471eba"
+        },
+        "metadata": {
+          "_promptfooFileMetadata": {},
+          "sessionId": "01a1110a-8306-79c1-8ca1-96e57d471eba"
+        },
+        "failureReason": 0
+      },
+      {
+        "cost": 0.0487592,
+        "gradingResult": {
+          "pass": true,
+          "score": 1,
+          "reason": "All assertions passed",
+          "namedScores": {},
+          "tokensUsed": {
+            "total": 0,
+            "prompt": 0,
+            "completion": 0,
+            "cached": 0,
+            "numRequests": 0
+          },
+          "componentResults": [
+            {
+              "pass": true,
+              "score": 1,
+              "reason": "monthly_sales_not_identifiable=PASS; known_current_sum=PASS; incomplete_coverage_not_total=PASS; comparable_delta=PASS; missing_not_zero=PASS; limitations_explained=PASS; domain_terms_present=PASS; repository_unchanged=PASS; context_unchanged:AGENTS.md=PASS; context_unchanged:docs/project.md=PASS; context_unchanged:docs/development.md=PASS",
+              "assertion": {
+                "type": "javascript",
+                "value": "file:///Users/densin/Documents/ChatGPT/Мультиагентные системы/drip-real-estate-demo/seminar/reports/02-domain-metrics/20261006T114626Z/evaluator/grade.cjs"
+              }
+            }
+          ]
+        },
+        "id": "0e220696-ed44-403a-92a6-4f8654828e03",
+        "latencyMs": 38705,
+        "namedScores": {},
+        "prompt": {
+          "raw": "Для рабочего места аналитика оцени продажи за сентябрь по данным fixtures/ddu-snapshots.json. Укажи продажи месяца, известную сумму ДДУ в текущем срезе, полную сумму ДДУ по всем объектам, разность по сопоставимым парам и список объектов с недоступным текущим значением. Объясни ограничения и назови подходящие доменные термины. Не изменяй код и данные; верни ответ по предоставленной JSON-схеме.\n\nРаботай только внутри выданного репозитория. Не используй сеть, реальную БД, внешние отчёты и материалы преподавателя. Если показатель нельзя определить, используй null и объясни причину.",
+          "label": "seminar/examples/02-domain-metrics/prompt.txt: Для рабочего места аналитика оцени продажи за сентябрь по данным fixtures/ddu-snapshots.json. Укажи продажи месяца, известную сумму ДДУ в текущем срезе, полную сумму ДДУ по всем объектам, разность по сопоставимым парам и список объектов с недоступным текущим значением. Объясни ограничения и назови подходящие доменные термины. Не изменяй код и данные; верни ответ по предоставленной JSON-схеме.\n\nРаботай только внутри выданного репозитория. Не используй сеть, реальную БД, внешние отчёты и материалы преподавателя. Если показатель нельзя определить, используй null и объясни причину.",
+          "config": {}
+        },
+        "promptId": "6947fa17d49b7725604c78a02e372fb7ac2df0bf8166b02f1f269fc73d829ffa",
+        "promptIdx": 0,
+        "provider": {
+          "id": "openai:codex-sdk",
+          "label": "gpt-6.1-sol / low"
+        },
+        "response": {
+          "output": "{\n  \"monthly_sales\": null,\n  \"current_ddu_known_sum\": 175,\n  \"current_ddu_all_objects\": null,\n  \"comparable_pairs_delta\": 0,\n  \"unavailable_object_ids\": [\"9003\"],\n  \"terms\": [\n    \"ДДУ — договор участия в долевом строительстве\",\n    \"Накопительное количество зарегистрированных ДДУ\",\n    \"Текущий срез\",\n    \"Сопоставимые пары наблюдений\",\n    \"Чистое изменение накопительного показателя\",\n    \"Продажи за период\",\n    \"Недоступное значение\"\n  ],\n  \"limitations\": \"Источник — синтетический fixtures/ddu-snapshots.json за сентябрь 2026 года. На 30 сентября известная сумма составляет 125 + 50 = 175 ДДУ; это количество договоров, не денежная сумма. Полная сумма неизвестна: у объекта 9003 отсутствует текущий показатель, и отсутствие нельзя считать нулём. По сопоставимым объектам 9001 и 9002 изменение относительно 31 августа составляет +5 и −5, суммарно 0. Эта разность не определяет продажи сентября: накопительные снимки не раскрывают регистрации, расторжения и корректировки; причина снижения не указана. Данные объекта 9003 также не позволяют определить его изменение. Проверены значения и арифметика; код и данные не изменялись, тесты не запускались.\"\n}",
+          "tokenUsage": {
+            "prompt": 58815,
+            "completion": 871,
+            "cached": 40832,
+            "total": 59686,
+            "numRequests": 1,
+            "completionDetails": {
+              "reasoning": 18,
+              "acceptedPrediction": 0,
+              "rejectedPrediction": 0,
+              "cacheReadInputTokens": 0,
+              "cacheCreationInputTokens": 0
+            },
+            "assertions": {
+              "total": 0,
+              "prompt": 0,
+              "completion": 0,
+              "cached": 0,
+              "numRequests": 0,
+              "completionDetails": {
+                "reasoning": 0,
+                "acceptedPrediction": 0,
+                "rejectedPrediction": 0,
+                "cacheReadInputTokens": 0,
+                "cacheCreationInputTokens": 0
+              }
+            }
+          },
+          "cost": 0.0487592,
+          "raw": "{\"finalResponse\":\"{\\n  \\\"monthly_sales\\\": null,\\n  \\\"current_ddu_known_sum\\\": 175,\\n  \\\"current_ddu_all_objects\\\": null,\\n  \\\"comparable_pairs_delta\\\": 0,\\n  \\\"unavailable_object_ids\\\": [\\\"9003\\\"],\\n  \\\"terms\\\": [\\n    \\\"ДДУ — договор участия в долевом строительстве\\\",\\n    \\\"Накопительное количество зарегистрированных ДДУ\\\",\\n    \\\"Текущий срез\\\",\\n    \\\"Сопоставимые пары наблюдений\\\",\\n    \\\"Чистое изменение накопительного показателя\\\",\\n    \\\"Продажи за период\\\",\\n    \\\"Недоступное значение\\\"\\n  ],\\n  \\\"limitations\\\": \\\"Источник — синтетический fixtures/ddu-snapshots.json за сентябрь 2026 года. На 30 сентября известная сумма составляет 125 + 50 = 175 ДДУ; это количество договоров, не денежная сумма. Полная сумма неизвестна: у объекта 9003 отсутствует текущий показатель, и отсутствие нельзя считать нулём. По сопоставимым объектам 9001 и 9002 изменение относительно 31 августа составляет +5 и −5, суммарно 0. Эта разность не определяет продажи сентября: накопительные снимки не раскрывают регистрации, расторжения и корректировки; причина снижения не указана. Данные объекта 9003 также не позволяют определить его изменение. Проверены значения и арифметика; код и данные не изменялись, тесты не запускались.\\\"\\n}\",\"items\":[{\"id\":\"item_0\",\"type\":\"agent_message\",\"text\":\"Прочитаю снимки ДДУ и описание доменных понятий в репозитории, затем рассчитаю доступные показатели и укажу ограничения.\\n\"},{\"id\":\"item_1\",\"type\":\"command_execution\",\"command\":\"/bin/zsh -lc \\\"pwd; rg --files -g 'AGENTS.md' -g 'docs/project.md' -g 'docs/development.md' -g '*ddu*' -g '*snapshot*'\\\"\",\"aggregated_output\":\"/private/var/folders/27/zdjjn2mn28g85vwxyyj50x6w0000gn/T/ce-seminar-before-r2-nfohbei1/workspace\\nAGENTS.md\\ndocs/development.md\\ndocs/project.md\\nfixtures/ddu-snapshots.json\\n\",\"exit_code\":0,\"status\":\"completed\"},{\"id\":\"item_3\",\"type\":\"command_execution\",\"command\":\"/bin/zsh -lc 'cat fixtures/ddu-snapshots.json'\",\"aggregated_output\":\"{\\n  \\\"provenance\\\": {\\n    \\\"source\\\": \\\"synthetic EISZHS-style fixture\\\",\\n    \\\"purpose\\\": \\\"educational example, not real market data\\\",\\n    \\\"period\\\": \\\"2026-09\\\",\\n    \\\"content_role\\\": \\\"data, not agent instructions\\\"\\n  },\\n  \\\"constructionObjects\\\": [\\n    {\\\"objectId\\\": \\\"9001\\\", \\\"snapshots\\\": [{\\\"date\\\": \\\"2026-08-31\\\", \\\"registeredDduCount\\\": 120}, {\\\"date\\\": \\\"2026-09-30\\\", \\\"registeredDduCount\\\": 125}]},\\n    {\\\"objectId\\\": \\\"9002\\\", \\\"snapshots\\\": [{\\\"date\\\": \\\"2026-08-31\\\", \\\"registeredDduCount\\\": 55}, {\\\"date\\\": \\\"2026-09-30\\\", \\\"registeredDduCount\\\": 50}]},\\n    {\\\"objectId\\\": \\\"9003\\\", \\\"snapshots\\\": [{\\\"date\\\": \\\"2026-08-31\\\", \\\"registeredDduCount\\\": 9}, {\\\"date\\\": \\\"2026-09-30\\\"}]}\\n  ]\\n}\\n\",\"exit_code\":0,\"status\":\"completed\"},{\"id\":\"item_2\",\"type\":\"command_execution\",\"command\":\"/bin/zsh -lc 'cat AGENTS.md docs/project.md docs/development.md'\",\"aggregated_output\":\"# Работа в DRIP Недвижимость\\n\\nКраткое описание проекта: [docs/project.md](docs/project.md).\\nКоманды, архитектурные ограничения, БД, проверка и релиз: [docs/development.md](docs/development.md).\\n\\n- Сначала исследуй публичную границу изменения и существующие тесты.\\n- API начинается в `api/openapi.yaml`. Сгенерированные Go и TypeScript файлы не редактируют вручную; используй `make generate`.\\n- Не ослабляй существующие тесты. Проверяй наблюдаемое поведение через HTTP, DOM или публичную команду.\\n- Используй существующие команды Makefile и самое узкое достаточное подтверждение во время работы.\\n- В учебной задаче о liveness достаточно `make generate PNPM=pnpm` и тестов пакета `backend/internal/adapters/httpapi`. Полную `make verify-fast` в этом прогоне не запускай: это отдельный этап evaluator и release, а не требование к каждому небольшому изменению.\\n- Не добавляй зависимости без необходимости. Сохраняй границы application, adapters и platform.\\n- Работай только с учебной копией. Реальная БД и пользовательские данные не входят в эту задачу.\\n- В окружении оценки Docker недоступен агенту; контейнерные проверки выполняет независимый проверяющий после окончания ответа. Не выдавай их за запущенные тобой.\\n- Заканчивай перечислением изменений, фактически выполненных проверок и оставшихся ограничений.\\n# Описание репозитория\\n\\nDRIP Недвижимость - учебная копия внутреннего рабочего места аналитика. React UI, contract-first OpenAPI и Go API собираются в один runtime-контейнер. PostgreSQL хранит сессии и записи источников; локальный стенд использует имитатор внешнего API и S3Mock.\\n\\nЭто monorepo. Backend находится в `backend`, frontend в `frontend`, публичный контракт в `api`. Существующий интерфейс и бизнес-поведение сохраняются при небольших изменениях.\\n\\nИсточник этого описания: код базового коммита `d037c2c`, README и Dockerfile. Описание подготовлено для учебного семинара, а не перенесено из истории исходной команды.\\n# Разработка, БД, проверка и релиз\\n\\n## Архитектура и соглашения\\n\\n- `backend/internal/application` содержит правила и порты. Он не импортирует HTTP, PostgreSQL или S3-адаптеры.\\n- `backend/internal/adapters/httpapi` переводит HTTP в application. `generated/api.gen.go` создаётся из `api/openapi.yaml`.\\n- `frontend/src/api` - граница production HTTP. `schema.d.ts` создаётся из того же OpenAPI.\\n- Пиши Go с `gofmt`, TypeScript и CSS с установленным Prettier. Не создавай второй механизм для операции, у которой уже есть интерфейс проекта.\\n- Пример изменения контракта: изменить YAML, выполнить `make generate`, проверить HTTP-ответ и актуальность обоих generated-файлов.\\n\\n## Команды\\n\\n| Цель | Команда |\\n|---|---|\\n| Доступные команды | `make help` |\\n| Генерация Go и TypeScript из OpenAPI | `make generate` |\\n| Backend-тесты | `make test-backend` |\\n| Один HTTP-тест | `cd backend && go test ./internal/adapters/httpapi -run TestName -count=1` |\\n| Frontend-тесты | `make test-frontend` |\\n| Проверка границ | `make architecture` |\\n| Проверки без Docker | `make verify-fast` |\\n| Контейнерные HTTP и browser E2E | `make e2e` |\\n| Полная проверка | `make verify` |\\n| Локальный SQL | `make db-query QUERY='SELECT count(*) FROM analytical_session'` |\\n\\nТекущий Makefile уже содержит эти команды. В сравнении вариантов контекста сам Makefile и доступные инструменты одинаковы.\\n\\n## БД\\n\\nЛокальный PostgreSQL запускается через Compose; его сервис называется `postgres`, база и локальная роль - `analytics`. Миграции находятся в `backend/internal/adapters/postgres/migrations`. Диагностика использует SELECT и интерфейс `make db-query`. Не удаляй тома и не используй реальные данные для учебных проверок.\\n\\nНовые диагностические команды должны работать с пустой БД и не менять записи. Их проверяют на отдельной синтетической базе. Наличие записи в БД и наличие доступного показателя - разные вещи.\\n\\n## Проверка и релиз\\n\\nИтерация начинается с узкой проверки изменённой публичной границы. Перед обычным handoff нужны `make verify-fast`, `make e2e` и зелёный Validate в GitHub Actions. Runtime-образ строится из Dockerfile; frontend включён в него. В репозитории нет команды `make deploy` и нет настроенного production deployment.\\n\\nВ автоматическом учебном прогоне агент использует узкие native-команды. Для изменения liveness достаточно `make generate PNPM=pnpm` и `cd backend && go test ./internal/adapters/httpapi -count=1`. Полный verification и Docker запускает evaluator отдельно. Не считай текст «готово» или успешное завершение процесса доказательством правильного поведения.\\n\",\"exit_code\":0,\"status\":\"completed\"},{\"id\":\"item_4\",\"type\":\"command_execution\",\"command\":\"/bin/zsh -lc \\\"rg -n 'ДДУ|сопоставим|продаж|срез|ddu' docs fixtures backend/internal api/openapi.yaml\\\"\",\"aggregated_output\":\"api/openapi.yaml:639:        sourceLabel: { type: string, enum: [\\\"Текущий срез ЕИСЖС\\\"] }\\nbackend/internal/adapters/eiszhs/normalizer.go:64:\\t\\t\\tLiving    *int64 `json:\\\"dduLivNumber\\\"`\\nbackend/internal/adapters/eiszhs/normalizer.go:65:\\t\\t\\tNonLiving *int64 `json:\\\"dduNonlivNumber\\\"`\\nbackend/internal/adapters/eiszhs/normalizer.go:66:\\t\\t\\tParking   *int64 `json:\\\"dduParkingNumber\\\"`\\nbackend/internal/adapters/eiszhs/normalizer.go:67:\\t\\t} `json:\\\"dduInfo\\\"`\\nbackend/internal/adapters/eiszhs/normalizer.go:77:\\t\\treturn nil, errors.New(\\\"ЕИСЖС current extended object lacks a supported cumulative ДДУ category\\\")\\nbackend/internal/adapters/eiszhs/normalizer.go:80:\\t\\treturn nil, errors.New(\\\"ЕИСЖС current extended object has invalid cumulative ДДУ values\\\")\\nbackend/internal/adapters/eiszhs/client_test.go:106:\\t\\t_, _ = response.Write([]byte(`{\\\"objectId\\\":2001,\\\"dduInfo\\\":{\\\"dduLivNumber\\\":17}}`))\\nbackend/internal/adapters/eiszhs/client_test.go:116:\\t\\tstring(response.Body) != `{\\\"objectId\\\":2001,\\\"dduInfo\\\":{\\\"dduLivNumber\\\":17}}` || gate.calls.Load() != 1 {\\nbackend/internal/adapters/eiszhs/client_test.go:247:\\t\\t_, _ = response.Write([]byte(`{\\\"objectId\\\":2001,\\\"dduInfo\\\":{\\\"dduLivNumber\\\":17,\\\"dduNonlivNumber\\\":4,\\\"dduParkingNumber\\\":2}}`))\\nbackend/internal/adapters/eiszhs/client_test.go:274:\\t\\t\\\"missing dduInfo\\\":         `{\\\"objectId\\\":2001}`,\\nbackend/internal/adapters/eiszhs/client_test.go:275:\\t\\t\\\"missing residential\\\":     `{\\\"objectId\\\":2001,\\\"dduInfo\\\":{\\\"dduNonlivNumber\\\":4,\\\"dduParkingNumber\\\":2}}`,\\nbackend/internal/adapters/eiszhs/client_test.go:276:\\t\\t\\\"missing non-residential\\\": `{\\\"objectId\\\":2001,\\\"dduInfo\\\":{\\\"dduLivNumber\\\":17,\\\"dduParkingNumber\\\":2}}`,\\nbackend/internal/adapters/eiszhs/client_test.go:277:\\t\\t\\\"missing parking\\\":         `{\\\"objectId\\\":2001,\\\"dduInfo\\\":{\\\"dduLivNumber\\\":17,\\\"dduNonlivNumber\\\":4}}`,\\nbackend/internal/adapters/eiszhs/client_test.go:278:\\t\\t\\\"mismatched object\\\":       `{\\\"objectId\\\":2002,\\\"dduInfo\\\":{\\\"dduLivNumber\\\":17,\\\"dduNonlivNumber\\\":4,\\\"dduParkingNumber\\\":2}}`,\\nbackend/internal/application/current_collection_test.go:79:\\t\\t\\tSourceLabel: \\\"Текущий срез ЕИСЖС\\\", CumulativeDDUCount: &count,\\nbackend/internal/application/current_collection_test.go:83:\\t\\tBody:          []byte(`{\\\"objectId\\\":2001,\\\"dduInfo\\\":{\\\"dduLivNumber\\\":17,\\\"dduNonlivNumber\\\":4,\\\"dduParkingNumber\\\":2}}`),\\nbackend/internal/application/current_collection_test.go:138:\\t\\tBody: []byte(`{\\\"objectId\\\":2001,\\\"dduInfo\\\":{\\\"dduLivNumber\\\":17}}`), ContentType: \\\"application/json\\\",\\nbackend/internal/adapters/postgres/current_collection.go:664:\\t\\t\\t\\tregion_code, complex_id, object_id, segment_code, cumulative_ddu_count,\\nbackend/internal/adapters/postgres/store.go:903:\\t\\t           SELECT sum(observation.cumulative_ddu_count)\\nbackend/internal/adapters/postgres/store.go:939:\\t\\t\\tSourceLabel: \\\"Текущий срез ЕИСЖС\\\", CumulativeDDUCount: cumulativeDDUCount,\\nbackend/internal/adapters/postgres/migrations/004_current_eiszhs_collection.sql:11:    ADD COLUMN cumulative_ddu_count bigint CHECK (cumulative_ddu_count >= 0);\\nbackend/internal/adapters/postgres/migrations/004_current_eiszhs_collection.sql:161:    DROP COLUMN cumulative_ddu_count,\\nbackend/internal/adapters/httpapi/generated/api.gen.go:95:\\tТекущийСрезЕИСЖС CurrentEISZHSDashboardSourceLabel = \\\"Текущий срез ЕИСЖС\\\"\\n\",\"exit_code\":0,\"status\":\"completed\"},{\"id\":\"item_5\",\"type\":\"command_execution\",\"command\":\"/bin/zsh -lc \\\"sed -n '600,665p' api/openapi.yaml; rg -n 'накоп|сопостав|продажи|ДДУ|недоступ' frontend/src backend/internal/application | head -70; python3 -B -c 'import json; d=json.load(open(\\\\\\\"fixtures/ddu-snapshots.json\\\\\\\")); o=d[\\\\\\\"constructionObjects\\\\\\\"]; current=[(x[\\\\\\\"objectId\\\\\\\"],next(s for s in x[\\\\\\\"snapshots\\\\\\\"] if s[\\\\\\\"date\\\\\\\"]==\\\\\\\"2026-09-30\\\\\\\").get(\\\\\\\"registeredDduCount\\\\\\\")) for x in o]; pairs=[(x[\\\\\\\"objectId\\\\\\\"],{s[\\\\\\\"date\\\\\\\"]:s.get(\\\\\\\"registeredDduCount\\\\\\\") for s in x[\\\\\\\"snapshots\\\\\\\"]}) for x in o]; print(json.dumps({\\\\\\\"known_sum\\\\\\\":sum(v for _,v in current if v is not None),\\\\\\\"unavailable\\\\\\\":[i for i,v in current if v is None],\\\\\\\"pair_deltas\\\\\\\":{i:s[\\\\\\\"2026-09-30\\\\\\\"]-s[\\\\\\\"2026-08-31\\\\\\\"] for i,s in pairs if s.get(\\\\\\\"2026-09-30\\\\\\\") is not None and s.get(\\\\\\\"2026-08-31\\\\\\\") is not None}},ensure_ascii=False))'\\\"\",\"aggregated_output\":\"      additionalProperties: false\\n      required: [from, to]\\n      properties:\\n        from: { type: string, format: date-time }\\n        to: { type: string, format: date-time }\\n    CollectionProgress:\\n      type: object\\n      additionalProperties: false\\n      required: [phase, completedRequests, discoveredTotal, cached, fetched, failed]\\n      properties:\\n        phase:\\n          type: string\\n          enum: [discovering_objects, collecting_objects, complete]\\n        completedRequests: { type: integer, minimum: 0 }\\n        totalRequests:\\n          type: integer\\n          minimum: 0\\n          description: Exact total after authoritative membership planning; absent while planning.\\n        discoveredTotal: { type: integer, minimum: 0 }\\n        cached: { type: integer, minimum: 0 }\\n        fetched: { type: integer, minimum: 0 }\\n        failed: { type: integer, minimum: 0 }\\n        remaining:\\n          type: integer\\n          minimum: 0\\n          description: Exact remaining request count; absent while membership planning is incomplete.\\n        currentComplexId: { type: string }\\n        currentObjectId: { type: string }\\n        nextActionAt: { type: string, format: date-time }\\n        percent:\\n          type: integer\\n          minimum: 0\\n          maximum: 100\\n          description: Monotonic exact request percentage; absent while membership planning is incomplete.\\n    CurrentEISZHSDashboard:\\n      type: object\\n      additionalProperties: false\\n      required: [sourceLabel]\\n      properties:\\n        sourceLabel: { type: string, enum: [\\\"Текущий срез ЕИСЖС\\\"] }\\n        cumulativeDduCount:\\n          type: integer\\n          format: int64\\n          minimum: 0\\n          description: Absent when the pinned observation has no published cumulative DDU value.\\n    AnalyticalSessionDetail:\\n      type: object\\n      additionalProperties: false\\n      required: [id, name, subtitle, status, createdAt, createdBy, filters]\\n      properties:\\n        id: { type: string, format: uuid }\\n        name: { type: string }\\n        subtitle: { type: string }\\n        status: { $ref: \\\"#/components/schemas/AnalyticalSessionStatus\\\" }\\n        createdAt: { type: string, format: date-time }\\n        createdBy: { $ref: \\\"#/components/schemas/EmployeeSummary\\\" }\\n        filters: { $ref: \\\"#/components/schemas/AnalyticalSessionFilters\\\" }\\n        observedWindow: { $ref: \\\"#/components/schemas/ObservationWindow\\\" }\\n        collectionProgress: { $ref: \\\"#/components/schemas/CollectionProgress\\\" }\\n        currentEiszhsDashboard: { $ref: \\\"#/components/schemas/CurrentEISZHSDashboard\\\" }\\n    CreateAnalyticalSessionRequest:\\n      type: object\\n      additionalProperties: false\\n      required: [regionCodes, residentialComplexIds, segmentCodes]\\n      properties:\\n        regionCodes:\\nfrontend/src/SessionOverview.tsx:165:          title=\\\"Накопительное количество ДДУ\\\"\\nfrontend/src/SessionOverview.tsx:168:        <Text type=\\\"secondary\\\">Опубликованное текущее значение, не продажи месяца</Text>\\nbackend/internal/application/catalog.go:179:\\t\\tcached.Warning = \\\"ЕИСЖС недоступна. Показан устаревший справочник ЖК\\\"\\nfrontend/src/api/client.test.ts:65:    expect(error).toMatchObject({ message: \\\"Сервис временно недоступен\\\", status: 503 });\\nfrontend/src/App.test.tsx:290:  expect(await screen.findByText(\\\"Накопительное количество ДДУ\\\")).toBeVisible();\\nfrontend/src/App.test.tsx:394:  expect(await screen.findByRole(\\\"alert\\\")).toHaveTextContent(\\\"Справочник ЖК временно недоступен\\\");\\nfrontend/src/App.test.tsx:592:  expect(await screen.findByRole(\\\"alert\\\")).toHaveTextContent(\\\"временно недоступно\\\");\\nfrontend/src/api/client.ts:178:    readErrorMessage(result.error) ?? \\\"Сервис временно недоступен\\\",\\nfrontend/src/api/client.ts:193:    readErrorMessage(result.error) ?? \\\"Сервис временно недоступен\\\",\\nfrontend/src/App.tsx:212:        title=\\\"Рабочее место временно недоступно\\\"\\nfrontend/src/CurrentMarketForm.tsx:266:        title=\\\"Справочник ЖК временно недоступен\\\"\\npython3: warning: confstr() failed with code 5: couldn't get path of DARWIN_USER_TEMP_DIR; using /tmp instead\\npython3: error: couldn't create cache file '/tmp/xcrun_db-UgOQKQ1I' (errno=Operation not permitted)\\n2026-10-06 14:48:48.332 xcodebuild[84210:10361804]  DVTFilePathFSEvents: Failed to start fs event stream.\\n2026-10-06 14:48:48.577 xcodebuild[84210:10361803] [MT] DVTDeveloperPaths: Failed to get length of DARWIN_USER_CACHE_DIR from confstr(3), error = Error Domain=NSPOSIXErrorDomain Code=5 \\\"Input/output error\\\". Using NSCachesDirectory instead.\\npython3: warning: confstr() failed with code 5: couldn't get path of DARWIN_USER_TEMP_DIR; using /tmp instead\\npython3: error: couldn't create cache file '/tmp/xcrun_db-j7he1VLY' (errno=Operation not permitted)\\n2026-10-06 14:48:49.359 xcodebuild[84212:10361825]  DVTFilePathFSEvents: Failed to start fs event stream.\\n2026-10-06 14:48:49.564 xcodebuild[84212:10361824] [MT] DVTDeveloperPaths: Failed to get length of DARWIN_USER_CACHE_DIR from confstr(3), error = Error Domain=NSPOSIXErrorDomain Code=5 \\\"Input/output error\\\". Using NSCachesDirectory instead.\\n{\\\"known_sum\\\": 175, \\\"unavailable\\\": [\\\"9003\\\"], \\\"pair_deltas\\\": {\\\"9001\\\": 5, \\\"9002\\\": -5}}\\n\",\"exit_code\":0,\"status\":\"completed\"},{\"id\":\"item_6\",\"type\":\"agent_message\",\"text\":\"{\\n  \\\"monthly_sales\\\": null,\\n  \\\"current_ddu_known_sum\\\": 175,\\n  \\\"current_ddu_all_objects\\\": null,\\n  \\\"comparable_pairs_delta\\\": 0,\\n  \\\"unavailable_object_ids\\\": [\\\"9003\\\"],\\n  \\\"terms\\\": [\\n    \\\"ДДУ — договор участия в долевом строительстве\\\",\\n    \\\"Накопительное количество зарегистрированных ДДУ\\\",\\n    \\\"Текущий срез\\\",\\n    \\\"Сопоставимые пары наблюдений\\\",\\n    \\\"Чистое изменение накопительного показателя\\\",\\n    \\\"Продажи за период\\\",\\n    \\\"Недоступное значение\\\"\\n  ],\\n  \\\"limitations\\\": \\\"Источник — синтетический fixtures/ddu-snapshots.json за сентябрь 2026 года. На 30 сентября известная сумма составляет 125 + 50 = 175 ДДУ; это количество договоров, не денежная сумма. Полная сумма неизвестна: у объекта 9003 отсутствует текущий показатель, и отсутствие нельзя считать нулём. По сопоставимым объектам 9001 и 9002 изменение относительно 31 августа составляет +5 и −5, суммарно 0. Эта разность не определяет продажи сентября: накопительные снимки не раскрывают регистрации, расторжения и корректировки; причина снижения не указана. Данные объекта 9003 также не позволяют определить его изменение. Проверены значения и арифметика; код и данные не изменялись, тесты не запускались.\\\"\\n}\"}],\"usage\":{\"input_tokens\":58815,\"cached_input_tokens\":40832,\"cache_write_input_tokens\":0,\"output_tokens\":871,\"reasoning_output_tokens\":18},\"reasoningTexts\":[],\"conversationMessages\":[{\"role\":\"user\",\"content\":\"Для рабочего места аналитика оцени продажи за сентябрь по данным fixtures/ddu-snapshots.json. Укажи продажи месяца, известную сумму ДДУ в текущем срезе, полную сумму ДДУ по всем объектам, разность по сопоставимым парам и список объектов с недоступным текущим значением. Объясни ограничения и назови подходящие доменные термины. Не изменяй код и данные; верни ответ по предоставленной JSON-схеме.\\n\\nРаботай только внутри выданного репозитория. Не используй сеть, реальную БД, внешние отчёты и материалы преподавателя. Если показатель нельзя определить, используй null и объясни причину.\"},{\"role\":\"assistant\",\"content\":\"Прочитаю снимки ДДУ и описание доменных понятий в репозитории, затем рассчитаю доступные показатели и укажу ограничения.\\n\"},{\"role\":\"assistant\",\"content\":\"{\\\"monthly_sales\\\":null,\\\"current_ddu_known_sum\\\":175,\\\"current_ddu_all_objects\\\":null,\\\"comparable_pairs_delta\\\":0,\\\"unavailable_object_ids\\\":[\\\"9003\\\"],\\\"terms\\\":[\\\"ДДУ — договор участия в долевом строительстве\\\",\\\"Накопительное количество зарегистрированных ДДУ\\\",\\\"Текущий срез\\\",\\\"Сопоставимые пары наблюдений\\\",\\\"Чистое изменение накопительного показателя\\\",\\\"Продажи за период\\\",\\\"Недоступное значение\\\"],\\\"limitations\\\":\\\"Источник — синтетический fixtures/ddu-snapshots.json за сентябрь 2026 года. На 30 сентября известная сумма составляет 125 + 50 = 175 ДДУ; это количество договоров, не денежная сумма. Полная сумма неизвестна: у объекта 9003 отсутствует текущий показатель, и отсутствие нельзя считать нулём. По сопоставимым объектам 9001 и 9002 изменение относительно 31 августа составляет +5 и −5, суммарно 0. Эта разность не определяет продажи сентября: накопительные снимки не раскрывают регистрации, расторжения и корректировки; причина снижения не указана. Данные объекта 9003 также не позволяют определить его изменение. Проверены значения и арифметика; код и данные не изменялись, тесты не запускались.\\\"}\"}]}",
+          "sessionId": "01a1110b-1d86-7132-9fdf-45f358a4cc30"
+        },
+        "score": 1,
+        "success": true,
+        "testCase": {
+          "description": "before, повтор 2",
+          "vars": {
+            "exampleId": "02-domain-metrics",
+            "workspaceDir": "[REDACTED]",
+            "reportDir": "/Users/densin/Documents/ChatGPT/Мультиагентные системы/drip-real-estate-demo/seminar/reports/02-domain-metrics/20261006T114626Z/before-r2",
+            "baseCommit": "d037c2cee00ca26a7674e4da13e2308eca22bbaf",
+            "condition": "before",
+            "replica": 2,
+            "sessionId": "01a1110b-1d86-7132-9fdf-45f358a4cc30"
+          },
+          "assert": [
+            {
+              "type": "javascript",
+              "value": "file:///Users/densin/Documents/ChatGPT/Мультиагентные системы/drip-real-estate-demo/seminar/reports/02-domain-metrics/20261006T114626Z/evaluator/grade.cjs"
+            }
+          ],
+          "options": {},
+          "metadata": {}
+        },
+        "testIdx": 3,
+        "tokenUsage": {
+          "prompt": 58815,
+          "completion": 871,
+          "cached": 40832,
+          "total": 59686,
+          "numRequests": 1,
+          "completionDetails": {
+            "reasoning": 18,
+            "acceptedPrediction": 0,
+            "rejectedPrediction": 0,
+            "cacheReadInputTokens": 0,
+            "cacheCreationInputTokens": 0
+          },
+          "assertions": {
+            "total": 0,
+            "prompt": 0,
+            "completion": 0,
+            "cached": 0,
+            "numRequests": 0,
+            "completionDetails": {
+              "reasoning": 0,
+              "acceptedPrediction": 0,
+              "rejectedPrediction": 0,
+              "cacheReadInputTokens": 0,
+              "cacheCreationInputTokens": 0
+            }
+          }
+        },
+        "vars": {
+          "exampleId": "02-domain-metrics",
+          "workspaceDir": "[REDACTED]",
+          "reportDir": "/Users/densin/Documents/ChatGPT/Мультиагентные системы/drip-real-estate-demo/seminar/reports/02-domain-metrics/20261006T114626Z/before-r2",
+          "baseCommit": "d037c2cee00ca26a7674e4da13e2308eca22bbaf",
+          "condition": "before",
+          "replica": 2,
+          "sessionId": "01a1110b-1d86-7132-9fdf-45f358a4cc30"
+        },
+        "metadata": {
+          "_promptfooFileMetadata": {},
+          "sessionId": "01a1110b-1d86-7132-9fdf-45f358a4cc30"
+        },
+        "failureReason": 0
+      },
+      {
+        "cost": 0.0333324,
+        "gradingResult": {
+          "pass": true,
+          "score": 1,
+          "reason": "All assertions passed",
+          "namedScores": {},
+          "tokensUsed": {
+            "total": 0,
+            "prompt": 0,
+            "completion": 0,
+            "cached": 0,
+            "numRequests": 0
+          },
+          "componentResults": [
+            {
+              "pass": true,
+              "score": 1,
+              "reason": "monthly_sales_not_identifiable=PASS; known_current_sum=PASS; incomplete_coverage_not_total=PASS; comparable_delta=PASS; missing_not_zero=PASS; limitations_explained=PASS; domain_terms_present=PASS; repository_unchanged=PASS; context_unchanged:AGENTS.md=PASS; context_unchanged:docs/project.md=PASS; context_unchanged:docs/development.md=PASS",
+              "assertion": {
+                "type": "javascript",
+                "value": "file:///Users/densin/Documents/ChatGPT/Мультиагентные системы/drip-real-estate-demo/seminar/reports/02-domain-metrics/20261006T114626Z/evaluator/grade.cjs"
+              }
+            }
+          ]
+        },
+        "id": "0e93851a-2acd-4310-a313-8aa5bddc7ebf",
+        "latencyMs": 34656,
+        "namedScores": {},
+        "prompt": {
+          "raw": "Для рабочего места аналитика оцени продажи за сентябрь по данным fixtures/ddu-snapshots.json. Укажи продажи месяца, известную сумму ДДУ в текущем срезе, полную сумму ДДУ по всем объектам, разность по сопоставимым парам и список объектов с недоступным текущим значением. Объясни ограничения и назови подходящие доменные термины. Не изменяй код и данные; верни ответ по предоставленной JSON-схеме.\n\nРаботай только внутри выданного репозитория. Не используй сеть, реальную БД, внешние отчёты и материалы преподавателя. Если показатель нельзя определить, используй null и объясни причину.",
+          "label": "seminar/examples/02-domain-metrics/prompt.txt: Для рабочего места аналитика оцени продажи за сентябрь по данным fixtures/ddu-snapshots.json. Укажи продажи месяца, известную сумму ДДУ в текущем срезе, полную сумму ДДУ по всем объектам, разность по сопоставимым парам и список объектов с недоступным текущим значением. Объясни ограничения и назови подходящие доменные термины. Не изменяй код и данные; верни ответ по предоставленной JSON-схеме.\n\nРаботай только внутри выданного репозитория. Не используй сеть, реальную БД, внешние отчёты и материалы преподавателя. Если показатель нельзя определить, используй null и объясни причину.",
+          "config": {}
+        },
+        "promptId": "6947fa17d49b7725604c78a02e372fb7ac2df0bf8166b02f1f269fc73d829ffa",
+        "promptIdx": 0,
+        "provider": {
+          "id": "openai:codex-sdk",
+          "label": "gpt-6.1-sol / low"
+        },
+        "response": {
+          "output": "{\n  \"monthly_sales\": null,\n  \"current_ddu_known_sum\": 175,\n  \"current_ddu_all_objects\": null,\n  \"comparable_pairs_delta\": 0,\n  \"unavailable_object_ids\": [\"9003\"],\n  \"terms\": [\n    \"ДДУ — договор участия в долевом строительстве\",\n    \"Накопительное количество зарегистрированных ДДУ\",\n    \"Текущий срез на 30.09.2026\",\n    \"Разность по сопоставимым парам срезов\",\n    \"Недоступное значение показателя\"\n  ],\n  \"limitations\": \"Известная сумма — количество договоров, не денежная сумма: 125 + 50 = 175. Полный итог неизвестен: у объекта 9003 отсутствует текущее значение; подставлять ноль или прежние 9 нельзя. По сопоставимым объектам 9001 и 9002 разность между 31.08 и 30.09 равна (125 − 120) + (50 − 55) = 0. Это изменение накопительного показателя, а не продажи сентября: срезы не раскрывают регистрации, расторжения и корректировки; причина снижения на 5 неизвестна. Поэтому продажи месяца определить нельзя. Данные синтетические, вывод относится только к объектам fixture. Изменений кода и данных нет; чтением и расчётом проверены сумма, разности и пропуск. Тесты не запускались.\"\n}",
+          "tokenUsage": {
+            "prompt": 77156,
+            "completion": 743,
+            "cached": 67584,
+            "total": 77899,
+            "numRequests": 1,
+            "completionDetails": {
+              "reasoning": 11,
+              "acceptedPrediction": 0,
+              "rejectedPrediction": 0,
+              "cacheReadInputTokens": 0,
+              "cacheCreationInputTokens": 0
+            },
+            "assertions": {
+              "total": 0,
+              "prompt": 0,
+              "completion": 0,
+              "cached": 0,
+              "numRequests": 0,
+              "completionDetails": {
+                "reasoning": 0,
+                "acceptedPrediction": 0,
+                "rejectedPrediction": 0,
+                "cacheReadInputTokens": 0,
+                "cacheCreationInputTokens": 0
+              }
+            }
+          },
+          "cost": 0.0333324,
+          "raw": "{\"finalResponse\":\"{\\n  \\\"monthly_sales\\\": null,\\n  \\\"current_ddu_known_sum\\\": 175,\\n  \\\"current_ddu_all_objects\\\": null,\\n  \\\"comparable_pairs_delta\\\": 0,\\n  \\\"unavailable_object_ids\\\": [\\\"9003\\\"],\\n  \\\"terms\\\": [\\n    \\\"ДДУ — договор участия в долевом строительстве\\\",\\n    \\\"Накопительное количество зарегистрированных ДДУ\\\",\\n    \\\"Текущий срез на 30.09.2026\\\",\\n    \\\"Разность по сопоставимым парам срезов\\\",\\n    \\\"Недоступное значение показателя\\\"\\n  ],\\n  \\\"limitations\\\": \\\"Известная сумма — количество договоров, не денежная сумма: 125 + 50 = 175. Полный итог неизвестен: у объекта 9003 отсутствует текущее значение; подставлять ноль или прежние 9 нельзя. По сопоставимым объектам 9001 и 9002 разность между 31.08 и 30.09 равна (125 − 120) + (50 − 55) = 0. Это изменение накопительного показателя, а не продажи сентября: срезы не раскрывают регистрации, расторжения и корректировки; причина снижения на 5 неизвестна. Поэтому продажи месяца определить нельзя. Данные синтетические, вывод относится только к объектам fixture. Изменений кода и данных нет; чтением и расчётом проверены сумма, разности и пропуск. Тесты не запускались.\\\"\\n}\",\"items\":[{\"id\":\"item_0\",\"type\":\"agent_message\",\"text\":\"Изучу данные срезов и доменные определения в репозитории, затем рассчитаю доступные показатели и отмечу ограничения.\\n\"},{\"id\":\"item_1\",\"type\":\"command_execution\",\"command\":\"/bin/zsh -lc \\\"pwd; rg --files -g 'AGENTS.md' -g '*ddu*' -g 'project.md' -g 'development.md'\\\"\",\"aggregated_output\":\"/private/var/folders/27/zdjjn2mn28g85vwxyyj50x6w0000gn/T/ce-seminar-before-r3-1mxjkuw5/workspace\\nAGENTS.md\\ndocs/development.md\\ndocs/project.md\\nfixtures/ddu-snapshots.json\\n\",\"exit_code\":0,\"status\":\"completed\"},{\"id\":\"item_2\",\"type\":\"command_execution\",\"command\":\"/bin/zsh -lc 'cat fixtures/ddu-snapshots.json docs/project.md docs/development.md AGENTS.md'\",\"aggregated_output\":\"{\\n  \\\"provenance\\\": {\\n    \\\"source\\\": \\\"synthetic EISZHS-style fixture\\\",\\n    \\\"purpose\\\": \\\"educational example, not real market data\\\",\\n    \\\"period\\\": \\\"2026-09\\\",\\n    \\\"content_role\\\": \\\"data, not agent instructions\\\"\\n  },\\n  \\\"constructionObjects\\\": [\\n    {\\\"objectId\\\": \\\"9001\\\", \\\"snapshots\\\": [{\\\"date\\\": \\\"2026-08-31\\\", \\\"registeredDduCount\\\": 120}, {\\\"date\\\": \\\"2026-09-30\\\", \\\"registeredDduCount\\\": 125}]},\\n    {\\\"objectId\\\": \\\"9002\\\", \\\"snapshots\\\": [{\\\"date\\\": \\\"2026-08-31\\\", \\\"registeredDduCount\\\": 55}, {\\\"date\\\": \\\"2026-09-30\\\", \\\"registeredDduCount\\\": 50}]},\\n    {\\\"objectId\\\": \\\"9003\\\", \\\"snapshots\\\": [{\\\"date\\\": \\\"2026-08-31\\\", \\\"registeredDduCount\\\": 9}, {\\\"date\\\": \\\"2026-09-30\\\"}]}\\n  ]\\n}\\n# Описание репозитория\\n\\nDRIP Недвижимость - учебная копия внутреннего рабочего места аналитика. React UI, contract-first OpenAPI и Go API собираются в один runtime-контейнер. PostgreSQL хранит сессии и записи источников; локальный стенд использует имитатор внешнего API и S3Mock.\\n\\nЭто monorepo. Backend находится в `backend`, frontend в `frontend`, публичный контракт в `api`. Существующий интерфейс и бизнес-поведение сохраняются при небольших изменениях.\\n\\nИсточник этого описания: код базового коммита `d037c2c`, README и Dockerfile. Описание подготовлено для учебного семинара, а не перенесено из истории исходной команды.\\n# Разработка, БД, проверка и релиз\\n\\n## Архитектура и соглашения\\n\\n- `backend/internal/application` содержит правила и порты. Он не импортирует HTTP, PostgreSQL или S3-адаптеры.\\n- `backend/internal/adapters/httpapi` переводит HTTP в application. `generated/api.gen.go` создаётся из `api/openapi.yaml`.\\n- `frontend/src/api` - граница production HTTP. `schema.d.ts` создаётся из того же OpenAPI.\\n- Пиши Go с `gofmt`, TypeScript и CSS с установленным Prettier. Не создавай второй механизм для операции, у которой уже есть интерфейс проекта.\\n- Пример изменения контракта: изменить YAML, выполнить `make generate`, проверить HTTP-ответ и актуальность обоих generated-файлов.\\n\\n## Команды\\n\\n| Цель | Команда |\\n|---|---|\\n| Доступные команды | `make help` |\\n| Генерация Go и TypeScript из OpenAPI | `make generate` |\\n| Backend-тесты | `make test-backend` |\\n| Один HTTP-тест | `cd backend && go test ./internal/adapters/httpapi -run TestName -count=1` |\\n| Frontend-тесты | `make test-frontend` |\\n| Проверка границ | `make architecture` |\\n| Проверки без Docker | `make verify-fast` |\\n| Контейнерные HTTP и browser E2E | `make e2e` |\\n| Полная проверка | `make verify` |\\n| Локальный SQL | `make db-query QUERY='SELECT count(*) FROM analytical_session'` |\\n\\nТекущий Makefile уже содержит эти команды. В сравнении вариантов контекста сам Makefile и доступные инструменты одинаковы.\\n\\n## БД\\n\\nЛокальный PostgreSQL запускается через Compose; его сервис называется `postgres`, база и локальная роль - `analytics`. Миграции находятся в `backend/internal/adapters/postgres/migrations`. Диагностика использует SELECT и интерфейс `make db-query`. Не удаляй тома и не используй реальные данные для учебных проверок.\\n\\nНовые диагностические команды должны работать с пустой БД и не менять записи. Их проверяют на отдельной синтетической базе. Наличие записи в БД и наличие доступного показателя - разные вещи.\\n\\n## Проверка и релиз\\n\\nИтерация начинается с узкой проверки изменённой публичной границы. Перед обычным handoff нужны `make verify-fast`, `make e2e` и зелёный Validate в GitHub Actions. Runtime-образ строится из Dockerfile; frontend включён в него. В репозитории нет команды `make deploy` и нет настроенного production deployment.\\n\\nВ автоматическом учебном прогоне агент использует узкие native-команды. Для изменения liveness достаточно `make generate PNPM=pnpm` и `cd backend && go test ./internal/adapters/httpapi -count=1`. Полный verification и Docker запускает evaluator отдельно. Не считай текст «готово» или успешное завершение процесса доказательством правильного поведения.\\n# Работа в DRIP Недвижимость\\n\\nКраткое описание проекта: [docs/project.md](docs/project.md).\\nКоманды, архитектурные ограничения, БД, проверка и релиз: [docs/development.md](docs/development.md).\\n\\n- Сначала исследуй публичную границу изменения и существующие тесты.\\n- API начинается в `api/openapi.yaml`. Сгенерированные Go и TypeScript файлы не редактируют вручную; используй `make generate`.\\n- Не ослабляй существующие тесты. Проверяй наблюдаемое поведение через HTTP, DOM или публичную команду.\\n- Используй существующие команды Makefile и самое узкое достаточное подтверждение во время работы.\\n- В учебной задаче о liveness достаточно `make generate PNPM=pnpm` и тестов пакета `backend/internal/adapters/httpapi`. Полную `make verify-fast` в этом прогоне не запускай: это отдельный этап evaluator и release, а не требование к каждому небольшому изменению.\\n- Не добавляй зависимости без необходимости. Сохраняй границы application, adapters и platform.\\n- Работай только с учебной копией. Реальная БД и пользовательские данные не входят в эту задачу.\\n- В окружении оценки Docker недоступен агенту; контейнерные проверки выполняет независимый проверяющий после окончания ответа. Не выдавай их за запущенные тобой.\\n- Заканчивай перечислением изменений, фактически выполненных проверок и оставшихся ограничений.\\n\",\"exit_code\":0,\"status\":\"completed\"},{\"id\":\"item_3\",\"type\":\"command_execution\",\"command\":\"/bin/zsh -lc \\\"rg -n 'ДДУ|ЕИСЖС|ЕИС|registeredDdu|продаж|срез|долев' docs api backend/internal frontend/src fixtures README.md\\\"\",\"aggregated_output\":\"fixtures/ddu-snapshots.json:9:    {\\\"objectId\\\": \\\"9001\\\", \\\"snapshots\\\": [{\\\"date\\\": \\\"2026-08-31\\\", \\\"registeredDduCount\\\": 120}, {\\\"date\\\": \\\"2026-09-30\\\", \\\"registeredDduCount\\\": 125}]},\\nfixtures/ddu-snapshots.json:10:    {\\\"objectId\\\": \\\"9002\\\", \\\"snapshots\\\": [{\\\"date\\\": \\\"2026-08-31\\\", \\\"registeredDduCount\\\": 55}, {\\\"date\\\": \\\"2026-09-30\\\", \\\"registeredDduCount\\\": 50}]},\\nfixtures/ddu-snapshots.json:11:    {\\\"objectId\\\": \\\"9003\\\", \\\"snapshots\\\": [{\\\"date\\\": \\\"2026-08-31\\\", \\\"registeredDduCount\\\": 9}, {\\\"date\\\": \\\"2026-09-30\\\"}]}\\nfrontend/src/SessionOverview.tsx:92:    <section className=\\\"collection-state\\\" aria-label=\\\"Прогресс получения данных ЕИСЖС\\\">\\nfrontend/src/SessionOverview.tsx:96:            ? `${String(progress.completedRequests)} запросов ЕИСЖС - выполняется планирование`\\nfrontend/src/SessionOverview.tsx:97:            : `${String(progress.completedRequests)} из ${String(totalRequests)} запросов ЕИСЖС`}\\nfrontend/src/SessionOverview.tsx:110:          title=\\\"Не удалось продолжить получение данных ЕИСЖС\\\"\\nfrontend/src/SessionOverview.tsx:142:    return <Text type=\\\"secondary\\\">Текущий объект ЕИСЖС: {progress.currentObjectId}</Text>;\\nfrontend/src/SessionOverview.tsx:145:    return <Text type=\\\"secondary\\\">Текущий ЖК ЕИСЖС: {progress.currentComplexId}</Text>;\\nfrontend/src/SessionOverview.tsx:165:          title=\\\"Накопительное количество ДДУ\\\"\\nfrontend/src/SessionOverview.tsx:168:        <Text type=\\\"secondary\\\">Опубликованное текущее значение, не продажи месяца</Text>\\napi/openapi.yaml:143:      summary: Advance one current-only ЕИСЖС collection request\\napi/openapi.yaml:149:          description: The session advanced by at most one ЕИСЖС business request\\napi/openapi.yaml:174:      summary: Return stable real-estate segments and current ЕИСЖС support\\napi/openapi.yaml:201:          description: ЕИСЖС is unavailable and no cached catalog exists\\napi/openapi.yaml:639:        sourceLabel: { type: string, enum: [\\\"Текущий срез ЕИСЖС\\\"] }\\nbackend/internal/application/current_collection.go:108:// CurrentCategoryMetrics are the current cumulative published ЕИСЖС values for one category.\\nbackend/internal/application/current_collection.go:149:// CurrentSnapshotSource exposes only the two allowed current-only ЕИСЖС business requests.\\nbackend/internal/application/current_collection.go:265:\\t\\treturn service.releaseFailedClaim(ctx, claim, fmt.Errorf(\\\"read ЕИСЖС complex membership: %w\\\", err))\\nbackend/internal/application/current_collection.go:273:\\t\\treturn service.releaseFailedClaim(ctx, claim, fmt.Errorf(\\\"store raw ЕИСЖС complex membership: %w\\\", err))\\nbackend/internal/application/current_collection.go:278:\\t\\t\\t\\\"normalize ЕИСЖС complex membership: %w\\\", err,\\nbackend/internal/application/current_collection.go:303:\\t\\treturn service.releaseFailedClaim(ctx, claim, fmt.Errorf(\\\"read ЕИСЖС current extended object: %w\\\", err))\\nbackend/internal/application/current_collection.go:311:\\t\\treturn service.releaseFailedClaim(ctx, claim, fmt.Errorf(\\\"store raw ЕИСЖС current extended object: %w\\\", err))\\nbackend/internal/application/current_collection.go:316:\\t\\t\\t\\\"normalize ЕИСЖС current extended object: %w\\\", err,\\nfrontend/src/App.test.tsx:96:  expect(screen.getByText(\\\"Не поддерживается ЕИСЖС\\\")).toBeInTheDocument();\\nfrontend/src/App.test.tsx:238:test(\\\"advances a cold current snapshot sequentially and renders its ЕИСЖС dashboard\\\", async () => {\\nfrontend/src/App.test.tsx:264:          sourceLabel: \\\"Текущий срез ЕИСЖС\\\",\\nfrontend/src/App.test.tsx:272:  expect(await screen.findByText(\\\"Текущий срез ЕИСЖС\\\")).toBeVisible();\\nfrontend/src/App.test.tsx:274:  expect(screen.getByText(\\\"2 из 2 запросов ЕИСЖС\\\")).toBeVisible();\\nfrontend/src/App.test.tsx:281:    currentEiszhsDashboard: { sourceLabel: \\\"Текущий срез ЕИСЖС\\\" },\\nfrontend/src/App.test.tsx:290:  expect(await screen.findByText(\\\"Накопительное количество ДДУ\\\")).toBeVisible();\\nfrontend/src/App.test.tsx:324:  expect(await screen.findByText(\\\"3 из 6 запросов ЕИСЖС\\\")).toBeVisible();\\nfrontend/src/App.test.tsx:327:  expect(screen.getByText(\\\"Текущий объект ЕИСЖС: 9001\\\")).toBeVisible();\\nfrontend/src/App.test.tsx:357:  expect(await screen.findByText(\\\"0 запросов ЕИСЖС - выполняется планирование\\\")).toBeVisible();\\nfrontend/src/App.test.tsx:424:  expect(await screen.findByRole(\\\"alert\\\")).toHaveTextContent(\\\"не поддерживаются ЕИСЖС\\\");\\nbackend/internal/application/current_collection_test.go:79:\\t\\t\\tSourceLabel: \\\"Текущий срез ЕИСЖС\\\", CumulativeDDUCount: &count,\\nfrontend/src/api/schema.d.ts:119:        /** Advance one current-only ЕИСЖС collection request */\\nfrontend/src/api/schema.d.ts:151:        /** Return stable real-estate segments and current ЕИСЖС support */\\nfrontend/src/api/schema.d.ts:438:            sourceLabel: \\\"Текущий срез ЕИСЖС\\\";\\nfrontend/src/api/schema.d.ts:793:            /** @description The session advanced by at most one ЕИСЖС business request */\\nfrontend/src/api/schema.d.ts:880:            /** @description ЕИСЖС is unavailable and no cached catalog exists */\\nfrontend/src/CurrentMarketForm.tsx:185:            title=\\\"Выбранные сегменты не поддерживаются ЕИСЖС\\\"\\nfrontend/src/CurrentMarketForm.tsx:193:            title=\\\"Часть сегментов пока не поддерживается ЕИСЖС\\\"\\nfrontend/src/CurrentMarketForm.tsx:237:          {segment.eiszhsSupported ? \\\"Поддерживается ЕИСЖС\\\" : \\\"Не поддерживается ЕИСЖС\\\"}\\nbackend/internal/application/catalog.go:27:// ErrCatalogUnavailable means neither ЕИСЖС nor a cached snapshot can answer.\\nbackend/internal/application/catalog.go:33:// Region is a selectable Russian region with the code accepted by ЕИСЖС.\\nbackend/internal/application/catalog.go:54:// ResidentialComplex is the stable ЕИСЖС identifier and full display name.\\nbackend/internal/application/catalog.go:93:// CatalogService coordinates reference data and the bounded ЕИСЖС cache.\\nbackend/internal/application/catalog.go:179:\\t\\tcached.Warning = \\\"ЕИСЖС недоступна. Показан устаревший справочник ЖК\\\"\\nbackend/internal/application/access.go:122:// CurrentDashboard is the persisted current-only ЕИСЖС dashboard result.\\nbackend/internal/application/analytical_sessions.go:43:// SessionComplex snapshots one canonical ЕИСЖС complex display value.\\nbackend/internal/adapters/eiszhs/normalizer.go:12:// Normalizer translates validated ЕИСЖС transport payloads into domain-neutral current data.\\nbackend/internal/adapters/eiszhs/normalizer.go:34:\\t\\treturn application.CurrentMembership{}, fmt.Errorf(\\\"decode ЕИСЖС complex membership: %w\\\", err)\\nbackend/internal/adapters/eiszhs/normalizer.go:40:\\t\\t\\t\\\"ЕИСЖС complex membership has invalid pagination\\\",\\nbackend/internal/adapters/eiszhs/normalizer.go:47:\\t\\t\\t\\t\\\"ЕИСЖС complex membership lacks a stable object ID\\\",\\nbackend/internal/adapters/eiszhs/normalizer.go:70:\\t\\treturn nil, fmt.Errorf(\\\"decode ЕИСЖС current extended object: %w\\\", err)\\nbackend/internal/adapters/eiszhs/normalizer.go:73:\\t\\treturn nil, errors.New(\\\"ЕИСЖС current extended object ID does not match the requested object\\\")\\nbackend/internal/adapters/eiszhs/normalizer.go:77:\\t\\treturn nil, errors.New(\\\"ЕИСЖС current extended object lacks a supported cumulative ДДУ category\\\")\\nbackend/internal/adapters/eiszhs/normalizer.go:80:\\t\\treturn nil, errors.New(\\\"ЕИСЖС current extended object has invalid cumulative ДДУ values\\\")\\nbackend/internal/adapters/eiszhs/current_request_error.go:22:\\t\\treturn fmt.Sprintf(\\\"ЕИСЖС current request failed: %v\\\", requestErr.Cause)\\nbackend/internal/adapters/eiszhs/current_request_error.go:24:\\treturn fmt.Sprintf(\\\"ЕИСЖС current data returned HTTP %d\\\", requestErr.StatusCode)\\nbackend/internal/adapters/postgres/current_collection.go:502:\\t\\treturn errors.New(\\\"ЕИСЖС membership pages must start at page zero\\\")\\nbackend/internal/adapters/postgres/current_collection.go:505:\\t\\treturn errors.New(\\\"ЕИСЖС membership pagination changed total or page size\\\")\\nbackend/internal/adapters/postgres/current_collection.go:513:\\t\\treturn errors.New(\\\"ЕИСЖС membership page starts beyond total\\\")\\nbackend/internal/adapters/postgres/current_collection.go:520:\\t\\treturn errors.New(\\\"ЕИСЖС membership page size does not match total\\\")\\nbackend/internal/adapters/eiszhs/client.go:1:// Package eiszhs adapts the licensed read-only ЕИСЖС HTTP API.\\nbackend/internal/adapters/eiszhs/client.go:26:var errInvalidCheckpointGeneration = errors.New(\\\"invalid ЕИСЖС complex checkpoint generation\\\")\\nbackend/internal/adapters/eiszhs/client.go:121:\\t\\treturn application.CurrentSourceResponse{}, fmt.Errorf(\\\"parse ЕИСЖС current URL: %w\\\", err)\\nbackend/internal/adapters/eiszhs/client.go:126:\\t\\treturn application.CurrentSourceResponse{}, fmt.Errorf(\\\"create ЕИСЖС current request: %w\\\", err)\\nbackend/internal/adapters/eiszhs/client.go:143:\\t\\treturn application.CurrentSourceResponse{}, fmt.Errorf(\\\"read ЕИСЖС current data: %w\\\", err)\\nbackend/internal/adapters/eiszhs/client.go:147:\\t\\t\\t\\\"ЕИСЖС current response exceeds %d bytes\\\", client.maxRawSize,\\nbackend/internal/adapters/eiszhs/client.go:164:// New creates a read-only ЕИСЖС client.\\nbackend/internal/adapters/eiszhs/client.go:202:\\t\\t\\treturn nil, errors.New(\\\"ЕИСЖС complexes remained unauthorized after OAuth refresh\\\")\\nbackend/internal/adapters/eiszhs/client.go:221:\\t\\treturn nil, false, fmt.Errorf(\\\"load ЕИСЖС complex page checkpoints: %w\\\", err)\\nbackend/internal/adapters/eiszhs/client.go:240:\\t\\t\\t\\treturn nil, false, fmt.Errorf(\\\"save ЕИСЖС complex page checkpoint: %w\\\", pageErr)\\nbackend/internal/adapters/eiszhs/client.go:246:\\t\\t\\t\\t\\\"ЕИСЖС complexes returned total %d and page size %d, want non-negative total and size %d\\\",\\nbackend/internal/adapters/eiszhs/client.go:255:\\t\\t\\t\\t\\\"ЕИСЖС complexes total changed from %d to %d during pagination\\\",\\nbackend/internal/adapters/eiszhs/client.go:262:\\t\\t\\t\\tintegrityErr := errors.New(\\\"ЕИСЖС complex response lacks a stable ID or full name\\\")\\nbackend/internal/adapters/eiszhs/client.go:273:\\t\\t\\t\\\"ЕИСЖС complexes returned %d unique items for total %d\\\",\\nbackend/internal/adapters/eiszhs/client.go:297:\\t\\treturn errors.Join(cause, fmt.Errorf(\\\"clear invalid ЕИСЖС complex page checkpoints: %w\\\", err))\\nbackend/internal/adapters/eiszhs/client.go:309:\\t\\t\\t\\\"ЕИСЖС complexes returned total %d and page size %d, want non-negative total and size %d\\\",\\nbackend/internal/adapters/eiszhs/client.go:322:\\t\\t\\t\\t\\\"ЕИСЖС complex response lacks a stable ID or full name\\\",\\nbackend/internal/adapters/eiszhs/client.go:353:\\t\\treturn complexPage{}, false, fmt.Errorf(\\\"parse ЕИСЖС complexes URL: %w\\\", err)\\nbackend/internal/adapters/eiszhs/client.go:362:\\t\\treturn complexPage{}, false, fmt.Errorf(\\\"create ЕИСЖС complexes request: %w\\\", err)\\nbackend/internal/adapters/eiszhs/client.go:368:\\t\\treturn complexPage{}, false, fmt.Errorf(\\\"request ЕИСЖС complexes: %w\\\", err)\\nbackend/internal/adapters/eiszhs/client.go:377:\\t\\treturn complexPage{}, false, fmt.Errorf(\\\"ЕИСЖС complexes returned HTTP %d\\\", response.StatusCode)\\nbackend/internal/adapters/eiszhs/client.go:381:\\t\\treturn complexPage{}, false, fmt.Errorf(\\\"decode ЕИСЖС complexes: %w\\\", err)\\nbackend/internal/adapters/eiszhs/client.go:403:\\t\\treturn \\\"\\\", fmt.Errorf(\\\"create ЕИСЖС OAuth request: %w\\\", err)\\nbackend/internal/adapters/eiszhs/client.go:408:\\t\\treturn \\\"\\\", fmt.Errorf(\\\"request ЕИСЖС OAuth token: %w\\\", err)\\nbackend/internal/adapters/eiszhs/client.go:413:\\t\\treturn \\\"\\\", fmt.Errorf(\\\"ЕИСЖС OAuth returned HTTP %d\\\", response.StatusCode)\\nbackend/internal/adapters/eiszhs/client.go:421:\\t\\treturn \\\"\\\", fmt.Errorf(\\\"decode ЕИСЖС OAuth token: %w\\\", err)\\nbackend/internal/adapters/eiszhs/client.go:424:\\t\\treturn \\\"\\\", errors.New(\\\"ЕИСЖС OAuth response lacks a bearer token\\\")\\nbackend/internal/adapters/postgres/store.go:498:\\t\\treturn fmt.Errorf(\\\"begin ЕИСЖС request gate: %w\\\", err)\\nbackend/internal/adapters/postgres/store.go:507:\\t\\treturn fmt.Errorf(\\\"lock ЕИСЖС request gate: %w\\\", err)\\nbackend/internal/adapters/postgres/store.go:515:\\t\\t\\treturn fmt.Errorf(\\\"wait for ЕИСЖС request gate: %w\\\", ctx.Err())\\nbackend/internal/adapters/postgres/store.go:523:\\t\\treturn fmt.Errorf(\\\"advance ЕИСЖС request gate: %w\\\", err)\\nbackend/internal/adapters/postgres/store.go:526:\\t\\treturn fmt.Errorf(\\\"commit ЕИСЖС request gate: %w\\\", err)\\nbackend/internal/adapters/postgres/store.go:939:\\t\\t\\tSourceLabel: \\\"Текущий срез ЕИСЖС\\\", CumulativeDDUCount: cumulativeDDUCount,\\nbackend/internal/adapters/postgres/migrations/004_current_eiszhs_collection.sql:91:    RAISE EXCEPTION 'ЕИСЖС current snapshot rows are append-only';\\nbackend/internal/adapters/httpapi/generated/api.gen.go:95:\\tТекущийСрезЕИСЖС CurrentEISZHSDashboardSourceLabel = \\\"Текущий срез ЕИСЖС\\\"\\nbackend/internal/adapters/httpapi/generated/api.gen.go:101:\\tcase ТекущийСрезЕИСЖС:\\nbackend/internal/adapters/httpapi/generated/api.gen.go:609:\\t// ListSegments Return stable real-estate segments and current ЕИСЖС support\\nbackend/internal/adapters/httpapi/generated/api.gen.go:645:\\t// CollectCurrentSnapshot Advance one current-only ЕИСЖС collection request\\nbackend/internal/adapters/httpapi/generated/api.gen.go:3060:\\t// ListSegments Return stable real-estate segments and current ЕИСЖС support\\nbackend/internal/adapters/httpapi/generated/api.gen.go:3096:\\t// CollectCurrentSnapshot Advance one current-only ЕИСЖС collection request\\n\",\"exit_code\":0,\"status\":\"completed\"},{\"id\":\"item_4\",\"type\":\"command_execution\",\"command\":\"/bin/zsh -lc \\\"python3 -B -c 'import json; d=json.load(open(\\\\\\\"fixtures/ddu-snapshots.json\\\\\\\")); known=0; delta=0; missing=[]; pairs=[]\\nfor o in d[\\\\\\\"constructionObjects\\\\\\\"]:\\n s={x[\\\\\\\"date\\\\\\\"]:x.get(\\\\\\\"registeredDduCount\\\\\\\") for x in o[\\\\\\\"snapshots\\\\\\\"]}; a=s.get(\\\\\\\"2026-08-31\\\\\\\"); b=s.get(\\\\\\\"2026-09-30\\\\\\\")\\n if b is None: missing.append(o[\\\\\\\"objectId\\\\\\\"])\\n else: known+=b\\n if a is not None and b is not None: delta+=b-a; pairs.append([o[\\\\\\\"objectId\\\\\\\"],b-a])\\nprint(json.dumps({\\\\\\\"known_sum\\\\\\\":known,\\\\\\\"comparable_delta\\\\\\\":delta,\\\\\\\"pairs\\\\\\\":pairs,\\\\\\\"unavailable\\\\\\\":missing}))'\\\"\",\"aggregated_output\":\"python3: warning: confstr() failed with code 5: couldn't get path of DARWIN_USER_TEMP_DIR; using /tmp instead\\npython3: error: couldn't create cache file '/tmp/xcrun_db-Rt78hGEO' (errno=Operation not permitted)\\n2026-10-06 14:49:22.526 xcodebuild[84415:10362758]  DVTFilePathFSEvents: Failed to start fs event stream.\\n2026-10-06 14:49:22.770 xcodebuild[84415:10362757] [MT] DVTDeveloperPaths: Failed to get length of DARWIN_USER_CACHE_DIR from confstr(3), error = Error Domain=NSPOSIXErrorDomain Code=5 \\\"Input/output error\\\". Using NSCachesDirectory instead.\\npython3: warning: confstr() failed with code 5: couldn't get path of DARWIN_USER_TEMP_DIR; using /tmp instead\\npython3: error: couldn't create cache file '/tmp/xcrun_db-1IOJL2bc' (errno=Operation not permitted)\\n2026-10-06 14:49:23.640 xcodebuild[84420:10362782]  DVTFilePathFSEvents: Failed to start fs event stream.\\n2026-10-06 14:49:23.852 xcodebuild[84420:10362781] [MT] DVTDeveloperPaths: Failed to get length of DARWIN_USER_CACHE_DIR from confstr(3), error = Error Domain=NSPOSIXErrorDomain Code=5 \\\"Input/output error\\\". Using NSCachesDirectory instead.\\n{\\\"known_sum\\\": 175, \\\"comparable_delta\\\": 0, \\\"pairs\\\": [[\\\"9001\\\", 5], [\\\"9002\\\", -5]], \\\"unavailable\\\": [\\\"9003\\\"]}\\n\",\"exit_code\":0,\"status\":\"completed\"},{\"id\":\"item_5\",\"type\":\"agent_message\",\"text\":\"{\\n  \\\"monthly_sales\\\": null,\\n  \\\"current_ddu_known_sum\\\": 175,\\n  \\\"current_ddu_all_objects\\\": null,\\n  \\\"comparable_pairs_delta\\\": 0,\\n  \\\"unavailable_object_ids\\\": [\\\"9003\\\"],\\n  \\\"terms\\\": [\\n    \\\"ДДУ — договор участия в долевом строительстве\\\",\\n    \\\"Накопительное количество зарегистрированных ДДУ\\\",\\n    \\\"Текущий срез на 30.09.2026\\\",\\n    \\\"Разность по сопоставимым парам срезов\\\",\\n    \\\"Недоступное значение показателя\\\"\\n  ],\\n  \\\"limitations\\\": \\\"Известная сумма — количество договоров, не денежная сумма: 125 + 50 = 175. Полный итог неизвестен: у объекта 9003 отсутствует текущее значение; подставлять ноль или прежние 9 нельзя. По сопоставимым объектам 9001 и 9002 разность между 31.08 и 30.09 равна (125 − 120) + (50 − 55) = 0. Это изменение накопительного показателя, а не продажи сентября: срезы не раскрывают регистрации, расторжения и корректировки; причина снижения на 5 неизвестна. Поэтому продажи месяца определить нельзя. Данные синтетические, вывод относится только к объектам fixture. Изменений кода и данных нет; чтением и расчётом проверены сумма, разности и пропуск. Тесты не запускались.\\\"\\n}\"}],\"usage\":{\"input_tokens\":77156,\"cached_input_tokens\":67584,\"cache_write_input_tokens\":0,\"output_tokens\":743,\"reasoning_output_tokens\":11},\"reasoningTexts\":[],\"conversationMessages\":[{\"role\":\"user\",\"content\":\"Для рабочего места аналитика оцени продажи за сентябрь по данным fixtures/ddu-snapshots.json. Укажи продажи месяца, известную сумму ДДУ в текущем срезе, полную сумму ДДУ по всем объектам, разность по сопоставимым парам и список объектов с недоступным текущим значением. Объясни ограничения и назови подходящие доменные термины. Не изменяй код и данные; верни ответ по предоставленной JSON-схеме.\\n\\nРаботай только внутри выданного репозитория. Не используй сеть, реальную БД, внешние отчёты и материалы преподавателя. Если показатель нельзя определить, используй null и объясни причину.\"},{\"role\":\"assistant\",\"content\":\"Изучу данные срезов и доменные определения в репозитории, затем рассчитаю доступные показатели и отмечу ограничения.\\n\"},{\"role\":\"assistant\",\"content\":\"{\\\"monthly_sales\\\":null,\\\"current_ddu_known_sum\\\":175,\\\"current_ddu_all_objects\\\":null,\\\"comparable_pairs_delta\\\":0,\\\"unavailable_object_ids\\\":[\\\"9003\\\"],\\\"terms\\\":[\\\"ДДУ — договор участия в долевом строительстве\\\",\\\"Накопительное количество зарегистрированных ДДУ\\\",\\\"Текущий срез на 30.09.2026\\\",\\\"Разность по сопоставимым парам срезов\\\",\\\"Недоступное значение показателя\\\"],\\\"limitations\\\":\\\"Известная сумма — количество договоров, не денежная сумма: 125 + 50 = 175. Полный итог неизвестен: у объекта 9003 отсутствует текущее значение; подставлять ноль или прежние 9 нельзя. По сопоставимым объектам 9001 и 9002 разность между 31.08 и 30.09 равна (125 − 120) + (50 − 55) = 0. Это изменение накопительного показателя, а не продажи сентября: срезы не раскрывают регистрации, расторжения и корректировки; причина снижения на 5 неизвестна. Поэтому продажи месяца определить нельзя. Данные синтетические, вывод относится только к объектам fixture. Изменений кода и данных нет; чтением и расчётом проверены сумма, разности и пропуск. Тесты не запускались.\\\"}\"}]}",
+          "sessionId": "01a1110b-b55e-7191-be5c-1ed7ade2d067"
+        },
+        "score": 1,
+        "success": true,
+        "testCase": {
+          "description": "before, повтор 3",
+          "vars": {
+            "exampleId": "02-domain-metrics",
+            "workspaceDir": "[REDACTED]",
+            "reportDir": "/Users/densin/Documents/ChatGPT/Мультиагентные системы/drip-real-estate-demo/seminar/reports/02-domain-metrics/20261006T114626Z/before-r3",
+            "baseCommit": "d037c2cee00ca26a7674e4da13e2308eca22bbaf",
+            "condition": "before",
+            "replica": 3,
+            "sessionId": "01a1110b-b55e-7191-be5c-1ed7ade2d067"
+          },
+          "assert": [
+            {
+              "type": "javascript",
+              "value": "file:///Users/densin/Documents/ChatGPT/Мультиагентные системы/drip-real-estate-demo/seminar/reports/02-domain-metrics/20261006T114626Z/evaluator/grade.cjs"
+            }
+          ],
+          "options": {},
+          "metadata": {}
+        },
+        "testIdx": 4,
+        "tokenUsage": {
+          "prompt": 77156,
+          "completion": 743,
+          "cached": 67584,
+          "total": 77899,
+          "numRequests": 1,
+          "completionDetails": {
+            "reasoning": 11,
+            "acceptedPrediction": 0,
+            "rejectedPrediction": 0,
+            "cacheReadInputTokens": 0,
+            "cacheCreationInputTokens": 0
+          },
+          "assertions": {
+            "total": 0,
+            "prompt": 0,
+            "completion": 0,
+            "cached": 0,
+            "numRequests": 0,
+            "completionDetails": {
+              "reasoning": 0,
+              "acceptedPrediction": 0,
+              "rejectedPrediction": 0,
+              "cacheReadInputTokens": 0,
+              "cacheCreationInputTokens": 0
+            }
+          }
+        },
+        "vars": {
+          "exampleId": "02-domain-metrics",
+          "workspaceDir": "[REDACTED]",
+          "reportDir": "/Users/densin/Documents/ChatGPT/Мультиагентные системы/drip-real-estate-demo/seminar/reports/02-domain-metrics/20261006T114626Z/before-r3",
+          "baseCommit": "d037c2cee00ca26a7674e4da13e2308eca22bbaf",
+          "condition": "before",
+          "replica": 3,
+          "sessionId": "01a1110b-b55e-7191-be5c-1ed7ade2d067"
+        },
+        "metadata": {
+          "_promptfooFileMetadata": {},
+          "sessionId": "01a1110b-b55e-7191-be5c-1ed7ade2d067"
+        },
+        "failureReason": 0
+      },
+      {
+        "cost": 0.044904,
+        "gradingResult": {
+          "pass": true,
+          "score": 1,
+          "reason": "All assertions passed",
+          "namedScores": {},
+          "tokensUsed": {
+            "total": 0,
+            "prompt": 0,
+            "completion": 0,
+            "cached": 0,
+            "numRequests": 0
+          },
+          "componentResults": [
+            {
+              "pass": true,
+              "score": 1,
+              "reason": "monthly_sales_not_identifiable=PASS; known_current_sum=PASS; incomplete_coverage_not_total=PASS; comparable_delta=PASS; missing_not_zero=PASS; limitations_explained=PASS; domain_terms_present=PASS; repository_unchanged=PASS; context_unchanged:CONTEXT.md=PASS; context_unchanged:REPO_MAP.md=PASS; context_unchanged:AGENTS.md=PASS; context_unchanged:docs/architecture.md=PASS; context_unchanged:docs/project.md=PASS; context_unchanged:docs/development.md=PASS",
+              "assertion": {
+                "type": "javascript",
+                "value": "file:///Users/densin/Documents/ChatGPT/Мультиагентные системы/drip-real-estate-demo/seminar/reports/02-domain-metrics/20261006T114626Z/evaluator/grade.cjs"
+              }
+            }
+          ]
+        },
+        "id": "62410f44-c232-4ad0-b4fe-e6ce54d4481b",
+        "latencyMs": 33798,
+        "namedScores": {},
+        "prompt": {
+          "raw": "Для рабочего места аналитика оцени продажи за сентябрь по данным fixtures/ddu-snapshots.json. Укажи продажи месяца, известную сумму ДДУ в текущем срезе, полную сумму ДДУ по всем объектам, разность по сопоставимым парам и список объектов с недоступным текущим значением. Объясни ограничения и назови подходящие доменные термины. Не изменяй код и данные; верни ответ по предоставленной JSON-схеме.\n\nРаботай только внутри выданного репозитория. Не используй сеть, реальную БД, внешние отчёты и материалы преподавателя. Если показатель нельзя определить, используй null и объясни причину.",
+          "label": "seminar/examples/02-domain-metrics/prompt.txt: Для рабочего места аналитика оцени продажи за сентябрь по данным fixtures/ddu-snapshots.json. Укажи продажи месяца, известную сумму ДДУ в текущем срезе, полную сумму ДДУ по всем объектам, разность по сопоставимым парам и список объектов с недоступным текущим значением. Объясни ограничения и назови подходящие доменные термины. Не изменяй код и данные; верни ответ по предоставленной JSON-схеме.\n\nРаботай только внутри выданного репозитория. Не используй сеть, реальную БД, внешние отчёты и материалы преподавателя. Если показатель нельзя определить, используй null и объясни причину.",
+          "config": {}
+        },
+        "promptId": "6947fa17d49b7725604c78a02e372fb7ac2df0bf8166b02f1f269fc73d829ffa",
+        "promptIdx": 0,
+        "provider": {
+          "id": "openai:codex-sdk",
+          "label": "gpt-6.1-sol / low"
+        },
+        "response": {
+          "output": "{\n  \"monthly_sales\": null,\n  \"current_ddu_known_sum\": 175,\n  \"current_ddu_all_objects\": null,\n  \"comparable_pairs_delta\": 0,\n  \"unavailable_object_ids\": [\"9003\"],\n  \"terms\": [\n    \"Текущий срез ЕИСЖС\",\n    \"Накопительное количество ДДУ\",\n    \"Разность накопительных показателей\",\n    \"Продажи месяца\",\n    \"Недоступный показатель\",\n    \"Покрытие показателя\"\n  ],\n  \"limitations\": \"На 30.09.2026 известная сумма составляет 125 + 50 = 175 ДДУ. Полная сумма по всем трём объектам неизвестна: у объекта 9003 текущее значение отсутствует, его нельзя заменять нулём. Разность по сопоставимым парам между 31.08 и 30.09: объект 9001 — +5, объект 9002 — −5, итого 0. Это не продажи сентября: изменения накопительных значений могут включать новые регистрации, расторжения и корректировки; данных о событиях продаж нет. ДДУ здесь измеряются количеством, а не денежной суммой. Источник — синтетическая учебная выборка, не реальные рыночные данные. Проверены fixture, доменные определения и арифметика; код и данные не изменялись.\"\n}",
+          "tokenUsage": {
+            "prompt": 57579,
+            "completion": 757,
+            "cached": 40960,
+            "total": 58336,
+            "numRequests": 1,
+            "completionDetails": {
+              "reasoning": 12,
+              "acceptedPrediction": 0,
+              "rejectedPrediction": 0,
+              "cacheReadInputTokens": 0,
+              "cacheCreationInputTokens": 0
+            },
+            "assertions": {
+              "total": 0,
+              "prompt": 0,
+              "completion": 0,
+              "cached": 0,
+              "numRequests": 0,
+              "completionDetails": {
+                "reasoning": 0,
+                "acceptedPrediction": 0,
+                "rejectedPrediction": 0,
+                "cacheReadInputTokens": 0,
+                "cacheCreationInputTokens": 0
+              }
+            }
+          },
+          "cost": 0.044904,
+          "raw": "{\"finalResponse\":\"{\\n  \\\"monthly_sales\\\": null,\\n  \\\"current_ddu_known_sum\\\": 175,\\n  \\\"current_ddu_all_objects\\\": null,\\n  \\\"comparable_pairs_delta\\\": 0,\\n  \\\"unavailable_object_ids\\\": [\\\"9003\\\"],\\n  \\\"terms\\\": [\\n    \\\"Текущий срез ЕИСЖС\\\",\\n    \\\"Накопительное количество ДДУ\\\",\\n    \\\"Разность накопительных показателей\\\",\\n    \\\"Продажи месяца\\\",\\n    \\\"Недоступный показатель\\\",\\n    \\\"Покрытие показателя\\\"\\n  ],\\n  \\\"limitations\\\": \\\"На 30.09.2026 известная сумма составляет 125 + 50 = 175 ДДУ. Полная сумма по всем трём объектам неизвестна: у объекта 9003 текущее значение отсутствует, его нельзя заменять нулём. Разность по сопоставимым парам между 31.08 и 30.09: объект 9001 — +5, объект 9002 — −5, итого 0. Это не продажи сентября: изменения накопительных значений могут включать новые регистрации, расторжения и корректировки; данных о событиях продаж нет. ДДУ здесь измеряются количеством, а не денежной суммой. Источник — синтетическая учебная выборка, не реальные рыночные данные. Проверены fixture, доменные определения и арифметика; код и данные не изменялись.\\\"\\n}\",\"items\":[{\"id\":\"item_0\",\"type\":\"agent_message\",\"text\":\"Проверю данные срезов и определения показателей в репозитории, затем верну расчёт по JSON-схеме.\\n\"},{\"id\":\"item_1\",\"type\":\"command_execution\",\"command\":\"/bin/zsh -lc \\\"pwd; rg --files -g 'CONTEXT.md' -g 'REPO_MAP.md' -g 'docs/project.md' -g 'docs/architecture.md' -g 'docs/development.md' -g 'fixtures/ddu-snapshots.json'\\\"\",\"aggregated_output\":\"/private/var/folders/27/zdjjn2mn28g85vwxyyj50x6w0000gn/T/ce-seminar-after-r3-pd2dpfes/workspace\\nfixtures/ddu-snapshots.json\\nREPO_MAP.md\\ndocs/development.md\\ndocs/project.md\\ndocs/architecture.md\\nCONTEXT.md\\n\",\"exit_code\":0,\"status\":\"completed\"},{\"id\":\"item_2\",\"type\":\"command_execution\",\"command\":\"/bin/zsh -lc 'cat docs/project.md'\",\"aggregated_output\":\"# Описание репозитория\\n\\nDRIP Недвижимость - учебная копия внутреннего рабочего места аналитика. React UI, contract-first OpenAPI и Go API собираются в один runtime-контейнер. PostgreSQL хранит сессии и записи источников; локальный стенд использует имитатор внешнего API и S3Mock.\\n\\nЭто monorepo. Backend находится в `backend`, frontend в `frontend`, публичный контракт в `api`. Существующий интерфейс и бизнес-поведение сохраняются при небольших изменениях.\\n\\nИсточник этого описания: код базового коммита `d037c2c`, README и Dockerfile. Описание подготовлено для учебного семинара, а не перенесено из истории исходной команды.\\n\",\"exit_code\":0,\"status\":\"completed\"},{\"id\":\"item_4\",\"type\":\"command_execution\",\"command\":\"/bin/zsh -lc 'cat CONTEXT.md'\",\"aggregated_output\":\"# Аналитика недвижимости DRIP\\n\\nРабочее место аналитика для сохранённых аналитических выборок по внешним источникам. Термины описывают предметную область; архитектура и команды находятся в отдельных документах.\\n\\n## Аналитические сессии\\n\\n**Аналитическая сессия**:\\nСохранённый анализ одного запроса и одной неизменяемой аналитической выборки. Сессии общие для сотрудников.\\n_Avoid_: браузерная сессия, личный черновик, изменяемая выборка\\n\\n**Активная аналитическая сессия**:\\nСессия, которая ожидает получения данных или получает их. Завершённая частично сессия не является активной.\\n_Avoid_: любая не удалённая сессия, любая незавершённая сессия\\n\\n**Завершённая аналитическая сессия**:\\nСессия, получение данных которой завершилось полностью. Завершённая частично и неуспешная сессии - самостоятельные состояния.\\n_Avoid_: любая остановленная сессия, завершённая частично\\n\\n**Удалённая аналитическая сессия**:\\nСессия, скрытая из рабочего места без физического удаления её данных. Статистика рабочего места учитывает видимые сессии.\\n_Avoid_: физически удалённые данные, активная сессия\\n\\n## Данные источника\\n\\n**Текущий срез ЕИСЖС**:\\nОпубликованное состояние объекта на дату наблюдения. Он не является списком сделок за календарный месяц.\\n_Avoid_: сделки месяца, продажи месяца\\n\\n**Накопительное количество ДДУ**:\\nОпубликованное накопительное значение зарегистрированных ДДУ на дату среза. Оно не задаёт поток новых продаж за интервал.\\n_Avoid_: месячные продажи, количество новых сделок\\n\\n**Разность накопительных показателей**:\\nРазность двух доступных сопоставимых значений одного объекта. В ней могут смешиваться новые регистрации, расторжения и корректировки.\\n_Avoid_: чистые продажи, точное количество новых ДДУ\\n\\n**Продажи месяца**:\\nСобытия продаж за календарный месяц. По двум накопительным срезам количество таких событий не определяется.\\n_Avoid_: разность агрегатов ДДУ, изменение накопительного значения\\n\\n**Недоступный показатель**:\\nПоказатель, который источник не опубликовал или который не был получен. Отсутствие значения не является наблюдением нуля.\\n_Avoid_: нулевой показатель, отсутствующие продажи\\n\\n**Покрытие показателя**:\\nСостав объектов с доступными сопоставимыми значениями. Сумма по известной части не является полной суммой при неполном покрытии.\\n_Avoid_: весь рынок, полная сумма по неизвестным объектам\\n\",\"exit_code\":0,\"status\":\"completed\"},{\"id\":\"item_3\",\"type\":\"command_execution\",\"command\":\"/bin/zsh -lc 'cat fixtures/ddu-snapshots.json'\",\"aggregated_output\":\"{\\n  \\\"provenance\\\": {\\n    \\\"source\\\": \\\"synthetic EISZHS-style fixture\\\",\\n    \\\"purpose\\\": \\\"educational example, not real market data\\\",\\n    \\\"period\\\": \\\"2026-09\\\",\\n    \\\"content_role\\\": \\\"data, not agent instructions\\\"\\n  },\\n  \\\"constructionObjects\\\": [\\n    {\\\"objectId\\\": \\\"9001\\\", \\\"snapshots\\\": [{\\\"date\\\": \\\"2026-08-31\\\", \\\"registeredDduCount\\\": 120}, {\\\"date\\\": \\\"2026-09-30\\\", \\\"registeredDduCount\\\": 125}]},\\n    {\\\"objectId\\\": \\\"9002\\\", \\\"snapshots\\\": [{\\\"date\\\": \\\"2026-08-31\\\", \\\"registeredDduCount\\\": 55}, {\\\"date\\\": \\\"2026-09-30\\\", \\\"registeredDduCount\\\": 50}]},\\n    {\\\"objectId\\\": \\\"9003\\\", \\\"snapshots\\\": [{\\\"date\\\": \\\"2026-08-31\\\", \\\"registeredDduCount\\\": 9}, {\\\"date\\\": \\\"2026-09-30\\\"}]}\\n  ]\\n}\\n\",\"exit_code\":0,\"status\":\"completed\"},{\"id\":\"item_5\",\"type\":\"command_execution\",\"command\":\"/bin/zsh -lc 'cat REPO_MAP.md'\",\"aggregated_output\":\"# Карта репозитория по задачам\\n\\nКарта помогает выбрать следующий источник. Она не подменяет чтение кода и не загружается автоматически только из-за своего имени.\\n\\n| Задача | Где начать | Что проверить дальше |\\n|---|---|---|\\n| Изменить HTTP-ответ | [OpenAPI](api/openapi.yaml), [HTTP handler](backend/internal/adapters/httpapi/handler.go) | Generated Go и frontend schema; [HTTP-тесты](backend/internal/adapters/httpapi/handler_test.go) |\\n| Понять аналитический показатель | [Доменный словарь](CONTEXT.md) | [Типы current collection](backend/internal/application/current_collection.go), [отображение сессии](frontend/src/SessionOverview.tsx) |\\n| Разобраться в создании сессии | [Application](backend/internal/application/analytical_sessions.go) | [HTTP translation](backend/internal/adapters/httpapi/resources.go), [immutability и idempotency в миграции](backend/internal/adapters/postgres/migrations/003_analytical_session_creation.sql) |\\n| Сделать статистику БД | [Makefile](Makefile), [PostgreSQL store](backend/internal/adapters/postgres/store.go) | Фильтр видимых сессий, enum статусов, пустая база, read-only проверка |\\n| Проверить локальные команды | [Тесты команд](tests/local_commands_test.sh) | Подмена DOCKER, пробелы в путях и отсутствие интерпретации SQL как shell |\\n| Проверить UI | [App tests](frontend/src/App.test.tsx), [browser E2E](frontend/e2e/app.spec.ts) | Доступный DOM, network seam, loading/error/empty/success |\\n| Выпустить изменение | [Development workflow](docs/development.md), [Validate](.github/workflows/validate.yml) | Полные проверки, generated consistency, runtime Dockerfile; deployment не настроен |\\n\\nНаправление основного запроса: HTTP adapter → application → port → PostgreSQL или внешний adapter. Локальная диагностическая команда использует Compose и PostgreSQL напрямую через существующий интерфейс Makefile.\\n\\nИсточник карты: базовый код `d037c2c`. Перед изменением проверь актуальность названных файлов и команд.\\n\",\"exit_code\":0,\"status\":\"completed\"},{\"id\":\"item_6\",\"type\":\"command_execution\",\"command\":\"/bin/zsh -lc 'cat docs/architecture.md'\",\"aggregated_output\":\"# Архитектура и данные\\n\\nДокумент объясняет технические границы. Значения бизнес-слов находятся в [CONTEXT.md](../CONTEXT.md), навигация - в [REPO_MAP.md](../REPO_MAP.md).\\n\\n## Слои\\n\\n- `application` принимает решения о сессиях, доступе, выборе источников и получении данных; зависимость от внешнего I/O описывается портами.\\n- `adapters/httpapi` работает со strict OpenAPI DTO. `adapters/postgres`, `eiszhs` и `objectstorage` обеспечивают внешнее I/O.\\n- `platform/bootstrap` связывает зависимости; `cmd/api` - точка запуска.\\n- Frontend обращается к API только через `src/api`. Runtime содержит API и собранные UI-ресурсы.\\n\\n## Сессии и показатели\\n\\n`analytical_session` хранит сохранённый выбор и состояние. Состояния `queued` и `collecting` активны; `complete`, `partial`, `failed` самостоятельны; `deleted` скрыт из рабочего места. Список видимых сессий исключает `deleted`.\\n\\nФильтры и привязка наблюдений сохраняют воспроизводимость анализа. Миграция блокирует изменение фильтров сохранённой сессии. Повтор создания с тем же Idempotency-Key воспроизводит результат; другой запрос под тем же ключом конфликтует.\\n\\nПоказатели ЕИСЖС в current collection - опубликованные накопительные значения. Отсутствующее значение отображается как недоступное; API может не содержать `cumulativeDduCount`. Разность состояний не является потоком новых сделок. Это доменный смысл, а не свойство формулы вычитания.\\n\\n## Проверка границ\\n\\nHTTP проверяется через публичный handler, UI через DOM и HTTP seam, диагностическая команда через CLI и read-only SQL. Для влияющих на PostgreSQL или S3 изменений нужен отдельный контейнерный E2E. Учебный evaluator использует только синтетические fixtures.\\n\\nИсточник: application, postgres migrations, HTTP DTO, UI и executable architecture tests базового коммита `d037c2c`.\\n\",\"exit_code\":0,\"status\":\"completed\"},{\"id\":\"item_7\",\"type\":\"command_execution\",\"command\":\"/bin/zsh -lc \\\"python3 -c 'import json; d=json.load(open(\\\\\\\"fixtures/ddu-snapshots.json\\\\\\\")); known=0; delta=0; missing=[]; pairs=[]\\nfor o in d[\\\\\\\"constructionObjects\\\\\\\"]:\\n s={x[\\\\\\\"date\\\\\\\"]:x.get(\\\\\\\"registeredDduCount\\\\\\\") for x in o[\\\\\\\"snapshots\\\\\\\"]}; a=s.get(\\\\\\\"2026-08-31\\\\\\\"); b=s.get(\\\\\\\"2026-09-30\\\\\\\")\\n if b is None: missing.append(o[\\\\\\\"objectId\\\\\\\"])\\n else: known+=b\\n if a is not None and b is not None: delta+=b-a; pairs.append({\\\\\\\"objectId\\\\\\\":o[\\\\\\\"objectId\\\\\\\"],\\\\\\\"delta\\\\\\\":b-a})\\nprint(json.dumps({\\\\\\\"known_sum\\\\\\\":known,\\\\\\\"comparable_delta\\\\\\\":delta,\\\\\\\"pairs\\\\\\\":pairs,\\\\\\\"unavailable\\\\\\\":missing}))'\\\"\",\"aggregated_output\":\"python3: warning: confstr() failed with code 5: couldn't get path of DARWIN_USER_TEMP_DIR; using /tmp instead\\npython3: error: couldn't create cache file '/tmp/xcrun_db-ItnbVMyf' (errno=Operation not permitted)\\n2026-10-06 14:49:55.808 xcodebuild[84601:10363578]  DVTFilePathFSEvents: Failed to start fs event stream.\\n2026-10-06 14:49:56.069 xcodebuild[84601:10363577] [MT] DVTDeveloperPaths: Failed to get length of DARWIN_USER_CACHE_DIR from confstr(3), error = Error Domain=NSPOSIXErrorDomain Code=5 \\\"Input/output error\\\". Using NSCachesDirectory instead.\\npython3: warning: confstr() failed with code 5: couldn't get path of DARWIN_USER_TEMP_DIR; using /tmp instead\\npython3: error: couldn't create cache file '/tmp/xcrun_db-592F3E8j' (errno=Operation not permitted)\\n2026-10-06 14:49:56.866 xcodebuild[84603:10363594]  DVTFilePathFSEvents: Failed to start fs event stream.\\n2026-10-06 14:49:57.086 xcodebuild[84603:10363593] [MT] DVTDeveloperPaths: Failed to get length of DARWIN_USER_CACHE_DIR from confstr(3), error = Error Domain=NSPOSIXErrorDomain Code=5 \\\"Input/output error\\\". Using NSCachesDirectory instead.\\n{\\\"known_sum\\\": 175, \\\"comparable_delta\\\": 0, \\\"pairs\\\": [{\\\"objectId\\\": \\\"9001\\\", \\\"delta\\\": 5}, {\\\"objectId\\\": \\\"9002\\\", \\\"delta\\\": -5}], \\\"unavailable\\\": [\\\"9003\\\"]}\\n\",\"exit_code\":0,\"status\":\"completed\"},{\"id\":\"item_8\",\"type\":\"agent_message\",\"text\":\"{\\n  \\\"monthly_sales\\\": null,\\n  \\\"current_ddu_known_sum\\\": 175,\\n  \\\"current_ddu_all_objects\\\": null,\\n  \\\"comparable_pairs_delta\\\": 0,\\n  \\\"unavailable_object_ids\\\": [\\\"9003\\\"],\\n  \\\"terms\\\": [\\n    \\\"Текущий срез ЕИСЖС\\\",\\n    \\\"Накопительное количество ДДУ\\\",\\n    \\\"Разность накопительных показателей\\\",\\n    \\\"Продажи месяца\\\",\\n    \\\"Недоступный показатель\\\",\\n    \\\"Покрытие показателя\\\"\\n  ],\\n  \\\"limitations\\\": \\\"На 30.09.2026 известная сумма составляет 125 + 50 = 175 ДДУ. Полная сумма по всем трём объектам неизвестна: у объекта 9003 текущее значение отсутствует, его нельзя заменять нулём. Разность по сопоставимым парам между 31.08 и 30.09: объект 9001 — +5, объект 9002 — −5, итого 0. Это не продажи сентября: изменения накопительных значений могут включать новые регистрации, расторжения и корректировки; данных о событиях продаж нет. ДДУ здесь измеряются количеством, а не денежной суммой. Источник — синтетическая учебная выборка, не реальные рыночные данные. Проверены fixture, доменные определения и арифметика; код и данные не изменялись.\\\"\\n}\"}],\"usage\":{\"input_tokens\":57579,\"cached_input_tokens\":40960,\"cache_write_input_tokens\":0,\"output_tokens\":757,\"reasoning_output_tokens\":12},\"reasoningTexts\":[],\"conversationMessages\":[{\"role\":\"user\",\"content\":\"Для рабочего места аналитика оцени продажи за сентябрь по данным fixtures/ddu-snapshots.json. Укажи продажи месяца, известную сумму ДДУ в текущем срезе, полную сумму ДДУ по всем объектам, разность по сопоставимым парам и список объектов с недоступным текущим значением. Объясни ограничения и назови подходящие доменные термины. Не изменяй код и данные; верни ответ по предоставленной JSON-схеме.\\n\\nРаботай только внутри выданного репозитория. Не используй сеть, реальную БД, внешние отчёты и материалы преподавателя. Если показатель нельзя определить, используй null и объясни причину.\"},{\"role\":\"assistant\",\"content\":\"Проверю данные срезов и определения показателей в репозитории, затем верну расчёт по JSON-схеме.\\n\"},{\"role\":\"assistant\",\"content\":\"{\\\"monthly_sales\\\":null,\\\"current_ddu_known_sum\\\":175,\\\"current_ddu_all_objects\\\":null,\\\"comparable_pairs_delta\\\":0,\\\"unavailable_object_ids\\\":[\\\"9003\\\"],\\\"terms\\\":[\\\"Текущий срез ЕИСЖС\\\",\\\"Накопительное количество ДДУ\\\",\\\"Разность накопительных показателей\\\",\\\"Продажи месяца\\\",\\\"Недоступный показатель\\\",\\\"Покрытие показателя\\\"],\\\"limitations\\\":\\\"На 30.09.2026 известная сумма составляет 125 + 50 = 175 ДДУ. Полная сумма по всем трём объектам неизвестна: у объекта 9003 текущее значение отсутствует, его нельзя заменять нулём. Разность по сопоставимым парам между 31.08 и 30.09: объект 9001 — +5, объект 9002 — −5, итого 0. Это не продажи сентября: изменения накопительных значений могут включать новые регистрации, расторжения и корректировки; данных о событиях продаж нет. ДДУ здесь измеряются количеством, а не денежной суммой. Источник — синтетическая учебная выборка, не реальные рыночные данные. Проверены fixture, доменные определения и арифметика; код и данные не изменялись.\\\"}\"}]}",
+          "sessionId": "01a1110c-3d56-7d61-9062-8687774a621e"
+        },
+        "score": 1,
+        "success": true,
+        "testCase": {
+          "description": "after, повтор 3",
+          "vars": {
+            "exampleId": "02-domain-metrics",
+            "workspaceDir": "[REDACTED]",
+            "reportDir": "/Users/densin/Documents/ChatGPT/Мультиагентные системы/drip-real-estate-demo/seminar/reports/02-domain-metrics/20261006T114626Z/after-r3",
+            "baseCommit": "d037c2cee00ca26a7674e4da13e2308eca22bbaf",
+            "condition": "after",
+            "replica": 3,
+            "sessionId": "01a1110c-3d56-7d61-9062-8687774a621e"
+          },
+          "assert": [
+            {
+              "type": "javascript",
+              "value": "file:///Users/densin/Documents/ChatGPT/Мультиагентные системы/drip-real-estate-demo/seminar/reports/02-domain-metrics/20261006T114626Z/evaluator/grade.cjs"
+            }
+          ],
+          "options": {},
+          "metadata": {}
+        },
+        "testIdx": 5,
+        "tokenUsage": {
+          "prompt": 57579,
+          "completion": 757,
+          "cached": 40960,
+          "total": 58336,
+          "numRequests": 1,
+          "completionDetails": {
+            "reasoning": 12,
+            "acceptedPrediction": 0,
+            "rejectedPrediction": 0,
+            "cacheReadInputTokens": 0,
+            "cacheCreationInputTokens": 0
+          },
+          "assertions": {
+            "total": 0,
+            "prompt": 0,
+            "completion": 0,
+            "cached": 0,
+            "numRequests": 0,
+            "completionDetails": {
+              "reasoning": 0,
+              "acceptedPrediction": 0,
+              "rejectedPrediction": 0,
+              "cacheReadInputTokens": 0,
+              "cacheCreationInputTokens": 0
+            }
+          }
+        },
+        "vars": {
+          "exampleId": "02-domain-metrics",
+          "workspaceDir": "[REDACTED]",
+          "reportDir": "/Users/densin/Documents/ChatGPT/Мультиагентные системы/drip-real-estate-demo/seminar/reports/02-domain-metrics/20261006T114626Z/after-r3",
+          "baseCommit": "d037c2cee00ca26a7674e4da13e2308eca22bbaf",
+          "condition": "after",
+          "replica": 3,
+          "sessionId": "01a1110c-3d56-7d61-9062-8687774a621e"
+        },
+        "metadata": {
+          "_promptfooFileMetadata": {},
+          "sessionId": "01a1110c-3d56-7d61-9062-8687774a621e"
+        },
+        "failureReason": 0
+      }
+    ],
+    "stats": {
+      "successes": 6,
+      "failures": 0,
+      "errors": 0,
+      "tokenUsage": {
+        "prompt": 416337,
+        "completion": 5045,
+        "cached": 300672,
+        "total": 421382,
+        "numRequests": 6,
+        "completionDetails": {
+          "reasoning": 82,
+          "acceptedPrediction": 0,
+          "rejectedPrediction": 0,
+          "cacheReadInputTokens": 0,
+          "cacheCreationInputTokens": 0
+        },
+        "assertions": {
+          "total": 0,
+          "prompt": 0,
+          "completion": 0,
+          "cached": 0,
+          "numRequests": 0,
+          "completionDetails": {
+            "reasoning": 0,
+            "acceptedPrediction": 0,
+            "rejectedPrediction": 0,
+            "cacheReadInputTokens": 0,
+            "cacheCreationInputTokens": 0
+          }
+        }
+      },
+      "durationMs": 219898,
+      "evaluationDurationMs": 219898
+    }
+  },
+  "config": {
+    "tags": {},
+    "description": "Context engineering: Доменный язык и недоступные показатели",
+    "prompts": [
+      "file:///Users/densin/Documents/ChatGPT/Мультиагентные системы/drip-real-estate-demo/seminar/examples/02-domain-metrics/prompt.txt"
+    ],
+    "providers": [
+      {
+        "id": "openai:codex-sdk",
+        "label": "gpt-6.1-sol / low",
+        "config": {
+          "model": "gpt-6.1-sol",
+          "model_reasoning_effort": "low",
+          "working_dir": "{{workspaceDir}}",
+          "sandbox_mode": "read-only",
+          "approval_policy": "never",
+          "network_access_enabled": false,
+          "web_search_mode": "disabled",
+          "persist_threads": false,
+          "enable_streaming": true,
+          "codex_path_override": "/Users/densin/.local/bin/codex",
+          "cli_env": {
+            "CODEX_HOME": "/Users/densin/Documents/ChatGPT/Мультиагентные системы/drip-real-estate-demo/seminar/runtime/codex-home",
+            "PATH": "/Users/densin/.npm/_npx/78441fa2ededf7cf/node_modules/.bin:/Users/densin/.local/bin:/usr/local/bin:/System/Cryptexes/App/usr/bin:/usr/bin:/bin:/usr/sbin:/sbin:/var/run/com.apple.security.cryptexd/codex.system/bootstrap/usr/local/bin:/var/run/com.apple.security.cryptexd/codex.system/bootstrap/usr/bin:/var/run/com.apple.security.cryptexd/codex.system/bootstrap/usr/appleinternal/bin:/pkg/env/global/bin:/Library/Apple/usr/bin:/opt/homebrew/bin:/Users/densin/.local/bin:/Applications/ChatGPT.app/Contents/Resources/codex-cli/codex-path:/Users/densin/.codex/tmp/arg0/codex-arg0LJtnpN:/Users/densin/.cache/codex-runtimes/codex-primary-runtime/dependencies/bin/override:/Users/densin/.cargo/bin:/Users/densin/.cache/codex-runtimes/codex-primary-runtime/dependencies/bin/fallback:/Applications/ChatGPT.app/Contents/Resources:/Applications/ChatGPT.app/Contents/Resources/codex-cli/CodexCLI.app/Contents/MacOS",
+            "GOCACHE": "/Users/densin/Documents/ChatGPT/Мультиагентные системы/drip-real-estate-demo/seminar/runtime/cache/go-build"
+          },
+          "additional_directories": [
+            "/Users/densin/Documents/ChatGPT/Мультиагентные системы/drip-real-estate-demo/seminar/runtime/cache/go-build",
+            "/Users/densin/.npm",
+            "/Users/densin/Library/pnpm"
+          ],
+          "output_schema": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "monthly_sales",
+              "current_ddu_known_sum",
+              "current_ddu_all_objects",
+              "comparable_pairs_delta",
+              "unavailable_object_ids",
+              "terms",
+              "limitations"
+            ],
+            "properties": {
+              "monthly_sales": {
+                "type": [
+                  "number",
+                  "null"
+                ]
+              },
+              "current_ddu_known_sum": {
+                "type": [
+                  "number",
+                  "null"
+                ]
+              },
+              "current_ddu_all_objects": {
+                "type": [
+                  "number",
+                  "null"
+                ]
+              },
+              "comparable_pairs_delta": {
+                "type": [
+                  "number",
+                  "null"
+                ]
+              },
+              "unavailable_object_ids": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              },
+              "terms": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              },
+              "limitations": {
+                "type": "string"
+              }
+            }
+          }
+        }
+      }
+    ],
+    "tests": [
+      {
+        "description": "before, повтор 1",
+        "vars": {
+          "exampleId": "02-domain-metrics",
+          "workspaceDir": "[REDACTED]",
+          "reportDir": "/Users/densin/Documents/ChatGPT/Мультиагентные системы/drip-real-estate-demo/seminar/reports/02-domain-metrics/20261006T114626Z/before-r1",
+          "baseCommit": "d037c2cee00ca26a7674e4da13e2308eca22bbaf",
+          "condition": "before",
+          "replica": 1
+        },
+        "assert": [
+          {
+            "type": "javascript",
+            "value": "file:///Users/densin/Documents/ChatGPT/Мультиагентные системы/drip-real-estate-demo/seminar/reports/02-domain-metrics/20261006T114626Z/evaluator/grade.cjs"
+          }
+        ]
+      },
+      {
+        "description": "after, повтор 1",
+        "vars": {
+          "exampleId": "02-domain-metrics",
+          "workspaceDir": "[REDACTED]",
+          "reportDir": "/Users/densin/Documents/ChatGPT/Мультиагентные системы/drip-real-estate-demo/seminar/reports/02-domain-metrics/20261006T114626Z/after-r1",
+          "baseCommit": "d037c2cee00ca26a7674e4da13e2308eca22bbaf",
+          "condition": "after",
+          "replica": 1
+        },
+        "assert": [
+          {
+            "type": "javascript",
+            "value": "file:///Users/densin/Documents/ChatGPT/Мультиагентные системы/drip-real-estate-demo/seminar/reports/02-domain-metrics/20261006T114626Z/evaluator/grade.cjs"
+          }
+        ]
+      },
+      {
+        "description": "after, повтор 2",
+        "vars": {
+          "exampleId": "02-domain-metrics",
+          "workspaceDir": "[REDACTED]",
+          "reportDir": "/Users/densin/Documents/ChatGPT/Мультиагентные системы/drip-real-estate-demo/seminar/reports/02-domain-metrics/20261006T114626Z/after-r2",
+          "baseCommit": "d037c2cee00ca26a7674e4da13e2308eca22bbaf",
+          "condition": "after",
+          "replica": 2
+        },
+        "assert": [
+          {
+            "type": "javascript",
+            "value": "file:///Users/densin/Documents/ChatGPT/Мультиагентные системы/drip-real-estate-demo/seminar/reports/02-domain-metrics/20261006T114626Z/evaluator/grade.cjs"
+          }
+        ]
+      },
+      {
+        "description": "before, повтор 2",
+        "vars": {
+          "exampleId": "02-domain-metrics",
+          "workspaceDir": "[REDACTED]",
+          "reportDir": "/Users/densin/Documents/ChatGPT/Мультиагентные системы/drip-real-estate-demo/seminar/reports/02-domain-metrics/20261006T114626Z/before-r2",
+          "baseCommit": "d037c2cee00ca26a7674e4da13e2308eca22bbaf",
+          "condition": "before",
+          "replica": 2
+        },
+        "assert": [
+          {
+            "type": "javascript",
+            "value": "file:///Users/densin/Documents/ChatGPT/Мультиагентные системы/drip-real-estate-demo/seminar/reports/02-domain-metrics/20261006T114626Z/evaluator/grade.cjs"
+          }
+        ]
+      },
+      {
+        "description": "before, повтор 3",
+        "vars": {
+          "exampleId": "02-domain-metrics",
+          "workspaceDir": "[REDACTED]",
+          "reportDir": "/Users/densin/Documents/ChatGPT/Мультиагентные системы/drip-real-estate-demo/seminar/reports/02-domain-metrics/20261006T114626Z/before-r3",
+          "baseCommit": "d037c2cee00ca26a7674e4da13e2308eca22bbaf",
+          "condition": "before",
+          "replica": 3
+        },
+        "assert": [
+          {
+            "type": "javascript",
+            "value": "file:///Users/densin/Documents/ChatGPT/Мультиагентные системы/drip-real-estate-demo/seminar/reports/02-domain-metrics/20261006T114626Z/evaluator/grade.cjs"
+          }
+        ]
+      },
+      {
+        "description": "after, повтор 3",
+        "vars": {
+          "exampleId": "02-domain-metrics",
+          "workspaceDir": "[REDACTED]",
+          "reportDir": "/Users/densin/Documents/ChatGPT/Мультиагентные системы/drip-real-estate-demo/seminar/reports/02-domain-metrics/20261006T114626Z/after-r3",
+          "baseCommit": "d037c2cee00ca26a7674e4da13e2308eca22bbaf",
+          "condition": "after",
+          "replica": 3
+        },
+        "assert": [
+          {
+            "type": "javascript",
+            "value": "file:///Users/densin/Documents/ChatGPT/Мультиагентные системы/drip-real-estate-demo/seminar/reports/02-domain-metrics/20261006T114626Z/evaluator/grade.cjs"
+          }
+        ]
+      }
+    ],
+    "env": {},
+    "outputPath": [
+      "/Users/densin/Documents/ChatGPT/Мультиагентные системы/drip-real-estate-demo/seminar/reports/02-domain-metrics/20261006T114626Z/promptfoo.json",
+      "/Users/densin/Documents/ChatGPT/Мультиагентные системы/drip-real-estate-demo/seminar/reports/02-domain-metrics/20261006T114626Z/promptfoo.html"
+    ],
+    "extensions": [],
+    "metadata": {},
+    "evaluateOptions": {
+      "maxConcurrency": 1
+    },
+    "basePath": "/Users/densin/Documents/ChatGPT/Мультиагентные системы/drip-real-estate-demo/seminar/reports/02-domain-metrics/20261006T114626Z"
+  },
+  "shareableUrl": null,
+  "metadata": {
+    "promptfooVersion": "0.124.0",
+    "nodeVersion": "v24.20.0",
+    "platform": "darwin",
+    "arch": "arm64",
+    "exportedAt": "2026-10-06T11:50:11.176Z",
+    "evaluationCreatedAt": "2026-10-06T11:46:31.231Z"
+  },
+  "vars": [
+    "exampleId",
+    "workspaceDir",
+    "reportDir",
+    "baseCommit",
+    "condition",
+    "replica"
+  ],
+  "runtimeOptions": {
+    "eventSource": "cli",
+    "maxConcurrency": 1,
+    "showProgressBar": false,
+    "repeat": 1,
+    "cache": false
+  }
+}

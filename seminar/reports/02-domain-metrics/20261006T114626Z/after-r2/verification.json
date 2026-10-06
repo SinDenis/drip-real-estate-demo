@@ -1,0 +1,21 @@
+{
+  "checks": {
+    "monthly_sales_not_identifiable": true,
+    "known_current_sum": true,
+    "incomplete_coverage_not_total": true,
+    "comparable_delta": true,
+    "missing_not_zero": true,
+    "limitations_explained": true,
+    "domain_terms_present": true,
+    "repository_unchanged": true,
+    "context_unchanged:CONTEXT.md": true,
+    "context_unchanged:REPO_MAP.md": true,
+    "context_unchanged:AGENTS.md": true,
+    "context_unchanged:docs/architecture.md": true,
+    "context_unchanged:docs/project.md": true,
+    "context_unchanged:docs/development.md": true
+  },
+  "pass": true,
+  "score": 1.0,
+  "reason": "monthly_sales_not_identifiable=PASS; known_current_sum=PASS; incomplete_coverage_not_total=PASS; comparable_delta=PASS; missing_not_zero=PASS; limitations_explained=PASS; domain_terms_present=PASS; repository_unchanged=PASS; context_unchanged:CONTEXT.md=PASS; context_unchanged:REPO_MAP.md=PASS; context_unchanged:AGENTS.md=PASS; context_unchanged:docs/architecture.md=PASS; context_unchanged:docs/project.md=PASS; context_unchanged:docs/development.md=PASS"
+}

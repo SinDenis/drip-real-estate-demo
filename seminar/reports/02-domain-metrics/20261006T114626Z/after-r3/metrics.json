@@ -1,0 +1,44 @@
+{
+  "condition": "after",
+  "replica": 3,
+  "success": true,
+  "error": null,
+  "input_tokens": 57579,
+  "cached_input_tokens": 40960,
+  "uncached_input_tokens": 16619,
+  "output_tokens": 757,
+  "total_tokens": 58336,
+  "latency_ms": 33798,
+  "estimated_api_equivalent_usd": 0.044904,
+  "command_count": 7,
+  "session_id": "01a1110c-3d56-7d61-9062-8687774a621e",
+  "grading": {
+    "pass": true,
+    "score": 1,
+    "reason": "All assertions passed",
+    "namedScores": {},
+    "tokensUsed": {
+      "total": 0,
+      "prompt": 0,
+      "completion": 0,
+      "cached": 0,
+      "numRequests": 0
+    },
+    "componentResults": [
+      {
+        "pass": true,
+        "score": 1,
+        "reason": "monthly_sales_not_identifiable=PASS; known_current_sum=PASS; incomplete_coverage_not_total=PASS; comparable_delta=PASS; missing_not_zero=PASS; limitations_explained=PASS; domain_terms_present=PASS; repository_unchanged=PASS; context_unchanged:CONTEXT.md=PASS; context_unchanged:REPO_MAP.md=PASS; context_unchanged:AGENTS.md=PASS; context_unchanged:docs/architecture.md=PASS; context_unchanged:docs/project.md=PASS; context_unchanged:docs/development.md=PASS",
+        "assertion": {
+          "type": "javascript",
+          "value": "file:///Users/densin/Documents/ChatGPT/Мультиагентные системы/drip-real-estate-demo/seminar/reports/02-domain-metrics/20261006T114626Z/evaluator/grade.cjs"
+        }
+      }
+    ]
+  },
+  "valid_trial": true,
+  "largest_observed_request_input_tokens": 16175,
+  "last_request_input_tokens": 16175,
+  "repository_instructions_observed_in_rollout": true,
+  "prompt_observed_in_rollout": true
+}

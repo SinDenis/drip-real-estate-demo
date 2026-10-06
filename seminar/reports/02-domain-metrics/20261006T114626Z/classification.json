@@ -1,0 +1,6 @@
+{
+  "classification": "main",
+  "valid_comparison": true,
+  "replicates_per_condition": 3,
+  "interpretation": "Both conditions passed all checks; no measured accuracy benefit."
+}

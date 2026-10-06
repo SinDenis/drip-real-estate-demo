@@ -1,0 +1,10 @@
+{
+  "monthly_sales": null,
+  "current_ddu_known_sum": 175,
+  "current_ddu_all_objects": null,
+  "comparable_pairs_delta": 0,
+  "unavailable_object_ids": [
+    "9003"
+  ],
+  "reason": "A published cumulative snapshot is not a flow of sales; one object is unavailable."
+}

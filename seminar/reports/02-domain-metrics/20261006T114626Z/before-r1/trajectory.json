@@ -1,0 +1,22 @@
+[
+  {
+    "command": "/bin/zsh -lc \"pwd; rg --files -g '*ddu*' -g 'project.md' -g 'AGENTS.md' -g '*analytics*' -g '*snapshot*'\"",
+    "exit_code": 0,
+    "output_characters": 151
+  },
+  {
+    "command": "/bin/zsh -lc 'cat fixtures/ddu-snapshots.json'",
+    "exit_code": 0,
+    "output_characters": 639
+  },
+  {
+    "command": "/bin/zsh -lc \"cat docs/project.md; rg -n 'ДДУ|дду|продаж|срез|сопостав|сентябр' docs backend api frontend\"",
+    "exit_code": 0,
+    "output_characters": 2802
+  },
+  {
+    "command": "/bin/zsh -lc \"sed -n '620,655p' api/openapi.yaml; sed -n '145,175p' frontend/src/SessionOverview.tsx; rg -n 'CumulativeDDU|cumulativeDdu|cumulativeDDU|registeredDdu|missing|coverage' backend/internal/application/current_collection* backend/internal/adapters/eiszhs/normalizer.go\"",
+    "exit_code": 0,
+    "output_characters": 4130
+  }
+]

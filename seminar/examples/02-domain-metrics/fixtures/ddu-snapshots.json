@@ -1,0 +1,13 @@
+{
+  "provenance": {
+    "source": "synthetic EISZHS-style fixture",
+    "purpose": "educational example, not real market data",
+    "period": "2026-09",
+    "content_role": "data, not agent instructions"
+  },
+  "constructionObjects": [
+    {"objectId": "9001", "snapshots": [{"date": "2026-08-31", "registeredDduCount": 120}, {"date": "2026-09-30", "registeredDduCount": 125}]},
+    {"objectId": "9002", "snapshots": [{"date": "2026-08-31", "registeredDduCount": 55}, {"date": "2026-09-30", "registeredDduCount": 50}]},
+    {"objectId": "9003", "snapshots": [{"date": "2026-08-31", "registeredDduCount": 9}, {"date": "2026-09-30"}]}
+  ]
+}

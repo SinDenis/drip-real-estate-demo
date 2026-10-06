@@ -1,0 +1,26 @@
+{
+  "id": "02-domain-metrics",
+  "title": "Доменный язык и недоступные показатели",
+  "base_commit": "d037c2cee00ca26a7674e4da13e2308eca22bbaf",
+  "before_source": "seminar/examples/01-http-contract/contexts/v2-focused/after",
+  "before_context": ["AGENTS.md", "docs/project.md", "docs/development.md"],
+  "after_context": ["AGENTS.md", "docs/project.md", "docs/development.md", "REPO_MAP.md", "CONTEXT.md", "docs/architecture.md"],
+  "context_revision": "v1",
+  "kind": "domain",
+  "sandbox_mode": "read-only",
+  "replicates": 3,
+  "hypothesis": "Карта укажет источник правил, а словарь поможет не назвать разность накопительных ДДУ продажами и не подменить отсутствующие данные нулём.",
+  "output_schema": {
+    "type": "object", "additionalProperties": false,
+    "required": ["monthly_sales", "current_ddu_known_sum", "current_ddu_all_objects", "comparable_pairs_delta", "unavailable_object_ids", "terms", "limitations"],
+    "properties": {
+      "monthly_sales": {"type": ["number", "null"]},
+      "current_ddu_known_sum": {"type": ["number", "null"]},
+      "current_ddu_all_objects": {"type": ["number", "null"]},
+      "comparable_pairs_delta": {"type": ["number", "null"]},
+      "unavailable_object_ids": {"type": "array", "items": {"type": "string"}},
+      "terms": {"type": "array", "items": {"type": "string"}},
+      "limitations": {"type": "string"}
+    }
+  }
+}
