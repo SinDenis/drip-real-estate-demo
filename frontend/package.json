@@ -25,7 +25,7 @@
     "@tanstack/react-router": "1.170.32",
     "antd": "6.6.2",
     "openapi-fetch": "0.17.0",
-    "react": "19.2.8",
+    "react": "19.3.0",
     "react-dom": "19.2.8"
   },
   "devDependencies": {
@@ -34,7 +34,7 @@
     "@testing-library/jest-dom": "7.0.1",
     "@testing-library/react": "16.3.3",
     "@types/node": "26.4.0",
-    "@types/react": "19.2.18",
+    "@types/react": "19.3.0",
     "@types/react-dom": "19.2.5",
     "@vitejs/plugin-react": "6.1.1",
     "@vitest/coverage-v8": "4.1.11",
