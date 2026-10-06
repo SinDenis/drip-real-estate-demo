@@ -36,7 +36,7 @@ FROM backend-build AS backend-e2e
 ENV E2E_BASE_URL=http://app:8080
 CMD ["go", "test", "-tags=e2e", "-count=1", "./e2e"]
 
-FROM mcr.microsoft.com/playwright:v1.62.1-noble AS frontend-e2e
+FROM mcr.microsoft.com/playwright:v1.63.0-noble AS frontend-e2e
 ARG PNPM_VERSION
 COPY --from=frontend-dependencies /usr/local/bin/node /usr/local/bin/node
 RUN npm install --global pnpm@${PNPM_VERSION}
