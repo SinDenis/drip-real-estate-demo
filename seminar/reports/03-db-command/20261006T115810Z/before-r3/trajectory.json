@@ -1,0 +1,27 @@
+[
+  {
+    "command": "/bin/zsh -lc \"pwd; rg --files -g 'AGENTS.md' -g '*session*' -g 'Makefile' -g '*test*' -g '*.sql' -g 'REPO_MAP.md' -g 'CONTEXT.md' -g 'docs/*.md'\"",
+    "exit_code": 0,
+    "output_characters": 1793
+  },
+  {
+    "command": "/bin/zsh -lc 'cat docs/project.md docs/development.md REPO_MAP.md CONTEXT.md docs/architecture.md Makefile'",
+    "exit_code": 0,
+    "output_characters": 15078
+  },
+  {
+    "command": "/bin/zsh -lc \"cat /Users/densin/.agents/skills/axi/SKILL.md tests/local_commands_test.sh tests/fixtures/session_workspace.sql; rg -n 'deleted_at|status|analytical_session' backend/internal/adapters/postgres/migrations/003_analytical_session_creation.sql backend/internal/adapters/postgres/store.go; git status --short\"",
+    "exit_code": 0,
+    "output_characters": 22123
+  },
+  {
+    "command": "/bin/zsh -lc 'bash tests/session_stats_test.sh; bash tests/local_commands_test.sh; bash -n tests/session_stats_test.sh; git diff --check; git diff --stat'",
+    "exit_code": 0,
+    "output_characters": 145
+  },
+  {
+    "command": "/bin/zsh -lc \"python3 - <<'PY'\nimport pathlib, re, sqlite3\nmakefile = pathlib.Path('Makefile').read_text()\nrecipe = makefile.split('\\\\nsession-stats:', 1)[1].split('\\\\ns3-ls:', 1)[0]\nquery = re.search(r'--command \\\"([\"'^\"]+)\"'\"', recipe).group(1)\ndb = sqlite3.connect(':memory:')\ndb.execute('CREATE TABLE analytical_session (status TEXT, deleted_at TEXT)')\ndef check(expected):\n    before = db.execute('SELECT * FROM analytical_session').fetchall()\n    cursor = db.execute(query)\n    assert [column[0] for column in cursor.description] == ['total', 'active', 'complete', 'failed']\n    assert cursor.fetchall() == [expected]\n    assert db.execute('SELECT * FROM analytical_session').fetchall() == before\ncheck((0, 0, 0, 0))\nstatuses = ['queued', 'collecting', 'complete', 'partial', 'failed', 'canceled']\ndb.executemany('INSERT INTO analytical_session VALUES (?, ?)', [(s, None) for s in statuses] + [(s, '2026-01-01') for s in statuses])\ndb.execute('PRAGMA query_only = ON')\ncheck((6, 2, 1, 1))\nprint('PASS: SQL aggregates on empty and mixed synthetic SQLite data; read-only mode')\nPY\n git status --short; git diff --check\"",
+    "exit_code": 0,
+    "output_characters": 121
+  }
+]

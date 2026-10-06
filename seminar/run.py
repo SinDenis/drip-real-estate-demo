@@ -79,7 +79,7 @@ def file_manifest(work, ignored=()):
             result[rel] = sha(p.read_bytes())
     return result
 
-def materialize(config, example_dir, context_dir, label):
+def materialize(config, example_dir, context_dir, label, include_dependencies=True):
     work = Path(tempfile.mkdtemp(prefix='ce-seminar-' + label + '-')) / 'workspace'
     work.mkdir()
     archive = work.parent / 'base.tar'
@@ -109,7 +109,7 @@ def materialize(config, example_dir, context_dir, label):
     run(['git', 'commit', '--quiet', '-m', 'Fixed experiment input'], cwd=work)
     # Tools are present in both arms, copied before timing; there are no instructor files here.
     dependencies = ROOT / 'frontend/node_modules'
-    if dependencies.exists() and config['kind'] == 'http':
+    if include_dependencies and dependencies.exists() and config['kind'] == 'http':
         shutil.copytree(dependencies, work / 'frontend/node_modules', symlinks=True)
     return work, code, context
 
@@ -121,10 +121,17 @@ def execute_example(args):
     stamp = datetime.now(timezone.utc).strftime('%Y%m%dT%H%M%SZ')
     report = SEM / 'reports' / args.example / stamp
     report.mkdir(parents=True)
-    revision = cfg.get('context_revision', 'v1')
+    revision = args.revision or cfg.get('context_revision', 'v1')
+    if args.after_source and not args.revision:
+        raise RuntimeError('A custom context source requires --revision with a fresh name')
+    if not revision or any(c not in 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789-_' for c in revision):
+        raise RuntimeError('Revision must use letters, numbers, dash or underscore')
+    after_source = Path(args.after_source).resolve() if args.after_source else ROOT
+    if args.after_source and (example_dir / 'contexts' / revision).exists():
+        raise RuntimeError('This revision is already frozen. Choose a new --revision to preserve it.')
     before_source = ROOT / cfg['before_source'] if 'before_source' in cfg else ROOT
     before = freeze_context(example_dir, cfg['before_context'], 'before', revision, before_source)
-    after = freeze_context(example_dir, cfg['after_context'], 'after', revision)
+    after = freeze_context(example_dir, cfg['after_context'], 'after', revision, after_source)
     native = native_env()
     home = codex_home()
     tests = []
@@ -243,6 +250,12 @@ def main():
     trial = sub.add_parser('run', help='Запустить один пример с фиксированным промптом')
     trial.add_argument('--example', required=True)
     trial.add_argument('--repeats', type=int)
+    trial.add_argument('--revision', help='Fresh immutable context revision for a classroom experiment')
+    trial.add_argument('--after-source', help='Folder with edited context files; requires a fresh --revision')
+    prepare = sub.add_parser('prepare', help='Create an editable classroom copy from the frozen guided context')
+    prepare.add_argument('--example', required=True)
+    restore = sub.add_parser('restore', help='Import the saved official series into native Promptfoo UI without model calls')
+    restore.add_argument('--config-dir', help='Optional local Promptfoo database folder')
     args = parser.parse_args()
     if args.action == 'setup':
         tool = RUNTIME / 'tool'
@@ -252,6 +265,35 @@ def main():
         print('setup: ready')
     elif args.action == 'run':
         execute_example(args)
+    elif args.action == 'restore':
+        env = native_env()
+        if args.config_dir:
+            env['PROMPTFOO_CONFIG_DIR'] = str(Path(args.config_dir).resolve())
+        count = 0
+        for path in sorted((SEM / 'examples').glob('*/example.json')):
+            cfg = json.loads(path.read_text())
+            folder = SEM / 'reports' / cfg['id']
+            official = json.loads((folder / 'official.json').read_text())['report']
+            run([str(tooling()), 'import', str(folder / official / 'promptfoo.json')], env=env)
+            count += 1
+        print('imported_series: ' + str(count))
+        print('model_calls: 0')
+        print('help: start promptfoo view with PROMPTFOO_CONFIG_DIR=' + env['PROMPTFOO_CONFIG_DIR'])
+    elif args.action == 'prepare':
+        example_dir = SEM / 'examples' / args.example
+        cfg = json.loads((example_dir / 'example.json').read_text())
+        dest = RUNTIME / 'classroom' / args.example
+        if dest.exists():
+            raise RuntimeError('Classroom copy already exists: ' + str(dest))
+        source = example_dir / 'contexts' / cfg.get('context_revision', 'v1') / 'after'
+        if not source.exists():
+            raise RuntimeError('Frozen guided context not found. Run the example first.')
+        work, _, _ = materialize(cfg, example_dir, source, 'classroom', include_dependencies=False)
+        dest.parent.mkdir(parents=True, exist_ok=True)
+        shutil.move(str(work), str(dest))
+        shutil.rmtree(work.parent)
+        print('workspace: ' + str(dest))
+        print('help: edit only context, check it, then run with --after-source and a fresh --revision')
     else:
         examples = sorted((SEM / 'examples').glob('*/example.json'))
         print(f'examples: {len(examples)}')

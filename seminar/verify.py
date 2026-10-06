@@ -86,7 +86,9 @@ def main():
         checks = grade(work, response, report)
     elif example == '03-db-command':
         from verify_db import grade
-        checks = [('existing_tests_unchanged', original_tests_unchanged(work))] + grade(work, report)
+        code, log = execute(['bash', 'tests/local_commands_test.sh'], work)
+        (report / 'existing-local-commands.log').write_text(log)
+        checks = [('existing_tests_unchanged', original_tests_unchanged(work)), ('existing_local_commands_pass', code == 0)] + grade(work, report)
     else:
         raise ValueError('Unknown example: ' + example)
     checks += context_checks

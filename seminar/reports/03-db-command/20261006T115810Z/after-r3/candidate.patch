@@ -1,0 +1,128 @@
+diff --git a/Makefile b/Makefile
+index 63a7483..27daf47 100644
+--- a/Makefile
++++ b/Makefile
+@@ -15,7 +15,7 @@ export FILE KEY QUERY SERVICE
+ 
+ .PHONY: help bootstrap generate test test-backend test-frontend lint architecture coverage \
+ 	coverage-backend coverage-frontend build verify-fast verify e2e dev-up dev-down \
+-	doctor logs logs-service db-shell db-query s3-ls s3-get s3-put
++	doctor logs logs-service db-shell db-query session-stats s3-ls s3-get s3-put
+ 
+ help: ## Show available development commands.
+ 	@awk 'BEGIN {FS = ":.*## "} /^[a-zA-Z0-9_-]+:.*## / {printf "  %-20s %s\n", $$1, $$2}' $(MAKEFILE_LIST)
+@@ -31,6 +31,7 @@ test: test-backend test-frontend ## Run native unit and contract tests.
+ 	bash tests/eiszhs_contract_test.sh
+ 	bash tests/eiszhs-probe_test.sh
+ 	bash tests/local_commands_test.sh
++	python3 tests/session_stats_test.py
+ 
+ test-backend: ## Run Go unit tests.
+ 	$(BACKEND_MAKE) test
+@@ -107,6 +108,9 @@ db-query: ## Run a local SQL query. Usage: make db-query QUERY='select now()'
+ 	}
+ 	$(COMPOSE) exec --no-TTY postgres psql --no-psqlrc --csv --quiet --username analytics --dbname analytics --set ON_ERROR_STOP=1 --command "$${QUERY}"
+ 
++session-stats: ## Print CSV counts of visible analytical sessions (total,active,complete,failed).
++	@$(MAKE) --silent --no-print-directory db-query QUERY="SELECT count(*) AS total, count(*) FILTER (WHERE status IN ('queued', 'collecting')) AS active, count(*) FILTER (WHERE status = 'complete') AS complete, count(*) FILTER (WHERE status = 'failed') AS failed FROM analytical_session WHERE deleted_at IS NULL;"
++
+ s3-ls: ## List objects in the isolated local S3 bucket.
+ 	$(COMPOSE) --profile tools run --rm aws s3 ls s3://analytics --recursive
+ 
+diff --git a/tests/session_stats_test.py b/tests/session_stats_test.py
+new file mode 100644
+index 0000000..6c77b86
+--- /dev/null
++++ b/tests/session_stats_test.py
+@@ -0,0 +1,91 @@
++#!/usr/bin/env python3
++"""Exercise the public Make command with a read-only synthetic SQL stand-in."""
++
++import json
++import os
++from pathlib import Path
++import sqlite3
++import subprocess
++import sys
++import tempfile
++
++
++ROOT = Path(__file__).resolve().parents[1]
++
++# SQLite supports the aggregate FILTER syntax used here. This checks query
++# semantics locally; PostgreSQL/Compose integration remains a separate check.
++PROBE = '''import csv
++import json
++import os
++import sqlite3
++import sys
++
++arguments = sys.argv[1:]
++expected = ["compose", "--file", "compose.yaml", "exec", "--no-TTY",
++            "postgres", "psql", "--no-psqlrc", "--csv", "--quiet",
++            "--username", "analytics", "--dbname", "analytics",
++            "--set", "ON_ERROR_STOP=1", "--command"]
++assert arguments[:-1] == expected, arguments
++with open(os.environ["STATS_CALLS"], "a") as calls:
++    calls.write(json.dumps(arguments) + "\\n")
++if os.environ.get("STATS_FAIL"):
++    sys.exit(1)
++connection = sqlite3.connect("file:" + os.environ["STATS_DATABASE"] + "?mode=ro", uri=True)
++cursor = connection.execute(arguments[-1])
++writer = csv.writer(sys.stdout, lineterminator="\\n")
++writer.writerow([column[0] for column in cursor.description])
++writer.writerows(cursor.fetchall())
++'''
++
++
++def main():
++    with tempfile.TemporaryDirectory(prefix="session-stats-", dir=ROOT) as directory:
++        directory = Path(directory)
++        probe = directory / "docker with spaces"
++        probe.write_text(f"#!{sys.executable}\n" + PROBE)
++        probe.chmod(0o700)
++        database = directory / "synthetic.sqlite"
++        calls = directory / "calls.jsonl"
++        connection = sqlite3.connect(database)
++        connection.execute(
++            "CREATE TABLE analytical_session (status TEXT NOT NULL, deleted_at TEXT)"
++        )
++        connection.commit()
++        environment = dict(os.environ, STATS_DATABASE=str(database), STATS_CALLS=str(calls))
++
++        def run(expected, fail=False):
++            calls.write_text("")
++            before = database.read_bytes()
++            result = subprocess.run(
++                ["make", "--no-print-directory", "session-stats", f"DOCKER={probe}",
++                 "QUERY=SELECT invalid_override"],
++                cwd=ROOT, env=dict(environment, STATS_FAIL="1" if fail else ""),
++                capture_output=True, text=True,
++            )
++            assert (result.returncode != 0) if fail else (result.returncode == 0), result.stderr
++            assert result.stdout == expected, repr(result.stdout)
++            assert len(calls.read_text().splitlines()) == 1, "expected one SQL invocation"
++            arguments = json.loads(calls.read_text())
++            assert arguments[-1].strip().upper().startswith("SELECT ")
++            assert database.read_bytes() == before, "database was modified"
++
++        run("total,active,complete,failed\n0,0,0,0\n")
++        statuses = ["queued", "collecting", "complete", "partial", "failed", "canceled"]
++        connection.executemany(
++            "INSERT INTO analytical_session VALUES (?, ?)",
++            [(status, None) for status in statuses]
++            + [(status, "2026-01-01") for status in statuses]
++            + [("queued", None), ("complete", None), ("failed", None)],
++        )
++        connection.commit()
++        run("total,active,complete,failed\n9,3,2,2\n")
++        connection.execute("DELETE FROM analytical_session WHERE deleted_at IS NULL")
++        connection.commit()
++        run("total,active,complete,failed\n0,0,0,0\n")
++        run("", fail=True)
++        connection.close()
++    print("PASS: session-stats (synthetic read-only SQLite stand-in)")
++
++
++if __name__ == "__main__":
++    main()

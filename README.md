@@ -22,3 +22,7 @@ make e2e
 ```
 
 Все доступные команды: `make help`. Для локального запуска проверок нужны Go из `backend/go.mod`, Node.js 24.20.0, Docker Compose, Git и jq.
+
+## Семинар 5: Context Engineering
+
+На учебной ветке подготовлены три задачи, фиксированные промпты, Promptfoo harness, независимые проверки и сохранённые отчёты. Начните с [материалов семинара](seminar/README.md) и [сценария преподавателя](seminar/FACILITATOR.md). Примеры закреплены последовательными тегами seminar-01-instructions, seminar-02-domain и seminar-03-adr-db. Основная ветка main сохраняет чистый стартовый проект.

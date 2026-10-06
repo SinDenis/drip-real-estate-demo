@@ -1,0 +1,27 @@
+[
+  {
+    "command": "/bin/zsh -lc \"pwd; rg --files -g 'AGENTS.md' -g '*session*' -g 'Makefile' -g '*.sql' -g 'go.mod'; cat docs/project.md docs/development.md REPO_MAP.md CONTEXT.md docs/architecture.md\"",
+    "exit_code": 0,
+    "output_characters": 9979
+  },
+  {
+    "command": "/bin/zsh -lc \"cat Makefile tests/local_commands_test.sh tests/fixtures/session_workspace.sql; rg -n 'status|deleted_at' backend/internal/adapters/postgres/store.go backend/internal/adapters/postgres/migrations/003_analytical_session_creation.sql; rg --files scripts tests; git status --short\"",
+    "exit_code": 0,
+    "output_characters": 10794
+  },
+  {
+    "command": "/bin/zsh -lc 'cat /Users/densin/.agents/skills/axi/SKILL.md; cat tests/fixtures/docker-probe; command -v psql postgres initdb sqlite3 python3; cat backend/internal/adapters/postgres/migrations/003_analytical_session_creation.sql'",
+    "exit_code": 0,
+    "output_characters": 17453
+  },
+  {
+    "command": "/bin/zsh -lc \"cat > tests/session_stats_test.py <<'PY'\n\\\"\\\"\\\"Exercise the public Make command without Docker or a real database.\n\nThe Docker substitute executes the received SELECT against synthetic SQLite\nrows. PostgreSQL/psql integration remains a separate container check.\n\\\"\\\"\\\"\n\nimport csv\nimport io\nimport json\nimport os\nfrom pathlib import Path\nimport shlex\nimport sqlite3\nimport subprocess\nimport sys\nimport tempfile\nimport unittest\n\nROOT = Path(__file__).resolve().parent.parent\n\n\ndef probe():\n    args = sys.argv[2:]\n    expected = [\n        'compose', '--file', 'compose.yaml', 'exec', '--no-TTY', 'postgres',\n        'psql', '--no-psqlrc', '--csv', '--quiet', '--username', 'analytics',\n        '--dbname', 'analytics', '--set', 'ON_ERROR_STOP=1', '--command',\n    ]\n    assert args[:-1] == expected, args\n    with open(os.environ['STATS_CALLS'], 'a') as calls:\n        calls.write('call\\\\n')\n    if os.environ.get('STATS_FAIL'):\n        sys.exit(1)\n    connection = sqlite3.connect(':memory:')\n    connection.execute('CREATE TABLE analytical_session (status TEXT, deleted_at TEXT)')\n    connection.executemany('INSERT INTO analytical_session VALUES (?, ?)',\n                           json.loads(os.environ['STATS_ROWS']))\n    before = connection.total_changes\n    # Only reads and aggregate functions are permitted in the supplied query.\n    allowed = {sqlite3.SQLITE_SELECT, sqlite3.SQLITE_READ, sqlite3.SQLITE_FUNCTION}\n    connection.set_authorizer(lambda action, *_: sqlite3.SQLITE_OK\n                              if action in allowed else sqlite3.SQLITE_DENY)\n    cursor = connection.execute(args[-1])\n    writer = csv.writer(sys.stdout, lineterminator='\\\\n')\n    writer.writerow(column[0] for column in cursor.description)\n    writer.writerows(cursor.fetchall())\n    assert connection.total_changes == before\n\n\nclass SessionStatsTest(unittest.TestCase):\n    def run_stats(self, rows, fail=False):\n        with tempfile.TemporaryDirectory(prefix='session-stats-', dir=ROOT) as directory:\n            directory = Path(directory)\n            docker = directory / 'docker substitute'\n            docker.write_text('#\"'!/bin/sh'\"\\\\nexec ' + shlex.join(\n                [sys.executable, str(Path(__file__).resolve()), '--probe']) + ' \\\"\"'$@\"'\"\\\\n')\n            docker.chmod(0o755)\n            calls = directory / 'calls'\n            result = subprocess.run(\n                ['make', '--no-print-directory', 'session-stats', f'DOCKER={docker}',\n                 'QUERY=SELECT invalid_override'], cwd=ROOT,\n                env={**os.environ, 'STATS_ROWS': json.dumps(rows),\n                     'STATS_CALLS': str(calls), 'STATS_FAIL': '1' if fail else ''},\n                text=True, capture_output=True, check=False)\n            self.assertEqual(calls.read_text(), 'call\\\\n')\n            return result\n\n    def test_empty(self):\n        result = self.run_stats([])\n        self.assertEqual(result.returncode, 0, result.stderr)\n        self.assertEqual(result.stdout, 'total,active,complete,failed\\\\n0,0,0,0\\\\n')\n\n    def test_all_statuses_and_hidden_sessions(self):\n        statuses = ['queued', 'collecting', 'complete', 'partial', 'failed', 'canceled']\n        rows = [(status, None) for status in statuses]\n        rows += [(status, '2026-01-01') for status in statuses]\n        result = self.run_stats(rows)\n        self.assertEqual(result.returncode, 0, result.stderr)\n        self.assertEqual(result.stdout, 'total,active,complete,failed\\\\n6,2,1,1\\\\n')\n\n    def test_failure_propagates(self):\n        result = self.run_stats([], fail=True)\n        self.assertNotEqual(result.returncode, 0)\n        self.assertEqual(result.stdout, '')\n\n\nif __name__ == '__main__':\n    if sys.argv[1:2] == ['--probe']:\n        probe()\n    else:\n        unittest.main()\nPY\npython3 tests/session_stats_test.py\nbash tests/local_commands_test.sh\nmake help\"",
+    "exit_code": 0,
+    "output_characters": 2066
+  },
+  {
+    "command": "/bin/zsh -lc 'git diff --check; git diff --stat; git status --short'",
+    "exit_code": 0,
+    "output_characters": 112
+  }
+]

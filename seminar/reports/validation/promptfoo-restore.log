@@ -1,0 +1,6 @@
+Eval eval-a2P-2026-10-06T11:28:02 already exists. Use --new-id to import with a new ID, or --force to replace it.
+
+There were some errors during the operation. See logs for more details.
+Error log: /Users/densin/Documents/ChatGPT/Мультиагентные системы/drip-real-estate-demo/seminar/runtime/import-check/logs/promptfoo-error-2026-10-06_12-26-42-812Z.log
+Debug log: /Users/densin/Documents/ChatGPT/Мультиагентные системы/drip-real-estate-demo/seminar/runtime/import-check/logs/promptfoo-debug-2026-10-06_12-26-42-812Z.log
+error: "Command '['/Users/densin/Documents/ChatGPT/Мультиагентные системы/.experiments/promptfoo-real-estate/tool/node_modules/promptfoo/dist/src/entrypoint.js', 'import', '/Users/densin/Documents/ChatGPT/Мультиагентные системы/drip-real-estate-demo/seminar/reports/01-http-contract/20261006T112620Z/promptfoo.json']' returned non-zero exit status 1."

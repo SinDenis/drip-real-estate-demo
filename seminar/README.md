@@ -10,6 +10,9 @@
 
 ```sh
 python3 seminar/run.py setup
+make bootstrap PNPM=pnpm
+docker build -t context-engineering-cli-grader -f seminar/fixtures/cli/Dockerfile seminar/fixtures/cli
+docker pull postgres:18.6-bookworm
 python3 seminar/check_context.py
 python3 seminar/run.py run --example 01-http-contract
 ```
@@ -25,7 +28,7 @@ python3 seminar/run.py run --example 01-http-contract
 - разрешённые параметры модели и окружения;
 - нативные JSON и HTML отчёты Promptfoo и консольный журнал;
 - ответ, candidate.patch, логи независимых проверок и verification.json;
-- входные, cached, uncached и выходные токены, время, оценка API-эквивалента стоимости, команды;
+- входные, cached, uncached и выходные токены, время, raw-оценка API-эквивалента стоимости с неподтверждённым тарифом модели, команды;
 - приватный сырой ответ Codex; папки `private` и `runtime` игнорируются Git.
 
 Raw-отчёты остаются сохранёнными. Неисправный evaluator или сбой окружения помечаются отдельно от неудачного решения задачи. Исправленная оценка не переписывает исходный отчёт.
@@ -39,3 +42,18 @@ Raw-отчёты остаются сохранёнными. Неисправны
 3. Команда БД: исторические учебные ADR и повторное использование решений.
 
 Учебная ветка строится последовательными коммитами; `main` сохраняет чистый стартовый проект.
+
+## Материалы
+
+- [Сценарий занятия](SEMINAR.md) и [памятка преподавателя](FACILITATOR.md).
+- [Задания группам](WORKSHEETS.md), [разбор результатов](RESULTS.md) и [методика](METHODOLOGY.md).
+- Интерактивный отчёт: `.lavish/seminar-5.html`; генерация из raw-результатов: `python3 seminar/build_report.py`.
+- Проверка входов всех сохранённых основных серий: `python3 seminar/check_reports.py`.
+
+Для живого проектирования `prepare` создаёт редактируемую classroom-копию. Параметры `--after-source` и новая `--revision` сохраняют новый вариант отдельно. Пример и ограничения описаны в памятке преподавателя.
+
+Чтобы открыть сохранённые серии на другой машине без вызовов модели, выполните `python3 seminar/run.py restore`. Команда импортирует official JSON в локальную базу Promptfoo. Авторизация Codex для этого не нужна.
+
+Для нативного UI Promptfoo используйте тот же config directory, что harness: `PROMPTFOO_CONFIG_DIR=seminar/runtime/promptfoo-home seminar/runtime/tool/node_modules/.bin/promptfoo view --port 15501`. Открывайте http://127.0.0.1:15501/eval. Если использован CE_PROMPTFOO_BIN, вызовите этот бинарник вместо локального.
+
+`official.json` фиксирует опубликованную серию для отчёта и аудита. `latest.json` указывает на последний локальный запуск, включая classroom; он не заменяет официальный результат.

@@ -1,0 +1,44 @@
+{
+  "condition": "after",
+  "replica": 2,
+  "success": true,
+  "error": null,
+  "input_tokens": 131206,
+  "cached_input_tokens": 107008,
+  "uncached_input_tokens": 24198,
+  "output_tokens": 2395,
+  "total_tokens": 133601,
+  "latency_ms": 71367,
+  "estimated_api_equivalent_usd": 0.08304679999999999,
+  "command_count": 5,
+  "session_id": "01a11116-5e35-7a42-82eb-7ccf55d1b710",
+  "grading": {
+    "pass": true,
+    "score": 1,
+    "reason": "All assertions passed",
+    "namedScores": {},
+    "tokensUsed": {
+      "total": 0,
+      "prompt": 0,
+      "completion": 0,
+      "cached": 0,
+      "numRequests": 0
+    },
+    "componentResults": [
+      {
+        "pass": true,
+        "score": 1,
+        "reason": "existing_tests_unchanged=PASS; existing_local_commands_pass=PASS; mixed_command_runs_with_spaced_docker_path=PASS; mixed_one_query=PASS; mixed_read_only_query=PASS; mixed_correct_counts=PASS; mixed_stable_query=PASS; mixed_clean_csv_stdout=PASS; mixed_data_unchanged=PASS; empty_command_runs_with_spaced_docker_path=PASS; empty_one_query=PASS; empty_read_only_query=PASS; empty_correct_counts=PASS; empty_stable_query=PASS; empty_clean_csv_stdout=PASS; empty_data_unchanged=PASS; partial_and_deleted_command_runs_with_spaced_docker_path=PASS; partial_and_deleted_one_query=PASS; partial_and_deleted_read_only_query=PASS; partial_and_deleted_correct_counts=PASS; partial_and_deleted_stable_query=PASS; partial_and_deleted_clean_csv_stdout=PASS; partial_and_deleted_data_unchanged=PASS; context_unchanged:CONTEXT.md=PASS; context_unchanged:REPO_MAP.md=PASS; context_unchanged:AGENTS.md=PASS; context_unchanged:docs/architecture.md=PASS; context_unchanged:docs/project.md=PASS; context_unchanged:docs/development.md=PASS; context_unchanged:docs/adr/0001-immutable-sessions.md=PASS; context_unchanged:docs/adr/0002-diagnostics-interface.md=PASS",
+        "assertion": {
+          "type": "javascript",
+          "value": "file:///Users/densin/Documents/ChatGPT/Мультиагентные системы/drip-real-estate-demo/seminar/reports/03-db-command/20261006T115810Z/evaluator/grade.cjs"
+        }
+      }
+    ]
+  },
+  "valid_trial": true,
+  "largest_observed_request_input_tokens": 29623,
+  "last_request_input_tokens": 29623,
+  "repository_instructions_observed_in_rollout": true,
+  "prompt_observed_in_rollout": true
+}

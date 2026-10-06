@@ -1,0 +1,23 @@
+{
+  "checks": [
+    {
+      "view": "desktop",
+      "overflow": false,
+      "scrollWidth": 1280,
+      "width": 1280
+    },
+    {
+      "view": "mobile",
+      "overflow": false,
+      "scrollWidth": 390,
+      "width": 390
+    },
+    {
+      "view": "mobile-expanded",
+      "overflow": false,
+      "scrollWidth": 390,
+      "width": 390
+    }
+  ],
+  "controls": "Task selection, metric selection and prompt disclosure verified; viewport restored."
+}

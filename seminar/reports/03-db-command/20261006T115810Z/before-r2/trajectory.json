@@ -1,0 +1,32 @@
+[
+  {
+    "command": "/bin/zsh -lc \"pwd; rg --files -g 'AGENTS.md' -g '*test*' -g 'Makefile' -g '*.sql' -g '*session*' -g 'REPO_MAP.md' -g 'CONTEXT.md' -g 'docs/*.md'\"",
+    "exit_code": 0,
+    "output_characters": 1793
+  },
+  {
+    "command": "/bin/zsh -lc 'cat Makefile docs/development.md docs/project.md REPO_MAP.md CONTEXT.md docs/architecture.md'",
+    "exit_code": 0,
+    "output_characters": 15078
+  },
+  {
+    "command": "/bin/zsh -lc \"cat tests/local_commands_test.sh tests/fixtures/session_workspace.sql; rg -n 'analytical_session|deleted_at|queued|collecting' backend/internal/adapters/postgres/store.go backend/internal/adapters/postgres/migrations/003*; cat /Users/densin/.agents/skills/axi/SKILL.md; git status --short\"",
+    "exit_code": 0,
+    "output_characters": 21882
+  },
+  {
+    "command": "/bin/zsh -lc \"command -v python3; cat tests/fixtures/docker-probe; rg -n 'status|CHECK' backend/internal/adapters/postgres/migrations/002_reference_catalog.sql backend/internal/adapters/postgres/migrations/003_analytical_session_creation.sql\"",
+    "exit_code": 0,
+    "output_characters": 1698
+  },
+  {
+    "command": "/bin/zsh -lc 'bash tests/session_stats_test.sh'",
+    "exit_code": 0,
+    "output_characters": 20
+  },
+  {
+    "command": "/bin/zsh -lc 'bash tests/local_commands_test.sh; bash -n tests/session_stats_test.sh; git diff --check; git diff --stat; git status --short'",
+    "exit_code": 0,
+    "output_characters": 133
+  }
+]

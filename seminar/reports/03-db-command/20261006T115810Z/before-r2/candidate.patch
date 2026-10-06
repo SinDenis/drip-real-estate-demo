@@ -1,0 +1,109 @@
+diff --git a/Makefile b/Makefile
+index 63a7483..f27750e 100644
+--- a/Makefile
++++ b/Makefile
+@@ -15,7 +15,7 @@ export FILE KEY QUERY SERVICE
+ 
+ .PHONY: help bootstrap generate test test-backend test-frontend lint architecture coverage \
+ 	coverage-backend coverage-frontend build verify-fast verify e2e dev-up dev-down \
+-	doctor logs logs-service db-shell db-query s3-ls s3-get s3-put
++	doctor logs logs-service db-shell db-query session-stats s3-ls s3-get s3-put
+ 
+ help: ## Show available development commands.
+ 	@awk 'BEGIN {FS = ":.*## "} /^[a-zA-Z0-9_-]+:.*## / {printf "  %-20s %s\n", $$1, $$2}' $(MAKEFILE_LIST)
+@@ -31,6 +31,7 @@ test: test-backend test-frontend ## Run native unit and contract tests.
+ 	bash tests/eiszhs_contract_test.sh
+ 	bash tests/eiszhs-probe_test.sh
+ 	bash tests/local_commands_test.sh
++	bash tests/session_stats_test.sh
+ 
+ test-backend: ## Run Go unit tests.
+ 	$(BACKEND_MAKE) test
+@@ -107,6 +108,9 @@ db-query: ## Run a local SQL query. Usage: make db-query QUERY='select now()'
+ 	}
+ 	$(COMPOSE) exec --no-TTY postgres psql --no-psqlrc --csv --quiet --username analytics --dbname analytics --set ON_ERROR_STOP=1 --command "$${QUERY}"
+ 
++session-stats: ## Print CSV counts of visible analytical sessions in the local database.
++	@$(COMPOSE) exec --no-TTY postgres psql --no-psqlrc --csv --quiet --username analytics --dbname analytics --set ON_ERROR_STOP=1 --command "SELECT count(*) AS total, count(*) FILTER (WHERE status IN ('queued', 'collecting')) AS active, count(*) FILTER (WHERE status = 'complete') AS complete, count(*) FILTER (WHERE status = 'failed') AS failed FROM analytical_session WHERE deleted_at IS NULL;"
++
+ s3-ls: ## List objects in the isolated local S3 bucket.
+ 	$(COMPOSE) --profile tools run --rm aws s3 ls s3://analytics --recursive
+ 
+diff --git a/tests/session_stats_test.sh b/tests/session_stats_test.sh
+new file mode 100644
+index 0000000..e1639aa
+--- /dev/null
++++ b/tests/session_stats_test.sh
+@@ -0,0 +1,72 @@
++#!/usr/bin/env bash
++
++set -euo pipefail
++
++repository_root="$(cd "$(dirname "$0")/.." && pwd)"
++test_directory="$(mktemp -d "$repository_root/tests/session-stats.XXXXXX")"
++trap 'rm -rf -- "$test_directory"' EXIT
++
++# Run the public Make command, substituting only its external Docker boundary.
++# SQLite executes the aggregate on synthetic data; PostgreSQL integration is
++# deliberately left to the isolated container checks.
++docker_probe="$test_directory/docker probe"
++cat > "$docker_probe" <<'PYTHON'
++#!/usr/bin/env python3
++import csv
++import os
++import sqlite3
++import sys
++
++args = sys.argv[1:]
++assert args[:3] == ['compose', '--file', 'compose.yaml'], args
++assert args[3:-1] == [
++    'exec', '--no-TTY', 'postgres', 'psql', '--no-psqlrc', '--csv',
++    '--quiet', '--username', 'analytics', '--dbname', 'analytics',
++    '--set', 'ON_ERROR_STOP=1', '--command',
++], args
++with open(os.environ['SESSION_STATS_CALLS'], 'a') as calls:
++    calls.write('call\n')
++if os.environ['SESSION_STATS_CASE'] == 'error':
++    sys.exit(1)
++
++db = sqlite3.connect(':memory:')
++db.execute('CREATE TABLE analytical_session (status TEXT, deleted_at TEXT)')
++statuses = ['queued', 'collecting', 'complete', 'partial', 'failed', 'canceled']
++if os.environ['SESSION_STATS_CASE'] == 'mixed':
++    db.executemany('INSERT INTO analytical_session VALUES (?, NULL)',
++                   [(s,) for s in statuses] + [('queued',), ('complete',)])
++if os.environ['SESSION_STATS_CASE'] in ('mixed', 'deleted'):
++    db.executemany('INSERT INTO analytical_session VALUES (?, ?)',
++                   [(s, '2026-01-01') for s in statuses])
++before = list(db.execute('SELECT * FROM analytical_session'))
++db.execute('PRAGMA query_only = ON')
++# execute rejects multiple SQL statements. query_only rejects mutations.
++cursor = db.execute(args[-1])
++writer = csv.writer(sys.stdout, lineterminator='\n')
++writer.writerow([column[0] for column in cursor.description])
++writer.writerows(cursor.fetchall())
++assert list(db.execute('SELECT * FROM analytical_session')) == before
++PYTHON
++chmod +x "$docker_probe"
++export SESSION_STATS_CALLS="$test_directory/calls"
++
++for scenario in empty mixed deleted; do
++  export SESSION_STATS_CASE="$scenario"
++  : > "$SESSION_STATS_CALLS"
++  output="$(make --no-print-directory --directory="$repository_root" session-stats DOCKER="$docker_probe")"
++  expected=$'total,active,complete,failed\n0,0,0,0'
++  if [[ "$scenario" == mixed ]]; then
++    expected=$'total,active,complete,failed\n8,3,2,1'
++  fi
++  [[ "$output" == "$expected" ]] || { printf 'FAIL: %s: %s\n' "$scenario" "$output" >&2; exit 1; }
++  [[ "$(cat "$SESSION_STATS_CALLS")" == call ]] || { printf 'FAIL: expected one query invocation\n' >&2; exit 1; }
++done
++
++export SESSION_STATS_CASE=error
++if make --no-print-directory --directory="$repository_root" session-stats DOCKER="$docker_probe" > "$test_directory/output" 2>/dev/null; then
++  printf 'FAIL: database failure must propagate\n' >&2
++  exit 1
++fi
++[[ ! -s "$test_directory/output" ]] || { printf 'FAIL: unexpected success output\n' >&2; exit 1; }
++make --no-print-directory --directory="$repository_root" help | rg -q 'session-stats'
++printf 'PASS: session-stats\n'

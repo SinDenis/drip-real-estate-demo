@@ -1,0 +1,1 @@
+SELECT count(*) AS total, count(*) FILTER (WHERE status IN ('queued', 'collecting')) AS active, count(*) FILTER (WHERE status = 'complete') AS complete, count(*) FILTER (WHERE status = 'failed') AS failed FROM analytical_session WHERE deleted_at IS NULL;

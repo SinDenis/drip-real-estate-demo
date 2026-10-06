@@ -1,0 +1,26 @@
+{
+  "observed_at": "2026-10-06T12:15:41.597097+00:00",
+  "note": "Read-only observation after the saved series. This is not a per-trial measurement.",
+  "versions": {
+    "codex": {
+      "exit": 0,
+      "output": "codex-cli 0.160.1"
+    },
+    "go": {
+      "exit": 0,
+      "output": "go version go1.27.0 darwin/arm64"
+    },
+    "node": {
+      "exit": 0,
+      "output": "v24.20.0"
+    },
+    "pnpm": {
+      "exit": 0,
+      "output": "11.25.0"
+    },
+    "promptfoo": {
+      "exit": 1,
+      "output": ""
+    }
+  }
+}

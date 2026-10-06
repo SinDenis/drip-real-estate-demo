@@ -10,4 +10,5 @@ done
 if [[ -z "$query" && ! -t 0 ]]; then query="$(cat)"; fi
 [[ -n "$query" ]] || { echo 'query missing' >&2; exit 2; }
 printf '%s' "$query" > /out/query.sql
+printf 'query\n' >> /out/query-calls.log
 cat /oracle/reply.csv

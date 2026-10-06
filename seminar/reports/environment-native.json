@@ -1,0 +1,9 @@
+{
+  "note": "Read-only version probe after the series with the same native_env and local Promptfoo config directory as the harness.",
+  "promptfoo": {
+    "exit": 0,
+    "stdout": "0.124.0",
+    "stderr": ""
+  },
+  "codex_sdk": "0.160.1"
+}

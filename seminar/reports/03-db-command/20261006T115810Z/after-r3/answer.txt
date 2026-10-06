@@ -1,0 +1,12 @@
+Добавлена `make session-stats`: через существующую `db-query` выполняет один SELECT и печатает CSV `total,active,complete,failed` с одной строкой количеств.
+
+Учитываются видимые сессии; активные — `queued` и `collecting`. Пустой набор даёт `0,0,0,0`. Добавлен новый тест в `make test`; существующие тесты и файлы контекста не изменены.
+
+Успешно выполнены:
+
+- `python3 tests/session_stats_test.py` — синтетическая SQLite read-only, формат, счётчики, один запрос, ошибки.
+- `bash tests/local_commands_test.sh`.
+- `git diff --check`.
+- `make help`.
+
+Непроверено: выполнение в PostgreSQL/Compose и полный набор тестов. Сеть и реальная БД не использовались, коммиты не создавались.

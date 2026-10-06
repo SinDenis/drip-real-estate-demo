@@ -1,0 +1,13 @@
+{
+  "pass": true,
+  "rejected_problems": [
+    [
+      "AGENTS.md",
+      "Broken link: missing.md"
+    ],
+    [
+      "AGENTS.md",
+      "Unknown Make target: nonexistent"
+    ]
+  ]
+}

@@ -1,0 +1,27 @@
+[
+  {
+    "command": "/bin/zsh -lc \"pwd; rg --files -g 'AGENTS.md' -g 'Makefile' -g '*session*' -g '*diagnos*'; cat docs/development.md docs/adr/0002-diagnostics-interface.md docs/adr/0001-immutable-sessions.md\"",
+    "exit_code": 0,
+    "output_characters": 6093
+  },
+  {
+    "command": "/bin/zsh -lc \"cat Makefile tests/local_commands_test.sh docs/project.md CONTEXT.md REPO_MAP.md docs/architecture.md; rg -n 'status|deleted_at' backend/internal/adapters/postgres/migrations/001_access.sql backend/internal/adapters/postgres/store.go; cat tests/fixtures/session_workspace.sql; git status --short\"",
+    "exit_code": 0,
+    "output_characters": 17770
+  },
+  {
+    "command": "/bin/zsh -lc 'cat /Users/densin/.agents/skills/axi/SKILL.md; cat tests/fixtures/docker-probe; rg --files tests; command -v psql || true'",
+    "exit_code": 0,
+    "output_characters": 13852
+  },
+  {
+    "command": "/bin/zsh -lc 'cat /Users/densin/.agents/skills/axi/SKILL.md'",
+    "exit_code": 0,
+    "output_characters": 13473
+  },
+  {
+    "command": "/bin/zsh -lc 'python3 tests/session_stats_test.py; bash tests/local_commands_test.sh; git diff --check; make help'",
+    "exit_code": 0,
+    "output_characters": 2098
+  }
+]

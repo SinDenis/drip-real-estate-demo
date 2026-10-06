@@ -2,6 +2,7 @@
 
 Краткое описание проекта: [docs/project.md](docs/project.md).
 Команды, архитектурные ограничения, БД, проверка и релиз: [docs/development.md](docs/development.md).
+Решения для БД и диагностических команд: [ADR 0001](docs/adr/0001-immutable-sessions.md), [ADR 0002](docs/adr/0002-diagnostics-interface.md).
 Карта поиска: [REPO_MAP.md](REPO_MAP.md). Термины и границы показателей: [CONTEXT.md](CONTEXT.md). Слои и данные: [docs/architecture.md](docs/architecture.md).
 
 - Сначала исследуй публичную границу изменения и существующие тесты.

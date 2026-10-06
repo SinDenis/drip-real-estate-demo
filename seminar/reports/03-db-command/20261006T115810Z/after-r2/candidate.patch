@@ -1,0 +1,139 @@
+diff --git a/Makefile b/Makefile
+index 63a7483..5b713cf 100644
+--- a/Makefile
++++ b/Makefile
+@@ -15,7 +15,7 @@ export FILE KEY QUERY SERVICE
+ 
+ .PHONY: help bootstrap generate test test-backend test-frontend lint architecture coverage \
+ 	coverage-backend coverage-frontend build verify-fast verify e2e dev-up dev-down \
+-	doctor logs logs-service db-shell db-query s3-ls s3-get s3-put
++	doctor logs logs-service db-shell db-query session-stats s3-ls s3-get s3-put
+ 
+ help: ## Show available development commands.
+ 	@awk 'BEGIN {FS = ":.*## "} /^[a-zA-Z0-9_-]+:.*## / {printf "  %-20s %s\n", $$1, $$2}' $(MAKEFILE_LIST)
+@@ -31,6 +31,7 @@ test: test-backend test-frontend ## Run native unit and contract tests.
+ 	bash tests/eiszhs_contract_test.sh
+ 	bash tests/eiszhs-probe_test.sh
+ 	bash tests/local_commands_test.sh
++	python3 tests/session_stats_test.py
+ 
+ test-backend: ## Run Go unit tests.
+ 	$(BACKEND_MAKE) test
+@@ -107,6 +108,9 @@ db-query: ## Run a local SQL query. Usage: make db-query QUERY='select now()'
+ 	}
+ 	$(COMPOSE) exec --no-TTY postgres psql --no-psqlrc --csv --quiet --username analytics --dbname analytics --set ON_ERROR_STOP=1 --command "$${QUERY}"
+ 
++session-stats: ## Print CSV counts of visible analytical sessions (total,active,complete,failed).
++	@$(MAKE) --no-print-directory --silent db-query QUERY="SELECT count(*) AS total, count(*) FILTER (WHERE status IN ('queued', 'collecting')) AS active, count(*) FILTER (WHERE status = 'complete') AS complete, count(*) FILTER (WHERE status = 'failed') AS failed FROM analytical_session WHERE deleted_at IS NULL;"
++
+ s3-ls: ## List objects in the isolated local S3 bucket.
+ 	$(COMPOSE) --profile tools run --rm aws s3 ls s3://analytics --recursive
+ 
+diff --git a/tests/session_stats_test.py b/tests/session_stats_test.py
+new file mode 100644
+index 0000000..49b153e
+--- /dev/null
++++ b/tests/session_stats_test.py
+@@ -0,0 +1,102 @@
++"""CLI contract tests; SQLite executes the captured SQL, without Docker/PostgreSQL."""
++
++import csv
++import json
++import os
++from pathlib import Path
++import shlex
++import sqlite3
++import subprocess
++import sys
++import tempfile
++import unittest
++
++
++ROOT = Path(__file__).resolve().parents[1]
++
++
++def docker_probe():
++    arguments = sys.argv[2:]
++    with open(os.environ["STATS_CALLS"], "a") as log:
++        log.write(json.dumps(arguments) + "\n")
++    if os.environ.get("STATS_FAIL"):
++        print("synthetic database failure", file=sys.stderr)
++        return 1
++    connection = sqlite3.connect(":memory:")
++    connection.execute("CREATE TABLE analytical_session (status TEXT, deleted_at TEXT)")
++    connection.executemany(
++        "INSERT INTO analytical_session VALUES (?, ?)",
++        json.loads(os.environ["STATS_ROWS"]),
++    )
++    before = list(connection.iterdump())
++    connection.execute("PRAGMA query_only = ON")
++    # execute accepts exactly one statement and query_only forbids writes.
++    result = connection.execute(arguments[arguments.index("--command") + 1])
++    writer = csv.writer(sys.stdout, lineterminator="\n")
++    writer.writerow(column[0] for column in result.description)
++    writer.writerows(result.fetchall())
++    assert list(connection.iterdump()) == before
++    return 0
++
++
++class SessionStatsTest(unittest.TestCase):
++    def setUp(self):
++        self.directory = tempfile.TemporaryDirectory(prefix="session stats ", dir=ROOT)
++        self.addCleanup(self.directory.cleanup)
++        directory = Path(self.directory.name)
++        self.log = directory / "calls.jsonl"
++        self.probe = directory / "docker probe"
++        self.probe.write_text(
++            "#!/bin/sh\nexec " + shlex.quote(sys.executable) + " "
++            + shlex.quote(str(Path(__file__).resolve())) + ' --docker "$@"\n'
++        )
++        self.probe.chmod(0o755)
++
++    def run_stats(self, rows, fail=False):
++        environment = dict(os.environ, STATS_ROWS=json.dumps(rows), STATS_CALLS=str(self.log))
++        environment.pop("STATS_FAIL", None)
++        if fail:
++            environment["STATS_FAIL"] = "1"
++        result = subprocess.run(
++            ["make", "--no-print-directory", "session-stats", f"DOCKER={self.probe}"],
++            cwd=ROOT, env=environment, capture_output=True, text=True,
++        )
++        calls = [json.loads(line) for line in self.log.read_text().splitlines()]
++        self.assertEqual(len(calls), 1)
++        self.assertEqual(calls[0][:-1], [
++            "compose", "--file", "compose.yaml", "exec", "--no-TTY", "postgres",
++            "psql", "--no-psqlrc", "--csv", "--quiet", "--username", "analytics",
++            "--dbname", "analytics", "--set", "ON_ERROR_STOP=1", "--command",
++        ])
++        return result
++
++    def test_empty(self):
++        result = self.run_stats([])
++        self.assertEqual(result.returncode, 0, result.stderr)
++        self.assertEqual(result.stdout, "total,active,complete,failed\n0,0,0,0\n")
++
++    def test_all_statuses_and_hidden_sessions(self):
++        statuses = ["queued", "collecting", "complete", "partial", "failed", "canceled"]
++        rows = [(status, None) for status in statuses]
++        rows += [("queued", None), ("failed", None), ("partial", None)]
++        rows += [(status, "2026-01-01") for status in statuses]
++        result = self.run_stats(rows)
++        self.assertEqual(result.returncode, 0, result.stderr)
++        self.assertEqual(result.stdout, "total,active,complete,failed\n9,3,1,2\n")
++
++    def test_hidden_only(self):
++        result = self.run_stats([("complete", "2026-01-01")])
++        self.assertEqual(result.returncode, 0, result.stderr)
++        self.assertEqual(result.stdout, "total,active,complete,failed\n0,0,0,0\n")
++
++    def test_database_failure(self):
++        result = self.run_stats([], fail=True)
++        self.assertNotEqual(result.returncode, 0)
++        self.assertEqual(result.stdout, "")
++        self.assertIn("synthetic database failure", result.stderr)
++
++
++if __name__ == "__main__":
++    if sys.argv[1:2] == ["--docker"]:
++        sys.exit(docker_probe())
++    unittest.main()
