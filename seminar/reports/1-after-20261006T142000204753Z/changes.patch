@@ -1,0 +1,188 @@
+diff --git a/api/openapi.yaml b/api/openapi.yaml
+index a877ac4..f04d4e4 100644
+--- a/api/openapi.yaml
++++ b/api/openapi.yaml
+@@ -349,7 +349,7 @@ paths:
+           description: API process is alive
+           content:
+             application/json:
+-              schema: { $ref: "#/components/schemas/Health" }
++              schema: { $ref: "#/components/schemas/Liveness" }
+   /health/ready:
+     get:
+       operationId: getReadiness
+@@ -737,6 +737,18 @@ components:
+       required: [error]
+       properties:
+         error: { $ref: "#/components/schemas/ErrorDetail" }
++    Liveness:
++      type: object
++      additionalProperties: false
++      required: [status, service]
++      properties:
++        status:
++          type: string
++          enum: [live]
++          x-enum-varnames: [LivenessLive]
++        service:
++          type: string
++          enum: ["DRIP Недвижимость"]
+     Health:
+       type: object
+       additionalProperties: false
+diff --git a/backend/internal/adapters/httpapi/generated/api.gen.go b/backend/internal/adapters/httpapi/generated/api.gen.go
+index 917030e..2be25ad 100644
+--- a/backend/internal/adapters/httpapi/generated/api.gen.go
++++ b/backend/internal/adapters/httpapi/generated/api.gen.go
+@@ -126,6 +126,36 @@ func (e HealthStatus) Valid() bool {
+ 	}
+ }
+ 
++// Defines values for LivenessService.
++const (
++	DRIPНедвижимость LivenessService = "DRIP Недвижимость"
++)
++
++// Valid indicates whether the value is a known member of the LivenessService enum.
++func (e LivenessService) Valid() bool {
++	switch e {
++	case DRIPНедвижимость:
++		return true
++	default:
++		return false
++	}
++}
++
++// Defines values for LivenessStatus.
++const (
++	LivenessLive LivenessStatus = "live"
++)
++
++// Valid indicates whether the value is a known member of the LivenessStatus enum.
++func (e LivenessStatus) Valid() bool {
++	switch e {
++	case LivenessLive:
++		return true
++	default:
++		return false
++	}
++}
++
+ // Defines values for ResidentialComplexCatalogFreshness.
+ const (
+ 	Fresh ResidentialComplexCatalogFreshness = "fresh"
+@@ -372,6 +402,18 @@ type Health struct {
+ // HealthStatus defines model for Health.Status.
+ type HealthStatus string
+ 
++// Liveness defines model for Liveness.
++type Liveness struct {
++	Service LivenessService `json:"service"`
++	Status  LivenessStatus  `json:"status"`
++}
++
++// LivenessService defines model for Liveness.Service.
++type LivenessService string
++
++// LivenessStatus defines model for Liveness.Status.
++type LivenessStatus string
++
+ // LoginRequest defines model for LoginRequest.
+ type LoginRequest struct {
+ 	Login    string `json:"login"`
+@@ -2991,7 +3033,7 @@ type GetLivenessResponseObject interface {
+ 	VisitGetLivenessResponse(w http.ResponseWriter) error
+ }
+ 
+-type GetLiveness200JSONResponse Health
++type GetLiveness200JSONResponse Liveness
+ 
+ func (response GetLiveness200JSONResponse) VisitGetLivenessResponse(w http.ResponseWriter) error {
+ 
+diff --git a/backend/internal/adapters/httpapi/handler.go b/backend/internal/adapters/httpapi/handler.go
+index 6b35579..4d81404 100644
+--- a/backend/internal/adapters/httpapi/handler.go
++++ b/backend/internal/adapters/httpapi/handler.go
+@@ -214,7 +214,7 @@ func (server) GetLiveness(
+ 	context.Context,
+ 	generated.GetLivenessRequestObject,
+ ) (generated.GetLivenessResponseObject, error) {
+-	return generated.GetLiveness200JSONResponse{Status: generated.Live}, nil
++	return generated.GetLiveness200JSONResponse{Status: "live", Service: "DRIP Недвижимость"}, nil
+ }
+ 
+ func (service server) GetReadiness(
+diff --git a/backend/internal/adapters/httpapi/liveness_test.go b/backend/internal/adapters/httpapi/liveness_test.go
+new file mode 100644
+index 0000000..0f94749
+--- /dev/null
++++ b/backend/internal/adapters/httpapi/liveness_test.go
+@@ -0,0 +1,42 @@
++package httpapi_test
++
++import (
++	"context"
++	"encoding/json"
++	"net/http"
++	"net/http/httptest"
++	"testing"
++
++	"github.com/SinDenis/drip-real-estate-demo/backend/internal/adapters/httpapi"
++	"github.com/SinDenis/drip-real-estate-demo/backend/internal/application"
++)
++
++func TestLivenessIncludesServiceWithoutCheckingInfrastructure(t *testing.T) {
++	t.Parallel()
++
++	handler := httpapi.NewHandler(httpapi.Dependencies{
++		Readiness: application.NewReadinessService(unexpectedLivenessProbe{t: t}),
++	})
++	response := httptest.NewRecorder()
++	handler.ServeHTTP(response, httptest.NewRequestWithContext(t.Context(), http.MethodGet, "/health/live", nil))
++
++	if response.Code != http.StatusOK {
++		t.Fatalf("status = %d, want %d", response.Code, http.StatusOK)
++	}
++	var body map[string]string
++	if err := json.NewDecoder(response.Body).Decode(&body); err != nil {
++		t.Fatalf("decode liveness response: %v", err)
++	}
++	if len(body) != 2 || body["status"] != "live" || body["service"] != "DRIP Недвижимость" {
++		t.Fatalf("body = %v, want status=live and service=DRIP Недвижимость", body)
++	}
++}
++
++type unexpectedLivenessProbe struct {
++	t *testing.T
++}
++
++func (probe unexpectedLivenessProbe) Check(context.Context) error {
++	probe.t.Fatal("liveness must not check infrastructure")
++	return nil
++}
+diff --git a/frontend/src/api/schema.d.ts b/frontend/src/api/schema.d.ts
+index 6db624f..352b498 100644
+--- a/frontend/src/api/schema.d.ts
++++ b/frontend/src/api/schema.d.ts
+@@ -501,6 +501,12 @@ export interface components {
+         ErrorResponse: {
+             error: components["schemas"]["ErrorDetail"];
+         };
++        Liveness: {
++            /** @enum {string} */
++            status: "live";
++            /** @enum {string} */
++            service: "DRIP Недвижимость";
++        };
+         Health: {
+             /** @enum {string} */
+             status: "live" | "ready" | "not_ready";
+@@ -1109,7 +1115,7 @@ export interface operations {
+                     [name: string]: unknown;
+                 };
+                 content: {
+-                    "application/json": components["schemas"]["Health"];
++                    "application/json": components["schemas"]["Liveness"];
+                 };
+             };
+         };

@@ -1,0 +1,34 @@
+{
+  "task": 1,
+  "condition": "after",
+  "seconds": 101.81,
+  "input_tokens": 287623,
+  "cached_input_tokens": 252672,
+  "output_tokens": 2553,
+  "total_tokens": 290176,
+  "uncached_input_tokens": 34951,
+  "status": "PASS",
+  "checks": {
+    "original_tests_and_context_unchanged": true,
+    "http_behavior": true,
+    "generator_runs": true,
+    "both_generated_contracts_current": true,
+    "route_in_openapi": true,
+    "backend_and_existing_tests": true
+  },
+  "handwritten_changed_lines": 58,
+  "commands": 12,
+  "exit_code": 0,
+  "prompt_sha256": "fc7247990938352aed58d457edd68c8056000bdac4547842595e3409fbee6b2e",
+  "code_sha256": "09047ec0eeb8d7e916606bd41b0e204038b7a74ec883f00dc82e60fb97d767de",
+  "checker_sha256": {
+    "2_test.go": "374c3e1523bbe0190b49a9dc3700706a90ac6e72cc456fa25450c1150610f882",
+    "3_test.go": "5c8bcfa9395917b68b2a3400881336a231151dcb6ca013eb3b7eb4a8524e8a92",
+    "check.py": "1e6bb643c19d189f1d37d77b8bd65422055cfc75408388237c111bc81adfcf0a",
+    "1_test.go": "0c401fa73bbbe3c85bf2e0addbbb01ff4dc3a0adc1745c5fbc68dcf5bc8a96e4",
+    "fixture_test.go": "0e8116206d369d5071b4f035f6d54cbf42a6c798d0c92d948039a936eba24164"
+  },
+  "context_files": [
+    "AGENTS.md"
+  ]
+}

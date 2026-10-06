@@ -1,0 +1,29 @@
+$ go test ./internal/adapters/httpapi -run ^TestSeminar -count=1
+ok  	github.com/SinDenis/drip-real-estate-demo/backend/internal/adapters/httpapi	0.460s
+
+
+$ make generate PNPM=pnpm
+/Applications/Xcode.app/Contents/Developer/usr/bin/make --no-print-directory --directory=backend generate
+go tool oapi-codegen -config oapi-codegen.yaml ../api/openapi.yaml
+/Applications/Xcode.app/Contents/Developer/usr/bin/make --no-print-directory --directory=frontend generate
+pnpm generate:api
+✨ openapi-typescript 7.13.0
+🚀 ../api/openapi.yaml → src/api/schema.d.ts [49.7ms]
+$ pnpm --package=typescript@5.9.3 --package=openapi-typescript@7.13.0 dlx openapi-typescript ../api/openapi.yaml -o src/api/schema.d.ts
+
+
+$ go test ./... -count=1
+ok  	github.com/SinDenis/drip-real-estate-demo/backend/architecture	0.400s
+?   	github.com/SinDenis/drip-real-estate-demo/backend/cmd/api	[no test files]
+?   	github.com/SinDenis/drip-real-estate-demo/backend/cmd/eiszhsfake	[no test files]
+ok  	github.com/SinDenis/drip-real-estate-demo/backend/internal/adapters/eiszhs	0.546s
+ok  	github.com/SinDenis/drip-real-estate-demo/backend/internal/adapters/httpapi	0.881s
+?   	github.com/SinDenis/drip-real-estate-demo/backend/internal/adapters/httpapi/generated	[no test files]
+ok  	github.com/SinDenis/drip-real-estate-demo/backend/internal/adapters/objectstorage	1.082s
+ok  	github.com/SinDenis/drip-real-estate-demo/backend/internal/adapters/postgres	1.607s
+ok  	github.com/SinDenis/drip-real-estate-demo/backend/internal/adapters/security	2.288s
+ok  	github.com/SinDenis/drip-real-estate-demo/backend/internal/application	2.361s
+ok  	github.com/SinDenis/drip-real-estate-demo/backend/internal/platform/bootstrap	3.011s
+ok  	github.com/SinDenis/drip-real-estate-demo/backend/internal/platform/config	2.394s
+ok  	github.com/SinDenis/drip-real-estate-demo/backend/internal/platform/httpserver	4.119s
+ok  	github.com/SinDenis/drip-real-estate-demo/backend/internal/platform/observability	3.429s

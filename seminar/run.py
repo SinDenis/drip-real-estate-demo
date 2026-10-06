@@ -244,7 +244,7 @@ def write_readme():
             failures = [key for key, value in row['checks'].items() if not value]
             if failures:
                 text += arm + ': ' + ', '.join(failures) + '. '
-        text += '\n\n'
+        text = text.rstrip() + '\n\n'
     text += '''## Что открыть в отчете
 
 В `reports/` каждый запуск сохранен отдельно: `result.json` - измерения, `changes.patch` - код,
