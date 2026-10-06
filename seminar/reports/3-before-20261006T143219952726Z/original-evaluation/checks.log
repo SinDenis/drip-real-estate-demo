@@ -1,0 +1,34 @@
+$ go test ./internal/adapters/httpapi -run ^TestSeminar -count=1
+--- FAIL: TestSeminarDuplicateErrors (0.00s)
+    --- FAIL: TestSeminarDuplicateErrors/invalid_key (0.00s)
+        ce_3_test.go:64: status=201 want=422 body={"collectionProgress":{"cached":0,"completedRequests":0,"currentComplexId":"1001","discoveredTotal":0,"failed":0,"fetched":0,"nextActionAt":"2026-10-06T12:00:00Z","phase":"discovering_objects"},"createdAt":"2026-10-06T12:00:00Z","createdBy":{"displayName":"New analyst","id":"22222222-2222-4222-8222-222222222222"},"filters":{"regionCodes":["77"],"regions":["Current region"],"residentialComplexIds":["1001"],"residentialComplexes":["Current complex"],"segmentCodes":["residential"],"segments":["Жилые помещения"]},"id":"01a111a4-1558-7ce0-b5d7-7b9b65ad1b58","name":"Current region - Current complex","status":"collecting","subtitle":"Жилые помещения"}
+FAIL
+FAIL	github.com/SinDenis/drip-real-estate-demo/backend/internal/adapters/httpapi	0.407s
+FAIL
+
+
+$ make generate PNPM=pnpm
+/Applications/Xcode.app/Contents/Developer/usr/bin/make --no-print-directory --directory=backend generate
+go tool oapi-codegen -config oapi-codegen.yaml ../api/openapi.yaml
+/Applications/Xcode.app/Contents/Developer/usr/bin/make --no-print-directory --directory=frontend generate
+pnpm generate:api
+✨ openapi-typescript 7.13.0
+🚀 ../api/openapi.yaml → src/api/schema.d.ts [47.8ms]
+$ pnpm --package=typescript@5.9.3 --package=openapi-typescript@7.13.0 dlx openapi-typescript ../api/openapi.yaml -o src/api/schema.d.ts
+
+
+$ go test ./... -count=1
+ok  	github.com/SinDenis/drip-real-estate-demo/backend/architecture	0.434s
+?   	github.com/SinDenis/drip-real-estate-demo/backend/cmd/api	[no test files]
+?   	github.com/SinDenis/drip-real-estate-demo/backend/cmd/eiszhsfake	[no test files]
+ok  	github.com/SinDenis/drip-real-estate-demo/backend/internal/adapters/eiszhs	0.727s
+ok  	github.com/SinDenis/drip-real-estate-demo/backend/internal/adapters/httpapi	0.333s
+?   	github.com/SinDenis/drip-real-estate-demo/backend/internal/adapters/httpapi/generated	[no test files]
+ok  	github.com/SinDenis/drip-real-estate-demo/backend/internal/adapters/objectstorage	1.744s
+ok  	github.com/SinDenis/drip-real-estate-demo/backend/internal/adapters/postgres	0.704s
+ok  	github.com/SinDenis/drip-real-estate-demo/backend/internal/adapters/security	1.383s
+ok  	github.com/SinDenis/drip-real-estate-demo/backend/internal/application	1.388s
+ok  	github.com/SinDenis/drip-real-estate-demo/backend/internal/platform/bootstrap	2.058s
+ok  	github.com/SinDenis/drip-real-estate-demo/backend/internal/platform/config	2.375s
+ok  	github.com/SinDenis/drip-real-estate-demo/backend/internal/platform/httpserver	3.120s
+ok  	github.com/SinDenis/drip-real-estate-demo/backend/internal/platform/observability	2.747s

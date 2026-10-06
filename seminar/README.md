@@ -18,12 +18,20 @@
 
 | Шаг / тег | Что показывать | Повторить замер |
 |---|---|---|
-| ce-code-01 | /health/live без инструкций | `python3 seminar/run.py 1 before --context-ref ce-code-01` |
+| ce-code-01 | /health/live без AGENTS.md | `python3 seminar/run.py 1 before --context-ref ce-code-01` |
 | ce-code-02 | Добавляем короткий AGENTS.md, тот же промпт | `python3 seminar/run.py 1 after --context-ref ce-code-02` |
 | ce-code-03 | CSV-экспорт, пока только AGENTS.md | `python3 seminar/run.py 2 before --context-ref ce-code-03` |
 | ce-code-04 | Добавляем карту и доменный словарь | `python3 seminar/run.py 2 after --context-ref ce-code-04` |
 | ce-code-05 | Копирование фильтров сессии без ADR | `python3 seminar/run.py 3 before --context-ref ce-code-05` |
 | ce-code-06 | Добавляем решение о создании неизменяемых сессий | `python3 seminar/run.py 3 after --context-ref ce-code-06` |
+
+Точный текст добавляемого контекста показывают три команды:
+
+```sh
+git diff ce-code-01 ce-code-02 -- AGENTS.md
+git diff ce-code-03 ce-code-04 -- AGENTS.md REPO_MAP.md CONTEXT.md
+git diff ce-code-05 ce-code-06 -- AGENTS.md docs/adr
+```
 
 1. **Liveness**: поле service, сохранение status и поведения readiness, согласованные Go/TypeScript контракты.
 2. **CSV**: новый GET, авторизация, экранирование, неизвестное значение и настоящий ноль, ошибки, отсутствие изменения данных.
@@ -48,17 +56,21 @@ INVALID означает незавершенный запуск инструм�
 | 1. Название в liveness | after | 101.8 | 290,176 | 252,672 | 34,951 | [PASS](reports/1-after-20261006T142000204753Z/checks.log) | [58](reports/1-after-20261006T142000204753Z/changes.patch) |
 | 2. CSV-экспорт сессии | before | 119.8 | 336,322 | 294,912 | 37,303 | [PASS](reports/2-before-20261006T142310284237Z/checks.log) | [231](reports/2-before-20261006T142310284237Z/changes.patch) |
 | 2. CSV-экспорт сессии | after | 171.2 | 516,154 | 480,512 | 30,556 | [PASS](reports/2-after-20261006T142754568167Z/checks.log) | [247](reports/2-after-20261006T142754568167Z/changes.patch) |
+| 3. Копирование фильтров сессии | before | 187.1 | 473,044 | 430,976 | 34,785 | [PASS](reports/3-before-20261006T143219952726Z/checks.log) | [263](reports/3-before-20261006T143219952726Z/changes.patch) |
 
 *Добавленные и удаленные строки, включая тесты и YAML; generated Go/TypeScript исключены.
 
-**1. Название в liveness**: PASS -> PASS. Одинаковые промпт, код и проверяющий: да.
+**1. Название в liveness**: PASS -> PASS. Одинаковые промпт, код и проверяющий: да. Время: -34.7%. Total: -41.3%. UNC: +19.0%.
 
-**2. CSV-экспорт сессии**: PASS -> PASS. Одинаковые промпт, код и проверяющий: да.
+**2. CSV-экспорт сессии**: PASS -> PASS. Одинаковые промпт, код и проверяющий: да. Время: +43.0%. Total: +53.5%. UNC: -18.1%.
+
+**Исправление проверяющего в задаче 3:** пробельный ключ оказался допустимым по существующему контракту. Тест заменен на ключ длиной 129 символов и проверен на прежней операции создания. Готовый патч переоценен без нового вызова модели; время и токены сохранены. [Первоначальная ошибочная оценка](reports/3-before-20261006T143219952726Z/original-evaluation/checks.log) также сохранена.
 
 ## Что открыть в отчете
 
 В `reports/` каждый запуск сохранен отдельно: `result.json` - измерения, `changes.patch` - код,
 `answer.md` - ответ, `events.jsonl` - действия, `checks.log` - независимые проверки.
+Патч сохраняется до генерации и тестов внешнего проверяющего.
 `input.json`, `prompt.txt`, `context/` и `checker/` сохраняют точные входы и проверяющий.
 Повторные запуски добавляют каталоги, таблица показывает последние результаты каждого условия.
 Авторизация и кеши лежат в игнорируемой `.runtime/`; агент получает только код и документы.

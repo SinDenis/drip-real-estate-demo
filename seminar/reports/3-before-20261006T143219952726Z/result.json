@@ -1,0 +1,41 @@
+{
+  "task": 3,
+  "condition": "before",
+  "seconds": 187.1,
+  "input_tokens": 465761,
+  "cached_input_tokens": 430976,
+  "output_tokens": 7283,
+  "total_tokens": 473044,
+  "uncached_input_tokens": 34785,
+  "status": "PASS",
+  "checks": {
+    "original_tests_and_context_unchanged": true,
+    "http_behavior": true,
+    "generator_runs": true,
+    "both_generated_contracts_current": true,
+    "route_in_openapi": true,
+    "backend_and_existing_tests": true
+  },
+  "handwritten_changed_lines": 263,
+  "commands": 13,
+  "exit_code": 0,
+  "prompt_sha256": "3aeb31a6ab33db4e78ee08d97a4063c4795e5ad2f8674b85aab9dbb34d201efd",
+  "code_sha256": "09047ec0eeb8d7e916606bd41b0e204038b7a74ec883f00dc82e60fb97d767de",
+  "checker_sha256": {
+    "2_test.go": "374c3e1523bbe0190b49a9dc3700706a90ac6e72cc456fa25450c1150610f882",
+    "3_test.go": "b0ff7c6303e09ae73d7367f05ff59a61f2db0da0d8874836461bd7bb1b22e896",
+    "check.py": "1e6bb643c19d189f1d37d77b8bd65422055cfc75408388237c111bc81adfcf0a",
+    "1_test.go": "0c401fa73bbbe3c85bf2e0addbbb01ff4dc3a0adc1745c5fbc68dcf5bc8a96e4",
+    "fixture_test.go": "8fa2b6152692d0ab2ed8254ee9540943dc0b0111c222c962eb8cb0e17b680c70"
+  },
+  "context_files": [
+    "AGENTS.md",
+    "REPO_MAP.md",
+    "CONTEXT.md"
+  ],
+  "regrade": {
+    "model_calls": 0,
+    "original": "original-evaluation/result.json",
+    "reason": "The original invalid-key fixture used ASCII spaces, which the existing contract permits. Replaced with 129 characters, outside the documented 128-character maximum; verified against the existing POST operation."
+  }
+}

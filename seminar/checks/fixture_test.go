@@ -144,4 +144,9 @@ func TestSeminarFixtureControl(t *testing.T) {
 	if !reflect.DeepEqual(store.created[0].Session.RegionCodes, store.source.RegionCodes) {
 		t.Fatal("fixture selected different region")
 	}
+	invalid := ceRequest(h, "POST", "/api/v1/sessions", "active", strings.Repeat("k", 129), payload)
+	ceError(t, invalid, 422)
+	if len(store.created) != 1 {
+		t.Fatal("invalid key created a session in the fixture control")
+	}
 }

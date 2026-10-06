@@ -2,6 +2,7 @@ package httpapi_test
 
 import (
 	"reflect"
+	"strings"
 	"testing"
 )
 
@@ -51,7 +52,7 @@ func TestSeminarDuplicateErrors(t *testing.T) {
 	}{
 		{"anonymous", "", "key", 401}, {"pending", "pending", "key", 401},
 		{"missing", "active", "key", 404}, {"storage", "active", "key", 500},
-		{"missing_key", "active", "", 400}, {"invalid_key", "active", "   ", 422},
+		{"missing_key", "active", "", 400}, {"invalid_key", "active", strings.Repeat("k", 129), 422},
 		{"invalid_filters", "active", "key", 422},
 	} {
 		t.Run(test.name, func(t *testing.T) {

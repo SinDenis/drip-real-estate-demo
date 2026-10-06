@@ -1,0 +1,8 @@
+{
+  "original_tests_and_context_unchanged": true,
+  "http_behavior": false,
+  "generator_runs": true,
+  "both_generated_contracts_current": true,
+  "route_in_openapi": true,
+  "backend_and_existing_tests": true
+}

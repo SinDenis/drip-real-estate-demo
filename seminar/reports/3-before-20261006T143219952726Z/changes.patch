@@ -1,0 +1,619 @@
+diff --git a/api/openapi.yaml b/api/openapi.yaml
+index a877ac4..1cafef1 100644
+--- a/api/openapi.yaml
++++ b/api/openapi.yaml
+@@ -137,6 +137,29 @@ paths:
+         "401": { $ref: "#/components/responses/Unauthorized" }
+         "404": { $ref: "#/components/responses/NotFound" }
+         default: { $ref: "#/components/responses/UnexpectedError" }
++  /api/v1/sessions/{sessionId}/duplicate:
++    post:
++      operationId: duplicateAnalyticalSession
++      summary: Create a new session using the visible source canonical filters
++      parameters:
++        - $ref: "#/components/parameters/SessionId"
++        - $ref: "#/components/parameters/SessionCookie"
++        - $ref: "#/components/parameters/IdempotencyKey"
++      responses:
++        "201":
++          description: A new session was created, or the same request was replayed
++          headers:
++            Location:
++              required: true
++              schema: { type: string }
++          content:
++            application/json:
++              schema: { $ref: "#/components/schemas/AnalyticalSessionDetail" }
++        "401": { $ref: "#/components/responses/Unauthorized" }
++        "404": { $ref: "#/components/responses/NotFound" }
++        "409": { $ref: "#/components/responses/Conflict" }
++        "422": { $ref: "#/components/responses/ValidationFailed" }
++        default: { $ref: "#/components/responses/UnexpectedError" }
+   /api/v1/sessions/{sessionId}/collect:
+     post:
+       operationId: collectCurrentSnapshot
+diff --git a/backend/internal/adapters/httpapi/duplicate.go b/backend/internal/adapters/httpapi/duplicate.go
+new file mode 100644
+index 0000000..ed326da
+--- /dev/null
++++ b/backend/internal/adapters/httpapi/duplicate.go
+@@ -0,0 +1,60 @@
++package httpapi
++
++import (
++	"context"
++	"errors"
++	"net/http"
++
++	"github.com/SinDenis/drip-real-estate-demo/backend/internal/adapters/httpapi/generated"
++	"github.com/SinDenis/drip-real-estate-demo/backend/internal/application"
++)
++
++func (service server) DuplicateAnalyticalSession(
++	ctx context.Context,
++	request generated.DuplicateAnalyticalSessionRequestObject,
++) (generated.DuplicateAnalyticalSessionResponseObject, error) {
++	token := cookieValue(request.Params.AdSession)
++	source, err := service.dependencies.Access.GetAnalyticalSession(ctx, token, request.SessionId.String())
++	if isUnauthorized(err) {
++		return generated.DuplicateAnalyticalSession401JSONResponse{
++			UnauthorizedJSONResponse: generated.UnauthorizedJSONResponse(unauthorizedError()),
++		}, nil
++	}
++	if errors.Is(err, application.ErrNotFound) {
++		return generated.DuplicateAnalyticalSession404JSONResponse{
++			NotFoundJSONResponse: generated.NotFoundJSONResponse(notFoundError("Сессия не найдена")),
++		}, nil
++	}
++	if err != nil {
++		return nil, err
++	}
++	session, _, err := service.dependencies.Sessions.Create(ctx, token, request.Params.IdempotencyKey,
++		application.CreateSessionInput{
++			RegionCodes:           source.RegionCodes,
++			ResidentialComplexIDs: source.ResidentialComplexIDs,
++			SegmentCodes:          source.SegmentCodes,
++		})
++	if response := createSessionErrorResponse(err); response != nil {
++		return duplicateCreateResponse{response}, nil
++	}
++	if err != nil {
++		return nil, err
++	}
++	detail, err := analyticalSessionDetail(session)
++	if err != nil {
++		return nil, err
++	}
++	return generated.DuplicateAnalyticalSession201JSONResponse{
++		Body:    detail,
++		Headers: generated.DuplicateAnalyticalSession201ResponseHeaders{Location: "/api/v1/sessions/" + session.ID},
++	}, nil
++}
++
++// Creation errors have the same status and JSON contract for both operations.
++type duplicateCreateResponse struct {
++	generated.CreateAnalyticalSessionResponseObject
++}
++
++func (response duplicateCreateResponse) VisitDuplicateAnalyticalSessionResponse(w http.ResponseWriter) error {
++	return response.VisitCreateAnalyticalSessionResponse(w)
++}
+diff --git a/backend/internal/adapters/httpapi/duplicate_test.go b/backend/internal/adapters/httpapi/duplicate_test.go
+new file mode 100644
+index 0000000..49c0352
+--- /dev/null
++++ b/backend/internal/adapters/httpapi/duplicate_test.go
+@@ -0,0 +1,180 @@
++package httpapi_test
++
++import (
++	"context"
++	"encoding/json"
++	"errors"
++	"net/http"
++	"net/http/httptest"
++	"reflect"
++	"strings"
++	"testing"
++	"time"
++
++	"github.com/SinDenis/drip-real-estate-demo/backend/internal/adapters/httpapi"
++	"github.com/SinDenis/drip-real-estate-demo/backend/internal/adapters/httpapi/generated"
++	"github.com/SinDenis/drip-real-estate-demo/backend/internal/application"
++)
++
++const sourceID = "01996c43-6c00-7abc-8def-1234567890ab"
++
++func TestDuplicateSessionCreatesAndReplays(t *testing.T) {
++	s, h := duplicateFixture()
++	before, _ := json.Marshal(s.source)
++	first := duplicateRequest(t, h, "submit", "cookie")
++	if first.Code != 201 {
++		t.Fatalf("create: %d %s", first.Code, first.Body.String())
++	}
++	var detail generated.AnalyticalSessionDetail
++	if err := json.Unmarshal(first.Body.Bytes(), &detail); err != nil {
++		t.Fatal(err)
++	}
++	if detail.Id.String() == s.source.ID || detail.CreatedBy.Id.String() != s.account.ID || !detail.CreatedAt.Equal(s.now) || detail.Status != "collecting" || detail.CurrentEiszhsDashboard != nil || detail.ObservedWindow != nil || detail.Filters.Period != nil {
++		t.Fatalf("new session: %#v", detail)
++	}
++	if first.Header().Get("Location") != "/api/v1/sessions/"+detail.Id.String() {
++		t.Fatal("wrong Location")
++	}
++	if !reflect.DeepEqual(s.input.RegionCodes, []string{"50", "77"}) || !reflect.DeepEqual(s.input.ResidentialComplexIDs, []string{"1001", "1002"}) || !reflect.DeepEqual(s.input.SegmentCodes, []string{"residential"}) {
++		t.Fatalf("filters: %#v", s.input)
++	}
++	after, _ := json.Marshal(s.source)
++	if string(before) != string(after) {
++		t.Fatal("source changed")
++	}
++	s.source.RegionCodes = []string{"50", "77"}
++	s.source.ResidentialComplexIDs = []string{"1001", "1002", "1001"}
++	replay := duplicateRequest(t, h, "submit", "cookie")
++	if replay.Code != 201 || replay.Body.String() != first.Body.String() || replay.Header().Get("Location") != first.Header().Get("Location") || s.creates != 1 || s.resolves != 1 {
++		t.Fatalf("replay: %d %s", replay.Code, replay.Body.String())
++	}
++	s.source.RegionCodes = []string{"77"}
++	conflict := duplicateRequest(t, h, "submit", "cookie")
++	if conflict.Code != 409 || !strings.Contains(conflict.Body.String(), `"idempotency_conflict"`) {
++		t.Fatalf("conflict: %d %s", conflict.Code, conflict.Body.String())
++	}
++}
++
++func TestDuplicateSessionErrors(t *testing.T) {
++	cases := []struct {
++		name, key, token, code string
++		status                 int
++		setup                  func(*duplicateStore)
++	}{
++		{"missing key", "", "cookie", "validation_failed", 400, nil},
++		{"invalid key", strings.Repeat("a", 129), "cookie", "invalid_session_filters", 422, nil},
++		{"non ASCII key", "ключ", "cookie", "invalid_session_filters", 422, nil},
++		{"no cookie", "key", "", "unauthenticated", 401, nil},
++		{"expired cookie", "key", "cookie", "unauthenticated", 401, func(s *duplicateStore) { s.authorized = false }},
++		{"inactive account", "key", "cookie", "unauthenticated", 401, func(s *duplicateStore) { s.account.State = application.AccountDeactivated }},
++		{"missing source", "key", "cookie", "not_found", 404, func(s *duplicateStore) { s.visible = false }},
++		{"hidden source", "key", "cookie", "not_found", 404, func(s *duplicateStore) { s.visible = false }},
++		{"missing filters", "key", "cookie", "invalid_session_filters", 422, func(s *duplicateStore) { s.source.RegionCodes = nil }},
++		{"invalid filters", "key", "cookie", "invalid_session_filters", 422, func(s *duplicateStore) { s.source.SegmentCodes = []string{"unknown"} }},
++		{"unresolvable filters", "key", "cookie", "invalid_session_filters", 422, func(s *duplicateStore) { s.resolveErr = application.ErrInvalidSessionSelection }},
++		{"read failure", "key", "cookie", "", 500, func(s *duplicateStore) { s.readErr = errors.New("read failed") }},
++		{"create failure", "key", "cookie", "", 500, func(s *duplicateStore) { s.createErr = errors.New("create failed") }},
++	}
++	for _, tc := range cases {
++		t.Run(tc.name, func(t *testing.T) {
++			s, h := duplicateFixture()
++			if tc.setup != nil {
++				tc.setup(s)
++			}
++			res := duplicateRequest(t, h, tc.key, tc.token)
++			if res.Code != tc.status {
++				t.Fatalf("status %d: %s", res.Code, res.Body.String())
++			}
++			var body struct {
++				Error struct {
++					Code string `json:"code"`
++				} `json:"error"`
++			}
++			if err := json.Unmarshal(res.Body.Bytes(), &body); err != nil {
++				t.Fatal(err)
++			}
++			if tc.code != "" && body.Error.Code != tc.code {
++				t.Fatalf("code: %q", body.Error.Code)
++			}
++			if s.creates != 0 {
++				t.Fatal("created on failed request")
++			}
++		})
++	}
++}
++
++func duplicateRequest(t *testing.T, h http.Handler, key, token string) *httptest.ResponseRecorder {
++	t.Helper()
++	req := httptest.NewRequestWithContext(t.Context(), http.MethodPost, "/api/v1/sessions/"+sourceID+"/duplicate", nil)
++	if key != "" {
++		req.Header.Set("Idempotency-Key", key)
++	}
++	if token != "" {
++		req.AddCookie(&http.Cookie{Name: "ad_session", Value: token})
++	}
++	res := httptest.NewRecorder()
++	h.ServeHTTP(res, req)
++	return res
++}
++func duplicateFixture() (*duplicateStore, http.Handler) {
++	old := time.Date(2025, 1, 1, 0, 0, 0, 0, time.UTC)
++	s := &duplicateStore{visible: true, authorized: true, now: old.AddDate(1, 0, 0),
++		account: application.Account{ID: "01996c43-6c00-7abc-8def-1234567890ac", DisplayName: "Новый автор", State: application.AccountActive},
++		source: application.AnalyticalSession{ID: sourceID, CreatedByID: "01996c43-6c00-7abc-8def-1234567890ad", CreatedAt: old, Status: "ready", Name: "Старое имя",
++			RegionCodes: []string{"77", "50"}, ResidentialComplexIDs: []string{"1002", "1001"}, SegmentCodes: []string{"residential"}, Regions: []string{"Старые подписи"}, PeriodFrom: &old, PeriodTo: &old, ObservedFrom: &old, ObservedTo: &old, ObservationIDs: []string{"old-result"}, CurrentDashboard: &application.CurrentDashboard{SourceLabel: "old"}}}
++	access := application.NewAccessService(s, duplicateCredentials{})
++	sessions := application.NewAnalyticalSessionService(access, s, func() time.Time { return s.now })
++	return s, httpapi.NewHandler(httpapi.Dependencies{Access: access, Sessions: sessions})
++}
++
++type duplicateCredentials struct{ application.CredentialManager }
++
++func (duplicateCredentials) HashSessionToken(token string) string { return token }
++
++type duplicateStore struct {
++	application.AccessRepository
++	source                         application.AnalyticalSession
++	account                        application.Account
++	visible, authorized            bool
++	now                            time.Time
++	input                          application.CreateSessionInput
++	saved                          *application.NewAnalyticalSession
++	creates, resolves              int
++	readErr, resolveErr, createErr error
++}
++
++func (s *duplicateStore) FindAccountBySession(_ context.Context, token string, _, _ time.Time) (application.Account, bool, error) {
++	return s.account, s.authorized && token == "cookie", nil
++}
++func (s *duplicateStore) GetAnalyticalSession(_ context.Context, id string) (application.AnalyticalSession, bool, error) {
++	return s.source, s.visible && id == s.source.ID, s.readErr
++}
++func (s *duplicateStore) FindAnalyticalSessionReplay(_ context.Context, key application.AnalyticalSessionIdempotency) (application.AnalyticalSession, bool, error) {
++	if s.saved == nil || s.saved.IdempotencyKey != key.IdempotencyKey || s.saved.AccountID != key.AccountID || s.saved.Endpoint != key.Endpoint {
++		return application.AnalyticalSession{}, false, nil
++	}
++	if s.saved.RequestHash != key.RequestHash {
++		return application.AnalyticalSession{}, false, application.ErrIdempotencyConflict
++	}
++	return s.saved.Session, true, nil
++}
++func (s *duplicateStore) ResolveSessionSelection(_ context.Context, input application.CreateSessionInput, _ time.Time) (application.ResolvedSessionSelection, error) {
++	s.input = input
++	s.resolves++
++	selection := application.ResolvedSessionSelection{}
++	for _, code := range input.RegionCodes {
++		selection.Regions = append(selection.Regions, application.SessionRegion{Code: code, Name: "Регион " + code})
++	}
++	for _, id := range input.ResidentialComplexIDs {
++		selection.Complexes = append(selection.Complexes, application.SessionComplex{ID: id, RegionCode: "77", Name: "ЖК " + id})
++	}
++	return selection, s.resolveErr
++}
++func (s *duplicateStore) CreateAnalyticalSession(_ context.Context, input application.NewAnalyticalSession) (application.AnalyticalSession, bool, error) {
++	if s.createErr != nil {
++		return application.AnalyticalSession{}, false, s.createErr
++	}
++	s.creates++
++	s.saved = &input
++	return input.Session, false, nil
++}
+diff --git a/backend/internal/adapters/httpapi/generated/api.gen.go b/backend/internal/adapters/httpapi/generated/api.gen.go
+index 917030e..cdc674d 100644
+--- a/backend/internal/adapters/httpapi/generated/api.gen.go
++++ b/backend/internal/adapters/httpapi/generated/api.gen.go
+@@ -574,6 +574,12 @@ type CollectCurrentSnapshotParams struct {
+ 	AdSession *SessionCookie `form:"ad_session,omitempty" json:"ad_session,omitempty"`
+ }
+ 
++// DuplicateAnalyticalSessionParams defines parameters for DuplicateAnalyticalSession.
++type DuplicateAnalyticalSessionParams struct {
++	IdempotencyKey IdempotencyKey `json:"Idempotency-Key"`
++	AdSession      *SessionCookie `form:"ad_session,omitempty" json:"ad_session,omitempty"`
++}
++
+ // ChangePasswordJSONRequestBody defines body for ChangePassword for application/json ContentType.
+ type ChangePasswordJSONRequestBody = ChangePasswordRequest
+ 
+@@ -645,6 +651,9 @@ type ServerInterface interface {
+ 	// CollectCurrentSnapshot Advance one current-only ЕИСЖС collection request
+ 	// (POST /api/v1/sessions/{sessionId}/collect)
+ 	CollectCurrentSnapshot(w http.ResponseWriter, r *http.Request, sessionId SessionId, params CollectCurrentSnapshotParams)
++	// DuplicateAnalyticalSession Create a new session using the visible source canonical filters
++	// (POST /api/v1/sessions/{sessionId}/duplicate)
++	DuplicateAnalyticalSession(w http.ResponseWriter, r *http.Request, sessionId SessionId, params DuplicateAnalyticalSessionParams)
+ 	// GetLiveness Report whether the API process is alive
+ 	// (GET /health/live)
+ 	GetLiveness(w http.ResponseWriter, r *http.Request)
+@@ -1394,6 +1403,75 @@ func (siw *ServerInterfaceWrapper) CollectCurrentSnapshot(w http.ResponseWriter,
+ 	handler.ServeHTTP(w, r)
+ }
+ 
++// DuplicateAnalyticalSession operation middleware
++func (siw *ServerInterfaceWrapper) DuplicateAnalyticalSession(w http.ResponseWriter, r *http.Request) {
++
++	var err error
++	_ = err
++
++	// ------------- Path parameter "sessionId" -------------
++	var sessionId SessionId
++
++	err = runtime.BindStyledParameterWithOptions("simple", "sessionId", r.PathValue("sessionId"), &sessionId, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationPath, Explode: false, Required: true, Type: "string", Format: "uuid", ValueIsUnescaped: true})
++	if err != nil {
++		siw.ErrorHandlerFunc(w, r, &InvalidParamFormatError{ParamName: "sessionId", Err: err})
++		return
++	}
++
++	// Parameter object where we will unmarshal all parameters from the context
++	var params DuplicateAnalyticalSessionParams
++
++	headers := r.Header
++
++	// ------------- Required header parameter "Idempotency-Key" -------------
++	if valueList, found := headers[http.CanonicalHeaderKey("Idempotency-Key")]; found {
++		var IdempotencyKey IdempotencyKey
++		n := len(valueList)
++		if n != 1 {
++			siw.ErrorHandlerFunc(w, r, &TooManyValuesForParamError{ParamName: "Idempotency-Key", Count: n})
++			return
++		}
++
++		err = runtime.BindStyledParameterWithOptions("simple", "Idempotency-Key", valueList[0], &IdempotencyKey, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: true, Type: "string", Format: ""})
++		if err != nil {
++			siw.ErrorHandlerFunc(w, r, &InvalidParamFormatError{ParamName: "Idempotency-Key", Err: err})
++			return
++		}
++
++		params.IdempotencyKey = IdempotencyKey
++
++	} else {
++		err := fmt.Errorf("Header parameter Idempotency-Key is required, but not found")
++		siw.ErrorHandlerFunc(w, r, &RequiredHeaderError{ParamName: "Idempotency-Key", Err: err})
++		return
++	}
++
++	{
++		var cookie *http.Cookie
++
++		if cookie, err = r.Cookie("ad_session"); err == nil {
++			var value SessionCookie
++			err = runtime.BindStyledParameterWithOptions("simple", "ad_session", cookie.Value, &value, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationCookie, Explode: true, Required: false, Type: "string", Format: ""})
++			if err != nil {
++				siw.ErrorHandlerFunc(w, r, &InvalidParamFormatError{ParamName: "ad_session", Err: err})
++				return
++			}
++			params.AdSession = &value
++
++		}
++	}
++
++	handler := http.Handler(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
++		siw.Handler.DuplicateAnalyticalSession(w, r, sessionId, params)
++	}))
++
++	for _, middleware := range siw.HandlerMiddlewares {
++		handler = middleware(handler)
++	}
++
++	handler.ServeHTTP(w, r)
++}
++
+ // GetLiveness operation middleware
+ func (siw *ServerInterfaceWrapper) GetLiveness(w http.ResponseWriter, r *http.Request) {
+ 
+@@ -1549,6 +1627,7 @@ func HandlerWithOptions(si ServerInterface, options StdHTTPServerOptions) http.H
+ 	m.HandleFunc(http.MethodGet+" "+options.BaseURL+"/api/v1/sessions", wrapper.ListAnalyticalSessions)
+ 	m.HandleFunc(http.MethodPost+" "+options.BaseURL+"/api/v1/sessions", wrapper.CreateAnalyticalSession)
+ 	m.HandleFunc(http.MethodGet+" "+options.BaseURL+"/api/v1/sessions/{sessionId}", wrapper.GetAnalyticalSession)
++	m.HandleFunc(http.MethodPost+" "+options.BaseURL+"/api/v1/sessions/{sessionId}/duplicate", wrapper.DuplicateAnalyticalSession)
+ 	m.HandleFunc(http.MethodPost+" "+options.BaseURL+"/api/v1/sessions/{sessionId}/collect", wrapper.CollectCurrentSnapshot)
+ 	m.HandleFunc(http.MethodGet+" "+options.BaseURL+"/api/v1/catalog/regions", wrapper.ListRegions)
+ 	m.HandleFunc(http.MethodGet+" "+options.BaseURL+"/api/v1/catalog/segments", wrapper.ListSegments)
+@@ -2984,6 +3063,110 @@ func (response CollectCurrentSnapshotdefaultJSONResponse) VisitCollectCurrentSna
+ 	return err
+ }
+ 
++type DuplicateAnalyticalSessionRequestObject struct {
++	SessionId SessionId `json:"sessionId"`
++	Params    DuplicateAnalyticalSessionParams
++}
++
++type DuplicateAnalyticalSessionResponseObject interface {
++	VisitDuplicateAnalyticalSessionResponse(w http.ResponseWriter) error
++}
++
++type DuplicateAnalyticalSession201ResponseHeaders struct {
++	Location string
++}
++
++type DuplicateAnalyticalSession201JSONResponse struct {
++	Body    AnalyticalSessionDetail
++	Headers DuplicateAnalyticalSession201ResponseHeaders
++}
++
++func (response DuplicateAnalyticalSession201JSONResponse) VisitDuplicateAnalyticalSessionResponse(w http.ResponseWriter) error {
++
++	var buf bytes.Buffer
++	if err := json.NewEncoder(&buf).Encode(response.Body); err != nil {
++		return err
++	}
++	w.Header().Set("Content-Type", "application/json")
++	w.Header().Set("Location", fmt.Sprint(response.Headers.Location))
++	w.WriteHeader(201)
++	_, err := buf.WriteTo(w)
++	return err
++}
++
++type DuplicateAnalyticalSession401JSONResponse struct{ UnauthorizedJSONResponse }
++
++func (response DuplicateAnalyticalSession401JSONResponse) VisitDuplicateAnalyticalSessionResponse(w http.ResponseWriter) error {
++
++	var buf bytes.Buffer
++	if err := json.NewEncoder(&buf).Encode(response); err != nil {
++		return err
++	}
++	w.Header().Set("Content-Type", "application/json")
++	w.WriteHeader(401)
++	_, err := buf.WriteTo(w)
++	return err
++}
++
++type DuplicateAnalyticalSession404JSONResponse struct{ NotFoundJSONResponse }
++
++func (response DuplicateAnalyticalSession404JSONResponse) VisitDuplicateAnalyticalSessionResponse(w http.ResponseWriter) error {
++
++	var buf bytes.Buffer
++	if err := json.NewEncoder(&buf).Encode(response); err != nil {
++		return err
++	}
++	w.Header().Set("Content-Type", "application/json")
++	w.WriteHeader(404)
++	_, err := buf.WriteTo(w)
++	return err
++}
++
++type DuplicateAnalyticalSession409JSONResponse struct{ ConflictJSONResponse }
++
++func (response DuplicateAnalyticalSession409JSONResponse) VisitDuplicateAnalyticalSessionResponse(w http.ResponseWriter) error {
++
++	var buf bytes.Buffer
++	if err := json.NewEncoder(&buf).Encode(response); err != nil {
++		return err
++	}
++	w.Header().Set("Content-Type", "application/json")
++	w.WriteHeader(409)
++	_, err := buf.WriteTo(w)
++	return err
++}
++
++type DuplicateAnalyticalSession422JSONResponse struct{ ValidationFailedJSONResponse }
++
++func (response DuplicateAnalyticalSession422JSONResponse) VisitDuplicateAnalyticalSessionResponse(w http.ResponseWriter) error {
++
++	var buf bytes.Buffer
++	if err := json.NewEncoder(&buf).Encode(response); err != nil {
++		return err
++	}
++	w.Header().Set("Content-Type", "application/json")
++	w.WriteHeader(422)
++	_, err := buf.WriteTo(w)
++	return err
++}
++
++type DuplicateAnalyticalSessiondefaultJSONResponse struct {
++	Body       ErrorResponse
++	StatusCode int
++}
++
++func (response DuplicateAnalyticalSessiondefaultJSONResponse) VisitDuplicateAnalyticalSessionResponse(w http.ResponseWriter) error {
++
++	var buf bytes.Buffer
++	if err := json.NewEncoder(&buf).Encode(response.Body); err != nil {
++		return err
++	}
++	w.Header().Set("Content-Type", "application/json")
++	w.WriteHeader(response.StatusCode)
++	_, err := buf.WriteTo(w)
++	return err
++}
++
+ type GetLivenessRequestObject struct {
+ }
+ 
+@@ -3096,6 +3279,9 @@ type StrictServerInterface interface {
+ 	// CollectCurrentSnapshot Advance one current-only ЕИСЖС collection request
+ 	// (POST /api/v1/sessions/{sessionId}/collect)
+ 	CollectCurrentSnapshot(ctx context.Context, request CollectCurrentSnapshotRequestObject) (CollectCurrentSnapshotResponseObject, error)
++	// DuplicateAnalyticalSession Create a new session using the visible source canonical filters
++	// (POST /api/v1/sessions/{sessionId}/duplicate)
++	DuplicateAnalyticalSession(ctx context.Context, request DuplicateAnalyticalSessionRequestObject) (DuplicateAnalyticalSessionResponseObject, error)
+ 	// GetLiveness Report whether the API process is alive
+ 	// (GET /health/live)
+ 	GetLiveness(ctx context.Context, request GetLivenessRequestObject) (GetLivenessResponseObject, error)
+@@ -3652,6 +3838,33 @@ func (sh *strictHandler) CollectCurrentSnapshot(w http.ResponseWriter, r *http.R
+ 	}
+ }
+ 
++// DuplicateAnalyticalSession operation middleware
++func (sh *strictHandler) DuplicateAnalyticalSession(w http.ResponseWriter, r *http.Request, sessionId SessionId, params DuplicateAnalyticalSessionParams) {
++	var request DuplicateAnalyticalSessionRequestObject
++
++	request.SessionId = sessionId
++	request.Params = params
++
++	handler := func(ctx context.Context, w http.ResponseWriter, r *http.Request, request interface{}) (interface{}, error) {
++		return sh.ssi.DuplicateAnalyticalSession(ctx, request.(DuplicateAnalyticalSessionRequestObject))
++	}
++	for _, middleware := range sh.middlewares {
++		handler = middleware(handler, "DuplicateAnalyticalSession")
++	}
++
++	response, err := handler(r.Context(), w, r, request)
++
++	if err != nil {
++		sh.options.ResponseErrorHandlerFunc(w, r, err)
++	} else if validResponse, ok := response.(DuplicateAnalyticalSessionResponseObject); ok {
++		if err := validResponse.VisitDuplicateAnalyticalSessionResponse(w); err != nil {
++			sh.options.ResponseErrorHandlerFunc(w, r, err)
++		}
++	} else if response != nil {
++		sh.options.ResponseErrorHandlerFunc(w, r, fmt.Errorf("unexpected response type: %T", response))
++	}
++}
++
+ // GetLiveness operation middleware
+ func (sh *strictHandler) GetLiveness(w http.ResponseWriter, r *http.Request) {
+ 	var request GetLivenessRequestObject
+diff --git a/frontend/src/api/schema.d.ts b/frontend/src/api/schema.d.ts
+index 6db624f..f83ed12 100644
+--- a/frontend/src/api/schema.d.ts
++++ b/frontend/src/api/schema.d.ts
+@@ -107,6 +107,23 @@ export interface paths {
+         patch?: never;
+         trace?: never;
+     };
++    "/api/v1/sessions/{sessionId}/duplicate": {
++        parameters: {
++            query?: never;
++            header?: never;
++            path?: never;
++            cookie?: never;
++        };
++        get?: never;
++        put?: never;
++        /** Create a new session using the visible source canonical filters */
++        post: operations["duplicateAnalyticalSession"];
++        delete?: never;
++        options?: never;
++        head?: never;
++        patch?: never;
++        trace?: never;
++    };
+     "/api/v1/sessions/{sessionId}/collect": {
+         parameters: {
+             query?: never;
+@@ -777,6 +794,38 @@ export interface operations {
+             default: components["responses"]["UnexpectedError"];
+         };
+     };
++    duplicateAnalyticalSession: {
++        parameters: {
++            query?: never;
++            header: {
++                "Idempotency-Key": components["parameters"]["IdempotencyKey"];
++            };
++            path: {
++                sessionId: components["parameters"]["SessionId"];
++            };
++            cookie?: {
++                ad_session?: components["parameters"]["SessionCookie"];
++            };
++        };
++        requestBody?: never;
++        responses: {
++            /** @description A new session was created, or the same request was replayed */
++            201: {
++                headers: {
++                    Location: string;
++                    [name: string]: unknown;
++                };
++                content: {
++                    "application/json": components["schemas"]["AnalyticalSessionDetail"];
++                };
++            };
++            401: components["responses"]["Unauthorized"];
++            404: components["responses"]["NotFound"];
++            409: components["responses"]["Conflict"];
++            422: components["responses"]["ValidationFailed"];
++            default: components["responses"]["UnexpectedError"];
++        };
++    };
+     collectCurrentSnapshot: {
+         parameters: {
+             query?: never;

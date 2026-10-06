@@ -190,12 +190,20 @@ GUIDE = '''# Семинар 5: три задачи на код, шесть ко�
 
 | Шаг / тег | Что показывать | Повторить замер |
 |---|---|---|
-| ce-code-01 | /health/live без инструкций | `python3 seminar/run.py 1 before --context-ref ce-code-01` |
+| ce-code-01 | /health/live без AGENTS.md | `python3 seminar/run.py 1 before --context-ref ce-code-01` |
 | ce-code-02 | Добавляем короткий AGENTS.md, тот же промпт | `python3 seminar/run.py 1 after --context-ref ce-code-02` |
 | ce-code-03 | CSV-экспорт, пока только AGENTS.md | `python3 seminar/run.py 2 before --context-ref ce-code-03` |
 | ce-code-04 | Добавляем карту и доменный словарь | `python3 seminar/run.py 2 after --context-ref ce-code-04` |
 | ce-code-05 | Копирование фильтров сессии без ADR | `python3 seminar/run.py 3 before --context-ref ce-code-05` |
 | ce-code-06 | Добавляем решение о создании неизменяемых сессий | `python3 seminar/run.py 3 after --context-ref ce-code-06` |
+
+Точный текст добавляемого контекста показывают три команды:
+
+```sh
+git diff ce-code-01 ce-code-02 -- AGENTS.md
+git diff ce-code-03 ce-code-04 -- AGENTS.md REPO_MAP.md CONTEXT.md
+git diff ce-code-05 ce-code-06 -- AGENTS.md docs/adr
+```
 
 1. **Liveness**: поле service, сохранение status и поведения readiness, согласованные Go/TypeScript контракты.
 2. **CSV**: новый GET, авторизация, экранирование, неизвестное значение и настоящий ноль, ошибки, отсутствие изменения данных.
@@ -240,15 +248,27 @@ def write_readme():
         same = all(before[key] == after[key] for key in ('prompt_sha256', 'code_sha256', 'checker_sha256'))
         text += f'**{task}. {TITLES[task]}**: {before["status"]} -> {after["status"]}. '
         text += f'Одинаковые промпт, код и проверяющий: {"да" if same else "НЕТ, сравнение некорректно"}. '
+        if before['status'] != 'INVALID' and after['status'] != 'INVALID':
+            for label, key in (('Время', 'seconds'), ('Total', 'total_tokens'), ('UNC', 'uncached_input_tokens')):
+                if before[key]:
+                    text += f'{label}: {(after[key] / before[key] - 1) * 100:+.1f}%. '
         for arm, row in zip(('before', 'after'), (before, after)):
             failures = [key for key, value in row['checks'].items() if not value]
             if failures:
                 text += arm + ': ' + ', '.join(failures) + '. '
         text = text.rstrip() + '\n\n'
+    for folder, row in rows.values():
+        if row.get('regrade'):
+            original = str(folder.relative_to(SEM)) + '/original-evaluation/checks.log'
+            text += ('**Исправление проверяющего в задаче 3:** пробельный ключ оказался допустимым по существующему контракту. '
+                     'Тест заменен на ключ длиной 129 символов и проверен на прежней операции создания. '
+                     'Готовый патч переоценен без нового вызова модели; время и токены сохранены. '
+                     f'[Первоначальная ошибочная оценка]({original}) также сохранена.\n\n')
     text += '''## Что открыть в отчете
 
 В `reports/` каждый запуск сохранен отдельно: `result.json` - измерения, `changes.patch` - код,
 `answer.md` - ответ, `events.jsonl` - действия, `checks.log` - независимые проверки.
+Патч сохраняется до генерации и тестов внешнего проверяющего.
 `input.json`, `prompt.txt`, `context/` и `checker/` сохраняют точные входы и проверяющий.
 Повторные запуски добавляют каталоги, таблица показывает последние результаты каждого условия.
 Авторизация и кеши лежат в игнорируемой `.runtime/`; агент получает только код и документы.
