@@ -1,0 +1,23 @@
+{
+  "known_bad_solution_rejected": true,
+  "checks": {
+    "mixed_command_runs_with_spaced_docker_path": true,
+    "mixed_read_only_query": true,
+    "mixed_correct_counts": false,
+    "mixed_stable_query": true,
+    "mixed_clean_csv_stdout": true,
+    "mixed_data_unchanged": true,
+    "empty_command_runs_with_spaced_docker_path": true,
+    "empty_read_only_query": true,
+    "empty_correct_counts": true,
+    "empty_stable_query": true,
+    "empty_clean_csv_stdout": true,
+    "empty_data_unchanged": true,
+    "partial_and_deleted_command_runs_with_spaced_docker_path": true,
+    "partial_and_deleted_read_only_query": true,
+    "partial_and_deleted_correct_counts": false,
+    "partial_and_deleted_stable_query": true,
+    "partial_and_deleted_clean_csv_stdout": true,
+    "partial_and_deleted_data_unchanged": true
+  }
+}

@@ -1,0 +1,243 @@
+diff --git a/api/openapi.yaml b/api/openapi.yaml
+index a877ac4..19c3271 100644
+--- a/api/openapi.yaml
++++ b/api/openapi.yaml
+@@ -349,7 +349,7 @@ paths:
+           description: API process is alive
+           content:
+             application/json:
+-              schema: { $ref: "#/components/schemas/Health" }
++              schema: { $ref: "#/components/schemas/Liveness" }
+   /health/ready:
+     get:
+       operationId: getReadiness
+@@ -737,6 +737,17 @@ components:
+       required: [error]
+       properties:
+         error: { $ref: "#/components/schemas/ErrorDetail" }
++    Liveness:
++      type: object
++      additionalProperties: false
++      required: [status, service]
++      properties:
++        status:
++          type: string
++          enum: [live]
++        service:
++          type: string
++          enum: ["DRIP Недвижимость"]
+     Health:
+       type: object
+       additionalProperties: false
+diff --git a/backend/internal/adapters/httpapi/generated/api.gen.go b/backend/internal/adapters/httpapi/generated/api.gen.go
+index 917030e..1ded7e5 100644
+--- a/backend/internal/adapters/httpapi/generated/api.gen.go
++++ b/backend/internal/adapters/httpapi/generated/api.gen.go
+@@ -107,19 +107,49 @@ func (e CurrentEISZHSDashboardSourceLabel) Valid() bool {
+ 
+ // Defines values for HealthStatus.
+ const (
+-	Live     HealthStatus = "live"
+-	NotReady HealthStatus = "not_ready"
+-	Ready    HealthStatus = "ready"
++	HealthStatusLive     HealthStatus = "live"
++	HealthStatusNotReady HealthStatus = "not_ready"
++	HealthStatusReady    HealthStatus = "ready"
+ )
+ 
+ // Valid indicates whether the value is a known member of the HealthStatus enum.
+ func (e HealthStatus) Valid() bool {
+ 	switch e {
+-	case Live:
++	case HealthStatusLive:
+ 		return true
+-	case NotReady:
++	case HealthStatusNotReady:
+ 		return true
+-	case Ready:
++	case HealthStatusReady:
++		return true
++	default:
++		return false
++	}
++}
++
++// Defines values for LivenessService.
++const (
++	DRIPНедвижимость LivenessService = "DRIP Недвижимость"
++)
++
++// Valid indicates whether the value is a known member of the LivenessService enum.
++func (e LivenessService) Valid() bool {
++	switch e {
++	case DRIPНедвижимость:
++		return true
++	default:
++		return false
++	}
++}
++
++// Defines values for LivenessStatus.
++const (
++	LivenessStatusLive LivenessStatus = "live"
++)
++
++// Valid indicates whether the value is a known member of the LivenessStatus enum.
++func (e LivenessStatus) Valid() bool {
++	switch e {
++	case LivenessStatusLive:
+ 		return true
+ 	default:
+ 		return false
+@@ -372,6 +402,18 @@ type Health struct {
+ // HealthStatus defines model for Health.Status.
+ type HealthStatus string
+ 
++// Liveness defines model for Liveness.
++type Liveness struct {
++	Service LivenessService `json:"service"`
++	Status  LivenessStatus  `json:"status"`
++}
++
++// LivenessService defines model for Liveness.Service.
++type LivenessService string
++
++// LivenessStatus defines model for Liveness.Status.
++type LivenessStatus string
++
+ // LoginRequest defines model for LoginRequest.
+ type LoginRequest struct {
+ 	Login    string `json:"login"`
+@@ -2991,7 +3033,7 @@ type GetLivenessResponseObject interface {
+ 	VisitGetLivenessResponse(w http.ResponseWriter) error
+ }
+ 
+-type GetLiveness200JSONResponse Health
++type GetLiveness200JSONResponse Liveness
+ 
+ func (response GetLiveness200JSONResponse) VisitGetLivenessResponse(w http.ResponseWriter) error {
+ 
+diff --git a/backend/internal/adapters/httpapi/handler.go b/backend/internal/adapters/httpapi/handler.go
+index 6b35579..98857fb 100644
+--- a/backend/internal/adapters/httpapi/handler.go
++++ b/backend/internal/adapters/httpapi/handler.go
+@@ -214,7 +214,9 @@ func (server) GetLiveness(
+ 	context.Context,
+ 	generated.GetLivenessRequestObject,
+ ) (generated.GetLivenessResponseObject, error) {
+-	return generated.GetLiveness200JSONResponse{Status: generated.Live}, nil
++	return generated.GetLiveness200JSONResponse{
++		Status: generated.LivenessStatusLive, Service: generated.LivenessService("DRIP Недвижимость"),
++	}, nil
+ }
+ 
+ func (service server) GetReadiness(
+@@ -222,9 +224,9 @@ func (service server) GetReadiness(
+ 	_ generated.GetReadinessRequestObject,
+ ) (generated.GetReadinessResponseObject, error) {
+ 	if err := service.dependencies.Readiness.Check(ctx); err != nil {
+-		return generated.GetReadiness503JSONResponse{Status: generated.NotReady}, nil
++		return generated.GetReadiness503JSONResponse{Status: generated.HealthStatusNotReady}, nil
+ 	}
+-	return generated.GetReadiness200JSONResponse{Status: generated.Ready}, nil
++	return generated.GetReadiness200JSONResponse{Status: generated.HealthStatusReady}, nil
+ }
+ 
+ func (service server) sessionCookie(raw string, lifetime time.Duration) string {
+diff --git a/backend/internal/adapters/httpapi/liveness_service_test.go b/backend/internal/adapters/httpapi/liveness_service_test.go
+new file mode 100644
+index 0000000..0563fdb
+--- /dev/null
++++ b/backend/internal/adapters/httpapi/liveness_service_test.go
+@@ -0,0 +1,65 @@
++package httpapi_test
++
++import (
++	"context"
++	"encoding/json"
++	"errors"
++	"net/http"
++	"net/http/httptest"
++	"reflect"
++	"testing"
++
++	"github.com/SinDenis/drip-real-estate-demo/backend/internal/adapters/httpapi"
++	"github.com/SinDenis/drip-real-estate-demo/backend/internal/application"
++)
++
++type countingUnavailableProbe struct {
++	calls int
++}
++
++func (probe *countingUnavailableProbe) Check(context.Context) error {
++	probe.calls++
++	return errors.New("infrastructure unavailable")
++}
++
++func TestLivenessServiceAndReadinessResponse(t *testing.T) {
++	t.Parallel()
++	probe := &countingUnavailableProbe{}
++	handler := httpapi.NewHandler(httpapi.Dependencies{
++		Readiness: application.NewReadinessService(probe),
++	})
++	for _, test := range []struct {
++		path  string
++		code  int
++		body  map[string]string
++		calls int
++	}{
++		{"/health/live", http.StatusOK, map[string]string{"status": "live", "service": "DRIP Недвижимость"}, 0},
++		{"/health/ready", http.StatusServiceUnavailable, map[string]string{"status": "not_ready"}, 1},
++		{"/health/live", http.StatusOK, map[string]string{"status": "live", "service": "DRIP Недвижимость"}, 1},
++	} {
++		response := httptest.NewRecorder()
++		handler.ServeHTTP(response, httptest.NewRequestWithContext(t.Context(), http.MethodGet, test.path, nil))
++		if response.Code != test.code {
++			t.Fatalf("%s: HTTP status = %d, want %d", test.path, response.Code, test.code)
++		}
++		if got := response.Header().Get("Content-Type"); got != "application/json" {
++			t.Fatalf("%s: Content-Type = %q", test.path, got)
++		}
++		assertHealthBody(t, response, test.body)
++		if probe.calls != test.calls {
++			t.Fatalf("%s: infrastructure checks = %d, want %d", test.path, probe.calls, test.calls)
++		}
++	}
++}
++
++func assertHealthBody(t *testing.T, response *httptest.ResponseRecorder, expected map[string]string) {
++	t.Helper()
++	var body map[string]string
++	if err := json.NewDecoder(response.Body).Decode(&body); err != nil {
++		t.Fatal(err)
++	}
++	if !reflect.DeepEqual(body, expected) {
++		t.Fatalf("body = %v, want %v", body, expected)
++	}
++}
+diff --git a/frontend/src/api/schema.d.ts b/frontend/src/api/schema.d.ts
+index 6db624f..352b498 100644
+--- a/frontend/src/api/schema.d.ts
++++ b/frontend/src/api/schema.d.ts
+@@ -501,6 +501,12 @@ export interface components {
+         ErrorResponse: {
+             error: components["schemas"]["ErrorDetail"];
+         };
++        Liveness: {
++            /** @enum {string} */
++            status: "live";
++            /** @enum {string} */
++            service: "DRIP Недвижимость";
++        };
+         Health: {
+             /** @enum {string} */
+             status: "live" | "ready" | "not_ready";
+@@ -1109,7 +1115,7 @@ export interface operations {
+                     [name: string]: unknown;
+                 };
+                 content: {
+-                    "application/json": components["schemas"]["Health"];
++                    "application/json": components["schemas"]["Liveness"];
+                 };
+             };
+         };

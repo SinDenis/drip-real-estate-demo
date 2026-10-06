@@ -1,0 +1,7 @@
+/Applications/Xcode.app/Contents/Developer/usr/bin/make --no-print-directory --directory=backend generate
+go tool oapi-codegen -config oapi-codegen.yaml ../api/openapi.yaml
+/Applications/Xcode.app/Contents/Developer/usr/bin/make --no-print-directory --directory=frontend generate
+pnpm generate:api
+✨ openapi-typescript 7.13.0
+🚀 ../api/openapi.yaml → src/api/schema.d.ts [68.7ms]
+$ pnpm --package=typescript@5.9.3 --package=openapi-typescript@7.13.0 dlx openapi-typescript ../api/openapi.yaml -o src/api/schema.d.ts

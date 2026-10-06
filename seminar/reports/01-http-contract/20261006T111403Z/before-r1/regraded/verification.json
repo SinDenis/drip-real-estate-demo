@@ -1,0 +1,12 @@
+{
+  "checks": {
+    "existing_tests_unchanged": true,
+    "public_http_behavior": true,
+    "generation_command_succeeds": true,
+    "generated_contracts_were_current": false,
+    "existing_http_tests_pass": true
+  },
+  "pass": false,
+  "score": 0.8,
+  "reason": "existing_tests_unchanged=PASS; public_http_behavior=PASS; generation_command_succeeds=PASS; generated_contracts_were_current=FAIL; existing_http_tests_pass=PASS"
+}

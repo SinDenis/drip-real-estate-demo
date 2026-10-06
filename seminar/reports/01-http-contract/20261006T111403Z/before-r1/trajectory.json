@@ -1,0 +1,77 @@
+[
+  {
+    "command": "/bin/zsh -lc \"pwd; rg --files -g 'AGENTS.md' -g 'go.mod' -g '*health*' -g 'package.json' -g 'Makefile' -g '*test*'\"",
+    "exit_code": 0,
+    "output_characters": 1273
+  },
+  {
+    "command": "/bin/zsh -lc \"ls -a; rg --files -g AGENTS.md -g '\"'!node_modules'\"' -g '\"'!vendor'\"'; rg -n 'health/live|liveness|func.*Live' backend; cat backend/go.mod; git status --short\"",
+    "exit_code": 0,
+    "output_characters": 15164
+  },
+  {
+    "command": "/bin/zsh -lc \"sed -n '200,245p' backend/internal/adapters/httpapi/handler.go; sed -n '1,100p' backend/internal/adapters/httpapi/handler_test.go; rg -n 'Liveness|Health|health/live|generate' api backend/internal/adapters/httpapi/generated/api.gen.go backend/Makefile; cat backend/Makefile; sed -n '1,65p' backend/internal/adapters/httpapi/handler.go\"",
+    "exit_code": 0,
+    "output_characters": 12292
+  },
+  {
+    "command": "/bin/zsh -lc \"sed -n '735,755p' api/openapi.yaml; cat backend/oapi-codegen.yaml; sed -n '1,75p' backend/e2e/api_test.go; rg -n 'func newHandler|type staticProbe' backend/internal/adapters/httpapi/handler_test.go; sed -n '1,75p' backend/internal/adapters/postgres/probe_test.go; env GOPROXY=off GOSUMDB=off GOTOOLCHAIN=local go version\"",
+    "exit_code": 0,
+    "output_characters": 3785
+  },
+  {
+    "command": "/bin/zsh -lc \"which go; ls /usr/local/go/bin /opt/homebrew/bin/go; rg -n 'go1.27|GOTOOLCHAIN|GOCACHE' scripts Makefile; sed -n '120,155p' backend/internal/adapters/httpapi/handler_test.go; ls /Users/densin/go/pkg/mod/golang.org/toolchain*\"",
+    "exit_code": 0,
+    "output_characters": 834
+  },
+  {
+    "command": "/bin/zsh -lc 'env GOPROXY=off GOSUMDB=off go version'",
+    "exit_code": 1,
+    "output_characters": 115
+  },
+  {
+    "command": "/bin/zsh -lc \"ls -d /Users/densin/go/pkg/mod/golang.org/toolchain*; rg -n 'httptest.NewServer|http.Get|net.Dial' backend/internal/adapters/httpapi backend/internal/application backend/architecture\"",
+    "exit_code": 1,
+    "output_characters": 75
+  },
+  {
+    "command": "/bin/zsh -lc 'env GOPROXY=off GOSUMDB=off GOTOOLCHAIN=local GOCACHE=\"$PWD/.cache/go-build\" /Users/densin/go/pkg/mod/golang.org/toolchain@v0.0.1-go1.27.0.darwin-arm64/bin/go tool oapi-codegen -config oapi-codegen.yaml ../api/openapi.yaml'",
+    "exit_code": 0,
+    "output_characters": 0
+  },
+  {
+    "command": "/bin/zsh -lc \"rg -n 'LivenessStatus|DRIP|type Liveness' backend/internal/adapters/httpapi/generated/api.gen.go; git diff --stat; cat .gitignore\"",
+    "exit_code": 0,
+    "output_characters": 973
+  },
+  {
+    "command": "/bin/zsh -lc 'git diff -- api/openapi.yaml backend/internal/adapters/httpapi/generated/api.gen.go backend/internal/adapters/httpapi/handler.go; git status --short --untracked-files=normal'",
+    "exit_code": 0,
+    "output_characters": 4259
+  },
+  {
+    "command": "/bin/zsh -lc 'gofmt -w internal/adapters/httpapi/handler.go internal/adapters/httpapi/liveness_service_test.go\nenv GOPROXY=off GOSUMDB=off GOTOOLCHAIN=local GOCACHE=\"$PWD/.cache/go-build\" /Users/densin/go/pkg/mod/golang.org/toolchain@v0.0.1-go1.27.0.darwin-arm64/bin/go test -race ./internal/adapters/httpapi/... ./internal/application/... ./architecture/...'",
+    "exit_code": 1,
+    "output_characters": 591
+  },
+  {
+    "command": "/bin/zsh -lc 'env GOPROXY=off GOSUMDB=off GOTOOLCHAIN=local GOCACHE=\"$PWD/.cache/go-build\" /Users/densin/go/pkg/mod/golang.org/toolchain@v0.0.1-go1.27.0.darwin-arm64/bin/go tool oapi-codegen -config oapi-codegen.yaml ../api/openapi.yaml'",
+    "exit_code": 0,
+    "output_characters": 0
+  },
+  {
+    "command": "/bin/zsh -lc 'env GOPROXY=off GOSUMDB=off GOTOOLCHAIN=local GOCACHE=\"$PWD/.cache/go-build\" /Users/densin/go/pkg/mod/golang.org/toolchain@v0.0.1-go1.27.0.darwin-arm64/bin/go test -race ./internal/adapters/httpapi/... ./internal/application/... ./architecture/...'",
+    "exit_code": 0,
+    "output_characters": 357
+  },
+  {
+    "command": "/bin/zsh -lc 'git diff --check; git diff --stat; git diff -- backend/internal/adapters/httpapi/generated/api.gen.go'",
+    "exit_code": 0,
+    "output_characters": 2214
+  },
+  {
+    "command": "/bin/zsh -lc \"python3 -c 'import shutil; shutil.rmtree(\\\"backend/.cache\\\")'\ngit diff --check\ngit status --short\"",
+    "exit_code": 0,
+    "output_characters": 188
+  }
+]

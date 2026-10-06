@@ -1,0 +1,13 @@
+`GET /health/live` возвращает HTTP 200 и JSON:
+```json
+{"status":"live","service":"DRIP Недвижимость"}
+```
+
+Обновлены OpenAPI, обработчик и сгенерированные Go/TypeScript-файлы. Добавлены HTTP-тесты: liveness не вызывает инфраструктуру, ответы readiness сохраняются. Существующие тесты и файлы контекста не изменены.
+
+Успешно выполнены:
+- `make generate PNPM=pnpm` в офлайн-режиме;
+- тесты пакета `backend/internal/adapters/httpapi`;
+- `git diff --check`.
+
+Полная проверка, Docker/E2E и frontend-тесты не запускались. Сеть и реальная БД не использовались, коммиты не создавались.

@@ -1,0 +1,98 @@
+{
+  "example": "01-http-contract",
+  "title": "HTTP-контракт и правила работы",
+  "hypothesis": "Краткие инструкции и точные команды помогут сохранить contract-first workflow и уменьшить лишнее исследование; положительный эффект не гарантирован.",
+  "prompt_sha256": "58a10926ae5f24c44bdd3a3d8b62cbc81658a67d89a57741c0fa7f7754005603",
+  "model": "gpt-6.1-sol",
+  "effort": "low",
+  "trials": [
+    {
+      "condition": "before",
+      "replica": 1,
+      "success": false,
+      "error": "Evaluator error: fatal: path 'backend/internal/adapters/httpapi/liveness_service_test.go' exists on disk, but not in 'HEAD'\nTraceback (most recent call last):\n  File \"/Users/densin/Documents/ChatGPT/Мультиагентные системы/drip-real-estate-demo/seminar/verify.py\", line 94, in <module>\n    main()\n  File \"/Users/densin/Documents/ChatGPT/Мультиагентные системы/drip-real-estate-demo/seminar/verify.py\", line 81, in main\n    checks = grade_http(work, report)\n  File \"/Users/densin/Documents/ChatGPT/Мультиагентные системы/drip-real-estate-demo/seminar/verify.py\", line 53, in grade_http\n    checks.append(('existing_tests_unchanged', original_tests_unchanged(work)))\n  File \"/Users/densin/Documents/ChatGPT/Мультиагентные системы/drip-real-estate-demo/seminar/verify.py\", line 46, in original_tests_unchanged\n    expected = subprocess.check_output(['git', 'show', 'HEAD:' + name], cwd=work)\n  File \"/Applications/Xcode.app/Contents/Developer/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/subprocess.py\", line 424, in check_output\n    return run(*popenargs, stdout=PIPE, timeout=timeout, check=True,\n  File \"/Applications/Xcode.app/Contents/Developer/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/subprocess.py\", line 528, in run\n    raise CalledProcessError(retcode, process.args,\nsubprocess.CalledProcessError: Command '['git', 'show', 'HEAD:backend/internal/adapters/httpapi/liveness_service_test.go']' returned non-zero exit status 128.\n",
+      "input_tokens": 394393,
+      "cached_input_tokens": 371072,
+      "uncached_input_tokens": 23321,
+      "output_tokens": 3441,
+      "total_tokens": 397834,
+      "latency_ms": 129882,
+      "estimated_api_equivalent_usd": 0.21911339999999999,
+      "command_count": 15,
+      "session_id": "01a110ec-3e83-70d3-9eba-9ae902fa28f8",
+      "grading": {
+        "pass": false,
+        "score": 0,
+        "reason": "Evaluator error: fatal: path 'backend/internal/adapters/httpapi/liveness_service_test.go' exists on disk, but not in 'HEAD'\nTraceback (most recent call last):\n  File \"/Users/densin/Documents/ChatGPT/Мультиагентные системы/drip-real-estate-demo/seminar/verify.py\", line 94, in <module>\n    main()\n  File \"/Users/densin/Documents/ChatGPT/Мультиагентные системы/drip-real-estate-demo/seminar/verify.py\", line 81, in main\n    checks = grade_http(work, report)\n  File \"/Users/densin/Documents/ChatGPT/Мультиагентные системы/drip-real-estate-demo/seminar/verify.py\", line 53, in grade_http\n    checks.append(('existing_tests_unchanged', original_tests_unchanged(work)))\n  File \"/Users/densin/Documents/ChatGPT/Мультиагентные системы/drip-real-estate-demo/seminar/verify.py\", line 46, in original_tests_unchanged\n    expected = subprocess.check_output(['git', 'show', 'HEAD:' + name], cwd=work)\n  File \"/Applications/Xcode.app/Contents/Developer/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/subprocess.py\", line 424, in check_output\n    return run(*popenargs, stdout=PIPE, timeout=timeout, check=True,\n  File \"/Applications/Xcode.app/Contents/Developer/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/subprocess.py\", line 528, in run\n    raise CalledProcessError(retcode, process.args,\nsubprocess.CalledProcessError: Command '['git', 'show', 'HEAD:backend/internal/adapters/httpapi/liveness_service_test.go']' returned non-zero exit status 128.\n",
+        "namedScores": {},
+        "tokensUsed": {
+          "total": 0,
+          "prompt": 0,
+          "completion": 0,
+          "cached": 0,
+          "numRequests": 0
+        },
+        "componentResults": [
+          {
+            "pass": false,
+            "score": 0,
+            "reason": "Evaluator error: fatal: path 'backend/internal/adapters/httpapi/liveness_service_test.go' exists on disk, but not in 'HEAD'\nTraceback (most recent call last):\n  File \"/Users/densin/Documents/ChatGPT/Мультиагентные системы/drip-real-estate-demo/seminar/verify.py\", line 94, in <module>\n    main()\n  File \"/Users/densin/Documents/ChatGPT/Мультиагентные системы/drip-real-estate-demo/seminar/verify.py\", line 81, in main\n    checks = grade_http(work, report)\n  File \"/Users/densin/Documents/ChatGPT/Мультиагентные системы/drip-real-estate-demo/seminar/verify.py\", line 53, in grade_http\n    checks.append(('existing_tests_unchanged', original_tests_unchanged(work)))\n  File \"/Users/densin/Documents/ChatGPT/Мультиагентные системы/drip-real-estate-demo/seminar/verify.py\", line 46, in original_tests_unchanged\n    expected = subprocess.check_output(['git', 'show', 'HEAD:' + name], cwd=work)\n  File \"/Applications/Xcode.app/Contents/Developer/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/subprocess.py\", line 424, in check_output\n    return run(*popenargs, stdout=PIPE, timeout=timeout, check=True,\n  File \"/Applications/Xcode.app/Contents/Developer/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/subprocess.py\", line 528, in run\n    raise CalledProcessError(retcode, process.args,\nsubprocess.CalledProcessError: Command '['git', 'show', 'HEAD:backend/internal/adapters/httpapi/liveness_service_test.go']' returned non-zero exit status 128.\n",
+            "assertion": {
+              "type": "javascript",
+              "value": "file:///Users/densin/Documents/ChatGPT/Мультиагентные системы/drip-real-estate-demo/seminar/grade.cjs"
+            }
+          }
+        ]
+      },
+      "valid_trial": false,
+      "largest_observed_request_input_tokens": 30605,
+      "last_request_input_tokens": 30605,
+      "repository_instructions_observed_in_rollout": false,
+      "prompt_observed_in_rollout": true
+    },
+    {
+      "condition": "after",
+      "replica": 1,
+      "success": false,
+      "error": "Evaluator error: fatal: path 'backend/internal/adapters/httpapi/liveness_service_test.go' exists on disk, but not in 'HEAD'\nTraceback (most recent call last):\n  File \"/Users/densin/Documents/ChatGPT/Мультиагентные системы/drip-real-estate-demo/seminar/verify.py\", line 94, in <module>\n    main()\n  File \"/Users/densin/Documents/ChatGPT/Мультиагентные системы/drip-real-estate-demo/seminar/verify.py\", line 81, in main\n    checks = grade_http(work, report)\n  File \"/Users/densin/Documents/ChatGPT/Мультиагентные системы/drip-real-estate-demo/seminar/verify.py\", line 53, in grade_http\n    checks.append(('existing_tests_unchanged', original_tests_unchanged(work)))\n  File \"/Users/densin/Documents/ChatGPT/Мультиагентные системы/drip-real-estate-demo/seminar/verify.py\", line 46, in original_tests_unchanged\n    expected = subprocess.check_output(['git', 'show', 'HEAD:' + name], cwd=work)\n  File \"/Applications/Xcode.app/Contents/Developer/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/subprocess.py\", line 424, in check_output\n    return run(*popenargs, stdout=PIPE, timeout=timeout, check=True,\n  File \"/Applications/Xcode.app/Contents/Developer/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/subprocess.py\", line 528, in run\n    raise CalledProcessError(retcode, process.args,\nsubprocess.CalledProcessError: Command '['git', 'show', 'HEAD:backend/internal/adapters/httpapi/liveness_service_test.go']' returned non-zero exit status 128.\n",
+      "input_tokens": 811853,
+      "cached_input_tokens": 752256,
+      "uncached_input_tokens": 59597,
+      "output_tokens": 4798,
+      "total_tokens": 816651,
+      "latency_ms": 223913,
+      "estimated_api_equivalent_usd": 0.4608091999999999,
+      "command_count": 29,
+      "session_id": "01a110ee-3aa6-72b0-a989-c288da6e159e",
+      "grading": {
+        "pass": false,
+        "score": 0,
+        "reason": "Evaluator error: fatal: path 'backend/internal/adapters/httpapi/liveness_service_test.go' exists on disk, but not in 'HEAD'\nTraceback (most recent call last):\n  File \"/Users/densin/Documents/ChatGPT/Мультиагентные системы/drip-real-estate-demo/seminar/verify.py\", line 94, in <module>\n    main()\n  File \"/Users/densin/Documents/ChatGPT/Мультиагентные системы/drip-real-estate-demo/seminar/verify.py\", line 81, in main\n    checks = grade_http(work, report)\n  File \"/Users/densin/Documents/ChatGPT/Мультиагентные системы/drip-real-estate-demo/seminar/verify.py\", line 53, in grade_http\n    checks.append(('existing_tests_unchanged', original_tests_unchanged(work)))\n  File \"/Users/densin/Documents/ChatGPT/Мультиагентные системы/drip-real-estate-demo/seminar/verify.py\", line 46, in original_tests_unchanged\n    expected = subprocess.check_output(['git', 'show', 'HEAD:' + name], cwd=work)\n  File \"/Applications/Xcode.app/Contents/Developer/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/subprocess.py\", line 424, in check_output\n    return run(*popenargs, stdout=PIPE, timeout=timeout, check=True,\n  File \"/Applications/Xcode.app/Contents/Developer/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/subprocess.py\", line 528, in run\n    raise CalledProcessError(retcode, process.args,\nsubprocess.CalledProcessError: Command '['git', 'show', 'HEAD:backend/internal/adapters/httpapi/liveness_service_test.go']' returned non-zero exit status 128.\n",
+        "namedScores": {},
+        "tokensUsed": {
+          "total": 0,
+          "prompt": 0,
+          "completion": 0,
+          "cached": 0,
+          "numRequests": 0
+        },
+        "componentResults": [
+          {
+            "pass": false,
+            "score": 0,
+            "reason": "Evaluator error: fatal: path 'backend/internal/adapters/httpapi/liveness_service_test.go' exists on disk, but not in 'HEAD'\nTraceback (most recent call last):\n  File \"/Users/densin/Documents/ChatGPT/Мультиагентные системы/drip-real-estate-demo/seminar/verify.py\", line 94, in <module>\n    main()\n  File \"/Users/densin/Documents/ChatGPT/Мультиагентные системы/drip-real-estate-demo/seminar/verify.py\", line 81, in main\n    checks = grade_http(work, report)\n  File \"/Users/densin/Documents/ChatGPT/Мультиагентные системы/drip-real-estate-demo/seminar/verify.py\", line 53, in grade_http\n    checks.append(('existing_tests_unchanged', original_tests_unchanged(work)))\n  File \"/Users/densin/Documents/ChatGPT/Мультиагентные системы/drip-real-estate-demo/seminar/verify.py\", line 46, in original_tests_unchanged\n    expected = subprocess.check_output(['git', 'show', 'HEAD:' + name], cwd=work)\n  File \"/Applications/Xcode.app/Contents/Developer/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/subprocess.py\", line 424, in check_output\n    return run(*popenargs, stdout=PIPE, timeout=timeout, check=True,\n  File \"/Applications/Xcode.app/Contents/Developer/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/subprocess.py\", line 528, in run\n    raise CalledProcessError(retcode, process.args,\nsubprocess.CalledProcessError: Command '['git', 'show', 'HEAD:backend/internal/adapters/httpapi/liveness_service_test.go']' returned non-zero exit status 128.\n",
+            "assertion": {
+              "type": "javascript",
+              "value": "file:///Users/densin/Documents/ChatGPT/Мультиагентные системы/drip-real-estate-demo/seminar/grade.cjs"
+            }
+          }
+        ]
+      },
+      "valid_trial": false,
+      "largest_observed_request_input_tokens": 37516,
+      "last_request_input_tokens": 37516,
+      "repository_instructions_observed_in_rollout": true,
+      "prompt_observed_in_rollout": true
+    }
+  ]
+}

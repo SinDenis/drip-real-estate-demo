@@ -1,0 +1,62 @@
+[
+  {
+    "command": "/bin/zsh -lc \"pwd; rg --files -g 'AGENTS.md' -g 'Makefile' -g '*health*' -g '*server*' -g 'openapi.yaml'; cat docs/project.md docs/development.md\"",
+    "exit_code": 0,
+    "output_characters": 3454
+  },
+  {
+    "command": "/bin/zsh -lc \"git status --short; rg -n 'Liveness|liveness|Health|health/live|status:' api/openapi.yaml backend/internal/adapters/httpapi; cat Makefile backend/Makefile frontend/Makefile; rg --files backend/internal/adapters/httpapi\"",
+    "exit_code": 0,
+    "output_characters": 13464
+  },
+  {
+    "command": "/bin/zsh -lc \"sed -n '335,375p' api/openapi.yaml; sed -n '730,760p' api/openapi.yaml; sed -n '1,120p' backend/internal/adapters/httpapi/handler_test.go; sed -n '195,245p' backend/internal/adapters/httpapi/handler.go; cat frontend/package.json\"",
+    "exit_code": 0,
+    "output_characters": 8697
+  },
+  {
+    "command": "/bin/zsh -lc \"python3 - <<'PY'\nfrom pathlib import Path\np=Path('api/openapi.yaml')\ns=p.read_text(); start=s.index('  /health/live:'); end=s.index('  /health/ready:',start); s=s[:start]+s[start:end].replace('#/components/schemas/Health','#/components/schemas/Liveness')+s[end:]; s=s.replace('    Health:\\\\n','    Liveness:\\\\n      type: object\\\\n      additionalProperties: false\\\\n      required: [status, service]\\\\n      properties:\\\\n        status:\\\\n          type: string\\\\n          enum: [live]\\\\n        service:\\\\n          type: string\\\\n          enum: [\\\"DRIP Недвижимость\\\"]\\\\n    Health:\\\\n'); p.write_text(s)\np=Path('backend/internal/adapters/httpapi/handler.go'); s=p.read_text().replace('return generated.GetLiveness200JSONResponse{Status: generated.Live}, nil','return generated.GetLiveness200JSONResponse{Status: \\\"live\\\", Service: \\\"DRIP Недвижимость\\\"}, nil'); p.write_text(s)\nPY\nGOPROXY=off GOSUMDB=off npm_config_offline=true make generate PNPM=pnpm\"",
+    "exit_code": 2,
+    "output_characters": 349
+  },
+  {
+    "command": "/bin/zsh -lc \"env | rg 'GO|PNPM|PATH'; rg -n 'func newHandler|type staticProbe|func .*Check' backend/internal/adapters/httpapi/handler_test.go; ls /Users/densin/go/pkg/mod/cache/download/golang.org/toolchain/@v; command -v go pnpm; cat backend/go.mod | head -15\"",
+    "exit_code": 0,
+    "output_characters": 2111
+  },
+  {
+    "command": "/bin/zsh -lc \"ls /Users/densin/go/pkg/mod/golang.org/toolchain@v0.0.1-go1.27.0.darwin-arm64/bin; sed -n '120,150p' backend/internal/adapters/httpapi/handler_test.go; sed -n '1,85p' backend/internal/adapters/httpapi/handler.go\"",
+    "exit_code": 0,
+    "output_characters": 2990
+  },
+  {
+    "command": "/bin/zsh -lc 'PATH=/Users/densin/go/pkg/mod/golang.org/toolchain@v0.0.1-go1.27.0.darwin-arm64/bin:$PATH GOTOOLCHAIN=local GOPROXY=off GOSUMDB=off npm_config_offline=true make generate PNPM=pnpm'",
+    "exit_code": 0,
+    "output_characters": 616
+  },
+  {
+    "command": "/bin/zsh -lc \"cat > backend/internal/adapters/httpapi/liveness_test.go <<'EOF'\npackage httpapi_test\n\nimport (\n \\\"context\\\"\n \\\"encoding/json\\\"\n \\\"errors\\\"\n \\\"net/http\\\"\n \\\"net/http/httptest\\\"\n \\\"reflect\\\"\n \\\"testing\\\"\n\n \\\"github.com/SinDenis/drip-real-estate-demo/backend/internal/adapters/httpapi\\\"\n \\\"github.com/SinDenis/drip-real-estate-demo/backend/internal/application\\\"\n)\n\ntype unexpectedLivenessProbe struct { t *testing.T }\n\nfunc (probe unexpectedLivenessProbe) Check(context.Context) error {\n probe.t.Fatal(\\\"liveness called an infrastructure probe\\\")\n return errors.New(\\\"infrastructure unavailable\\\")\n}\n\nfunc TestLivenessResponseIncludesServiceWithoutProbingInfrastructure(t *testing.T) {\n t.Parallel()\n handler := httpapi.NewHandler(httpapi.Dependencies{\n  Readiness: application.NewReadinessService(unexpectedLivenessProbe{t: t}),\n })\n assertHealthBody(t, handler, \\\"/health/live\\\", http.StatusOK, map[string]string{\n  \\\"status\\\": \\\"live\\\", \\\"service\\\": \\\"DRIP Недвижимость\\\",\n })\n}\n\nfunc TestReadinessResponseRemainsUnchanged(t *testing.T) {\n t.Parallel()\n for _, test := range []struct {\n  name string\n  err error\n  code int\n  status string\n }{\n  {name: \\\"available\\\", code: http.StatusOK, status: \\\"ready\\\"},\n  {name: \\\"unavailable\\\", err: errors.New(\\\"storage unavailable\\\"), code: http.StatusServiceUnavailable, status: \\\"not_ready\\\"},\n } {\n  t.Run(test.name, func(t *testing.T) {\n   assertHealthBody(t, newHandler(staticProbe{err: test.err}), \\\"/health/ready\\\", test.code, map[string]string{\\\"status\\\": test.status})\n  })\n }\n}\n\nfunc assertHealthBody(t *testing.T, handler http.Handler, path string, code int, expected map[string]string) {\n t.Helper()\n response := httptest.NewRecorder()\n handler.ServeHTTP(response, httptest.NewRequestWithContext(t.Context(), http.MethodGet, path, nil))\n if response.Code \"'!= code { t.Fatalf(\"HTTP status = %d, want %d\", response.Code, code) }\n if contentType := response.Header().Get(\"Content-Type\"); contentType != \"application/json\" {\n  t.Fatalf(\"Content-Type = %q, want application/json\", contentType)\n }\n var body map[string]string\n if err := json.Unmarshal(response.Body.Bytes(), &body); err != nil { t.Fatalf(\"decode response: %v\", err) }\n if !reflect.DeepEqual(body, expected) { t.Fatalf(\"body = %v, want %v\", body, expected) }\n}\nEOF\n/Users/densin/go/pkg/mod/golang.org/toolchain@v0.0.1-go1.27.0.darwin-arm64/bin/gofmt -w backend/internal/adapters/httpapi/liveness_test.go backend/internal/adapters/httpapi/handler.go\nGOTOOLCHAIN=local GOPROXY=off GOSUMDB=off /Users/densin/go/pkg/mod/golang.org/toolchain@v0.0.1-go1.27.0.darwin-arm64/bin/go test ./internal/adapters/httpapi -count=1'",
+    "exit_code": 1,
+    "output_characters": 195
+  },
+  {
+    "command": "/bin/zsh -lc 'GOTOOLCHAIN=local GOPROXY=off GOSUMDB=off /Users/densin/go/pkg/mod/golang.org/toolchain@v0.0.1-go1.27.0.darwin-arm64/bin/go test ./internal/adapters/httpapi -count=1'",
+    "exit_code": 1,
+    "output_characters": 326
+  },
+  {
+    "command": "/bin/zsh -lc \"python3 - <<'PY'\nfrom pathlib import Path\np=Path('api/openapi.yaml'); s=p.read_text().replace('        status:\\\\n          type: string\\\\n          enum: [live]\\\\n        service:', '        status:\\\\n          type: string\\\\n        service:'); p.write_text(s)\nPY\nPATH=/Users/densin/go/pkg/mod/golang.org/toolchain@v0.0.1-go1.27.0.darwin-arm64/bin:\"'$PATH GOTOOLCHAIN=local GOPROXY=off GOSUMDB=off npm_config_offline=true make generate PNPM=pnpm'",
+    "exit_code": 0,
+    "output_characters": 616
+  },
+  {
+    "command": "/bin/zsh -lc 'git diff --stat; git diff --check; git diff -- api/openapi.yaml backend/internal/adapters/httpapi/handler.go; git status --short'",
+    "exit_code": 0,
+    "output_characters": 2029
+  },
+  {
+    "command": "/bin/zsh -lc 'GOTOOLCHAIN=local GOPROXY=off GOSUMDB=off /Users/densin/go/pkg/mod/golang.org/toolchain@v0.0.1-go1.27.0.darwin-arm64/bin/go test ./internal/adapters/httpapi -count=1'",
+    "exit_code": 0,
+    "output_characters": 88
+  }
+]

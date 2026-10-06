@@ -1,0 +1,2 @@
+# Preserve byte-exact native reports and patches; their whitespace is evidence.
+seminar/reports/** -whitespace

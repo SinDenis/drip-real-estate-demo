@@ -1,0 +1,102 @@
+[
+  {
+    "command": "/bin/zsh -lc \"pwd; rg --files -g 'AGENTS.md' -g 'go.mod' -g '*health*' -g 'package.json' -g 'Makefile' -g 'README*'\"",
+    "exit_code": 0,
+    "output_characters": 211
+  },
+  {
+    "command": "/bin/zsh -lc \"ls -a; rg -n 'health/live|liveness|HealthLive' backend; cat backend/go.mod; rg --files backend | head -60\"",
+    "exit_code": 0,
+    "output_characters": 16880
+  },
+  {
+    "command": "/bin/zsh -lc \"git status --short; cat backend/internal/adapters/httpapi/handler.go; sed -n '1,150p' backend/internal/adapters/httpapi/handler_test.go; rg -n 'Liveness|Health|health/live' api backend/internal/adapters/httpapi/generated/api.gen.go; cat backend/Makefile; cat backend/internal/application/readiness.go\"",
+    "exit_code": 0,
+    "output_characters": 20920
+  },
+  {
+    "command": "/bin/zsh -lc \"sed -n '338,371p' api/openapi.yaml; sed -n '736,758p' api/openapi.yaml; cat backend/oapi-codegen.yaml; head -45 backend/e2e/api_test.go; rg -n 'Dial|Connect|DATABASE|Skip|Listen|http.Get' backend/*/*test.go backend/internal --glob '*test.go'; command -v go; go version\"",
+    "exit_code": 0,
+    "output_characters": 3952
+  },
+  {
+    "command": "/bin/zsh -lc 'GOPROXY=off GOSUMDB=off go version'",
+    "exit_code": 1,
+    "output_characters": 115
+  },
+  {
+    "command": "/bin/zsh -lc 'GOPROXY=off go version; GOPROXY=off go tool oapi-codegen -config oapi-codegen.yaml ../api/openapi.yaml'",
+    "exit_code": 1,
+    "output_characters": 419
+  },
+  {
+    "command": "/bin/zsh -lc \"GOPROXY=off go tool oapi-codegen -config oapi-codegen.yaml ../api/openapi.yaml; rg -n 'Liveness|DRIP' internal/adapters/httpapi/generated/api.gen.go\"",
+    "exit_code": 0,
+    "output_characters": 2152
+  },
+  {
+    "command": "/bin/zsh -lc 'gofmt -w internal/adapters/httpapi/handler.go internal/adapters/httpapi/liveness_service_test.go\nGOPROXY=off go test -race ./internal/adapters/httpapi ./architecture'",
+    "exit_code": 1,
+    "output_characters": 401
+  },
+  {
+    "command": "/bin/zsh -lc \"sed -n '106,160p' backend/internal/adapters/httpapi/generated/api.gen.go; rg -n 'generated\\\\.(Live|Ready|NotReady)' backend; cat backend/internal/platform/bootstrap/run_test.go | head -65; git diff --stat\"",
+    "exit_code": 0,
+    "output_characters": 3068
+  },
+  {
+    "command": "/bin/zsh -lc \"git diff -- api/openapi.yaml backend/internal/adapters/httpapi/generated/api.gen.go backend/internal/adapters/httpapi/handler.go; rg -n 'httptest.NewServer|net.Listen|pgx.Connect|pgxpool.New|client.Get' backend/internal --glob '*test.go'\"",
+    "exit_code": 0,
+    "output_characters": 6334
+  },
+  {
+    "command": "/bin/zsh -lc 'GOPROXY=off go tool oapi-codegen -config oapi-codegen.yaml ../api/openapi.yaml\nGOPROXY=off go test -race ./internal/adapters/httpapi ./architecture\nGOPROXY=off go tool golangci-lint run'",
+    "exit_code": 1,
+    "output_characters": 877901
+  },
+  {
+    "command": "/bin/zsh -lc 'GOPROXY=off GOLANGCI_LINT_CACHE=\"$PWD/.build/lint-cache\" go tool golangci-lint run > .lint-result.log 2>&1'",
+    "exit_code": 1,
+    "output_characters": 0
+  },
+  {
+    "command": "/bin/zsh -lc \"python3 - <<'PY'\nfrom pathlib import Path\np=Path('internal/adapters/httpapi/liveness_service_test.go')\ns=p.read_text(); start=s.index('\\\\tfor _, unavailable'); s=s[:start]+''' cases := []struct {\n  name string\n  path string\n  unavailable bool\n  code int\n  body map[string]string\n  calls int\n }{\n  {\\\"live healthy\\\", \\\"/health/live\\\", false, http.StatusOK, map[string]string{\\\"status\\\": \\\"live\\\", \\\"service\\\": \\\"DRIP Недвижимость\\\"}, 0},\n  {\\\"live unavailable\\\", \\\"/health/live\\\", true, http.StatusOK, map[string]string{\\\"status\\\": \\\"live\\\", \\\"service\\\": \\\"DRIP Недвижимость\\\"}, 0},\n  {\\\"ready healthy\\\", \\\"/health/ready\\\", false, http.StatusOK, map[string]string{\\\"status\\\": \\\"ready\\\"}, 1},\n  {\\\"ready unavailable\\\", \\\"/health/ready\\\", true, http.StatusServiceUnavailable, map[string]string{\\\"status\\\": \\\"not_ready\\\"}, 1},\n }\n for _, test := range cases {\n  t.Run(test.name, func(t *testing.T) {\n   t.Parallel()\n   probe := &countingHealthProbe{}\n   if test.unavailable {\n    probe.err = errors.New(\\\"infrastructure unavailable\\\")\n   }\n   handler := httpapi.NewHandler(httpapi.Dependencies{\n    Readiness: application.NewReadinessService(probe),\n   })\n   response := httptest.NewRecorder()\n   handler.ServeHTTP(response, httptest.NewRequestWithContext(t.Context(), http.MethodGet, test.path, nil))\n   if response.Code \"'!= test.code {\n    t.Fatalf(\"status = %d, want %d\", response.Code, test.code)\n   }\n   if got := response.Header().Get(\"Content-Type\"); got != \"application/json\" {\n    t.Fatalf(\"Content-Type = %q\", got)\n   }\n   var body map[string]string\n   if err := json.Unmarshal(response.Body.Bytes(), &body); err != nil {\n    t.Fatal(err)\n   }\n   if !reflect.DeepEqual(body, test.body) {\n    t.Fatalf(\"body = %#v, want %#v\", body, test.body)\n   }\n   if probe.calls != test.calls {\n    t.Fatalf(\"probe calls = %d, want %d\", probe.calls, test.calls)\n   }\n  })\n }\n}\n'\"'''; p.write_text(s)\nPY\ngofmt -w internal/adapters/httpapi/liveness_service_test.go\nGOPROXY=off go test -race ./internal/adapters/httpapi ./architecture ./internal/application ./internal/platform/observability\nGOPROXY=off go build ./cmd/api\"",
+    "exit_code": 0,
+    "output_characters": 342
+  },
+  {
+    "command": "/bin/zsh -lc 'GOPROXY=off GOLANGCI_LINT_CACHE=\"$PWD/.build/lint-cache\" go tool golangci-lint run > .lint-result.log 2>&1'",
+    "exit_code": 1,
+    "output_characters": 0
+  },
+  {
+    "command": "/bin/zsh -lc 'cat backend/.lint-result.log; git diff --check; git status --short'",
+    "exit_code": 0,
+    "output_characters": 451
+  },
+  {
+    "command": "/bin/zsh -lc \"python3 - <<'PY'\nfrom pathlib import Path\np=Path('backend/internal/adapters/httpapi/liveness_service_test.go');s=p.read_text();a=s.index('\\\\t\\\\t\\\\tif got :='); b=s.index('\\\\t\\\\t\\\\tif probe.calls'); block=s[a:b];s=s[:a]+'\\\\t\\\\t\\\\tassertHealthBody(t, response, test.body)\\\\n'+s[b:];block=block.replace('test.body','want');s+='\\\\nfunc assertHealthBody(t *testing.T, response *httptest.ResponseRecorder, want map[string]string) {\\\\n\\\\tt.Helper()\\\\n'+block+'}\\\\n';p.write_text(s)\nPY\ngofmt -w backend/internal/adapters/httpapi/liveness_service_test.go\"",
+    "exit_code": 0,
+    "output_characters": 0
+  },
+  {
+    "command": "/bin/zsh -lc 'GOPROXY=off GOLANGCI_LINT_CACHE=\"$PWD/.build/lint-cache\" go tool golangci-lint run > .lint-result.log 2>&1\nGOPROXY=off go test -race ./internal/adapters/httpapi ./architecture ./internal/application ./internal/platform/observability'",
+    "exit_code": 0,
+    "output_characters": 346
+  },
+  {
+    "command": "/bin/zsh -lc \"cat backend/.lint-result.log; python3 - <<'PY'\nfrom pathlib import Path\nfor name in ('backend/.lint-result.log', 'backend/api'):\n Path(name).unlink()\nPY\ngit diff --check; git status --short\"",
+    "exit_code": 0,
+    "output_characters": 393
+  },
+  {
+    "command": "/bin/zsh -lc \"python3 - <<'PY'\nfrom pathlib import Path\np=Path('internal/adapters/httpapi/liveness_service_test.go');s=p.read_text();a=s.index('\\\\t\\\\t\\\\tprobe :=');b=s.index('\\\\t\\\\t\\\\tresponse :=',a);s=s[:a]+'\\\\t\\\\t\\\\thandler, probe := healthHandler(test.unavailable)\\\\n'+s[b:];s+='''\nfunc healthHandler(unavailable bool) (http.Handler, *countingHealthProbe) {\n probe := &countingHealthProbe{}\n if unavailable {\n  probe.err = errors.New(\\\"infrastructure unavailable\\\")\n }\n return httpapi.NewHandler(httpapi.Dependencies{\n  Readiness: application.NewReadinessService(probe),\n }), probe\n}\n''';p.write_text(s)\nPY\ngofmt -w internal/adapters/httpapi/liveness_service_test.go\nGOPROXY=off GOLANGCI_LINT_CACHE=\\\"\"'$PWD/.build/lint-cache\" go tool golangci-lint run\nGOPROXY=off go test -race ./internal/adapters/httpapi ./architecture ./internal/application ./internal/platform/observability'",
+    "exit_code": 0,
+    "output_characters": 356
+  },
+  {
+    "command": "/bin/zsh -lc 'git diff --check; git status --short'",
+    "exit_code": 0,
+    "output_characters": 188
+  }
+]

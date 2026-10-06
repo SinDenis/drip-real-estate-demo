@@ -1,0 +1,82 @@
+[
+  {
+    "command": "/bin/zsh -lc \"pwd; rg --files -g 'AGENTS.md' -g 'go.mod' -g '*health*' -g 'package.json' -g 'Makefile'\"",
+    "exit_code": 0,
+    "output_characters": 178
+  },
+  {
+    "command": "/bin/zsh -lc \"ls -a; rg -n 'health/live|liveness|HealthLive' backend; rg --files -g AGENTS.md -g '*test.go' backend\"",
+    "exit_code": 0,
+    "output_characters": 1606
+  },
+  {
+    "command": "/bin/zsh -lc \"git status --short; rg -n 'GetLiveness|Liveness|HealthResponse' backend/internal/adapters/httpapi api; cat backend/go.mod; cat backend/Makefile; sed -n '1,130p' backend/internal/adapters/httpapi/handler_test.go; sed -n '1,160p' backend/internal/adapters/httpapi/handler.go\"",
+    "exit_code": 0,
+    "output_characters": 26449
+  },
+  {
+    "command": "/bin/zsh -lc \"sed -n '338,390p' api/openapi.yaml; rg -n '\"'^    Health:|type Health|go:build|os.Getenv'\"' api/openapi.yaml backend/internal/adapters/httpapi/generated/api.gen.go backend/e2e; sed -n '210,242p' backend/internal/adapters/httpapi/handler.go; cat backend/oapi-codegen.yaml; go version; sed -n '1,60p' backend/e2e/api_test.go\"",
+    "exit_code": 0,
+    "output_characters": 5234
+  },
+  {
+    "command": "/bin/zsh -lc \"sed -n '736,753p' api/openapi.yaml; rg -n 'net.Listen|httptest.NewServer|pgx.Connect' backend --glob '*test.go' --glob '\"'!e2e/**'\"'; ls /Users/densin/Documents/ChatGPT/Мультиагентные\\\\ системы/drip-real-estate-demo/seminar/runtime/cache; rg --files scripts\"",
+    "exit_code": 0,
+    "output_characters": 3182
+  },
+  {
+    "command": "/bin/zsh -lc 'GOPROXY=off GOSUMDB=off go tool oapi-codegen -h'",
+    "exit_code": 1,
+    "output_characters": 115
+  },
+  {
+    "command": "/bin/zsh -lc 'GOTOOLCHAIN=local go env GOPATH; ls /Users/densin/go/pkg/mod/golang.org/toolchain*/bin/go'",
+    "exit_code": 0,
+    "output_characters": 99
+  },
+  {
+    "command": "/bin/zsh -lc 'GOTOOLCHAIN=local GOPROXY=off GOSUMDB=off /Users/densin/go/pkg/mod/golang.org/toolchain@v0.0.1-go1.27.0.darwin-arm64/bin/go tool oapi-codegen -config oapi-codegen.yaml ../api/openapi.yaml'",
+    "exit_code": 1,
+    "output_characters": 386
+  },
+  {
+    "command": "/bin/zsh -lc 'GOTOOLCHAIN=local GOPROXY=off GOSUMDB=off /Users/densin/go/pkg/mod/golang.org/toolchain@v0.0.1-go1.27.0.darwin-arm64/bin/go tool oapi-codegen -config oapi-codegen.yaml ../api/openapi.yaml'",
+    "exit_code": 0,
+    "output_characters": 0
+  },
+  {
+    "command": "/bin/zsh -lc \"rg -n 'Liveness|DRIP' backend/internal/adapters/httpapi/generated/api.gen.go\"",
+    "exit_code": 0,
+    "output_characters": 2152
+  },
+  {
+    "command": "/bin/zsh -lc 'gofmt -w internal/adapters/httpapi/handler.go internal/adapters/httpapi/liveness_service_test.go; GOTOOLCHAIN=local GOPROXY=off GOSUMDB=off /Users/densin/go/pkg/mod/golang.org/toolchain@v0.0.1-go1.27.0.darwin-arm64/bin/go test -race ./internal/adapters/httpapi ./internal/platform/observability ./architecture'",
+    "exit_code": 1,
+    "output_characters": 495
+  },
+  {
+    "command": "/bin/zsh -lc \"git diff --stat; git diff -- backend/internal/adapters/httpapi/generated/api.gen.go | head -95; sed -n '130,145p' backend/internal/adapters/httpapi/handler_test.go\"",
+    "exit_code": 0,
+    "output_characters": 3264
+  },
+  {
+    "command": "/bin/zsh -lc 'GOTOOLCHAIN=local GOPROXY=off GOSUMDB=off /Users/densin/go/pkg/mod/golang.org/toolchain@v0.0.1-go1.27.0.darwin-arm64/bin/go test -race ./internal/adapters/httpapi ./internal/platform/observability ./architecture'",
+    "exit_code": 0,
+    "output_characters": 261
+  },
+  {
+    "command": "/bin/zsh -lc 'git diff --check; git status --short'",
+    "exit_code": 0,
+    "output_characters": 188
+  },
+  {
+    "command": "/bin/zsh -lc 'GOTOOLCHAIN=local GOPROXY=off GOSUMDB=off /Users/densin/go/pkg/mod/golang.org/toolchain@v0.0.1-go1.27.0.darwin-arm64/bin/go test -race ./internal/application ./internal/adapters/security ./internal/platform/config'",
+    "exit_code": 0,
+    "output_characters": 259
+  },
+  {
+    "command": "/bin/zsh -lc 'GOTOOLCHAIN=local GOPROXY=off GOSUMDB=off /Users/densin/go/pkg/mod/golang.org/toolchain@v0.0.1-go1.27.0.darwin-arm64/bin/go tool golangci-lint run'",
+    "exit_code": 0,
+    "output_characters": 877526
+  }
+]

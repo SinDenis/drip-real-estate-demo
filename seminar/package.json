@@ -1,0 +1,8 @@
+{
+  "name": "context-engineering-seminar-tools",
+  "private": true,
+  "dependencies": {
+    "@openai/codex-sdk": "0.160.1",
+    "promptfoo": "0.124.0"
+  }
+}

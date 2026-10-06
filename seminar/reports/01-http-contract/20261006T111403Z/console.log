@@ -1,0 +1,19 @@
+Using unknown model for OpenAI Codex SDK: gpt-6.1-sol
+Cache is disabled.
+Starting evaluation eval-yeN-2026-10-06T11:14:40
+Running 2 test cases (up to 1 at a time)...
+✓ Eval complete (ID: eval-yeN-2026-10-06T11:14:40)
+
+» View results: promptfoo view
+» Feedback: https://promptfoo.dev/feedback
+
+Total Tokens: 1,214,485
+  Provider: 1,214,485 (1,206,246 prompt, 8,239 completion, 1,123,328 cached, 485 reasoning)
+
+Results:
+  0 passed (0%)
+  ✗ 2 failed (100%)
+  0 errors (0%)
+Duration: 5m 54s (concurrency: 1)
+
+Writing output to /Users/densin/Documents/ChatGPT/Мультиагентные системы/drip-real-estate-demo/seminar/reports/01-http-contract/20261006T111403Z/promptfoo.json, /Users/densin/Documents/ChatGPT/Мультиагентные системы/drip-real-estate-demo/seminar/reports/01-http-contract/20261006T111403Z/promptfoo.html

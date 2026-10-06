@@ -1,0 +1,188 @@
+diff --git a/api/openapi.yaml b/api/openapi.yaml
+index a877ac4..d76e4e4 100644
+--- a/api/openapi.yaml
++++ b/api/openapi.yaml
+@@ -349,7 +349,7 @@ paths:
+           description: API process is alive
+           content:
+             application/json:
+-              schema: { $ref: "#/components/schemas/Health" }
++              schema: { $ref: "#/components/schemas/Liveness" }
+   /health/ready:
+     get:
+       operationId: getReadiness
+@@ -737,6 +737,19 @@ components:
+       required: [error]
+       properties:
+         error: { $ref: "#/components/schemas/ErrorDetail" }
++    Liveness:
++      type: object
++      additionalProperties: false
++      required: [status, service]
++      properties:
++        status:
++          type: string
++          enum: [live]
++          x-enum-varnames: [LivenessLive]
++        service:
++          type: string
++          enum: ["DRIP Недвижимость"]
++          x-enum-varnames: [DRIPRealEstate]
+     Health:
+       type: object
+       additionalProperties: false
+diff --git a/backend/internal/adapters/httpapi/generated/api.gen.go b/backend/internal/adapters/httpapi/generated/api.gen.go
+index 917030e..9bc6a17 100644
+--- a/backend/internal/adapters/httpapi/generated/api.gen.go
++++ b/backend/internal/adapters/httpapi/generated/api.gen.go
+@@ -126,6 +126,36 @@ func (e HealthStatus) Valid() bool {
+ 	}
+ }
+ 
++// Defines values for LivenessService.
++const (
++	DRIPRealEstate LivenessService = "DRIP Недвижимость"
++)
++
++// Valid indicates whether the value is a known member of the LivenessService enum.
++func (e LivenessService) Valid() bool {
++	switch e {
++	case DRIPRealEstate:
++		return true
++	default:
++		return false
++	}
++}
++
++// Defines values for LivenessStatus.
++const (
++	LivenessLive LivenessStatus = "live"
++)
++
++// Valid indicates whether the value is a known member of the LivenessStatus enum.
++func (e LivenessStatus) Valid() bool {
++	switch e {
++	case LivenessLive:
++		return true
++	default:
++		return false
++	}
++}
++
+ // Defines values for ResidentialComplexCatalogFreshness.
+ const (
+ 	Fresh ResidentialComplexCatalogFreshness = "fresh"
+@@ -372,6 +402,18 @@ type Health struct {
+ // HealthStatus defines model for Health.Status.
+ type HealthStatus string
+ 
++// Liveness defines model for Liveness.
++type Liveness struct {
++	Service LivenessService `json:"service"`
++	Status  LivenessStatus  `json:"status"`
++}
++
++// LivenessService defines model for Liveness.Service.
++type LivenessService string
++
++// LivenessStatus defines model for Liveness.Status.
++type LivenessStatus string
++
+ // LoginRequest defines model for LoginRequest.
+ type LoginRequest struct {
+ 	Login    string `json:"login"`
+@@ -2991,7 +3033,7 @@ type GetLivenessResponseObject interface {
+ 	VisitGetLivenessResponse(w http.ResponseWriter) error
+ }
+ 
+-type GetLiveness200JSONResponse Health
++type GetLiveness200JSONResponse Liveness
+ 
+ func (response GetLiveness200JSONResponse) VisitGetLivenessResponse(w http.ResponseWriter) error {
+ 
+diff --git a/backend/internal/adapters/httpapi/handler.go b/backend/internal/adapters/httpapi/handler.go
+index 6b35579..35e7993 100644
+--- a/backend/internal/adapters/httpapi/handler.go
++++ b/backend/internal/adapters/httpapi/handler.go
+@@ -214,7 +214,10 @@ func (server) GetLiveness(
+ 	context.Context,
+ 	generated.GetLivenessRequestObject,
+ ) (generated.GetLivenessResponseObject, error) {
+-	return generated.GetLiveness200JSONResponse{Status: generated.Live}, nil
++	return generated.GetLiveness200JSONResponse{
++		Status:  generated.LivenessLive,
++		Service: generated.DRIPRealEstate,
++	}, nil
+ }
+ 
+ func (service server) GetReadiness(
+diff --git a/backend/internal/adapters/httpapi/liveness_service_test.go b/backend/internal/adapters/httpapi/liveness_service_test.go
+new file mode 100644
+index 0000000..1114c24
+--- /dev/null
++++ b/backend/internal/adapters/httpapi/liveness_service_test.go
+@@ -0,0 +1,64 @@
++package httpapi_test
++
++import (
++	"context"
++	"encoding/json"
++	"net/http"
++	"net/http/httptest"
++	"reflect"
++	"testing"
++
++	"github.com/SinDenis/drip-real-estate-demo/backend/internal/adapters/httpapi"
++	"github.com/SinDenis/drip-real-estate-demo/backend/internal/application"
++)
++
++type forbiddenLivenessProbe struct{}
++
++func (forbiddenLivenessProbe) Check(context.Context) error {
++	panic("liveness must not check infrastructure")
++}
++
++func TestLivenessIncludesServiceWithoutCheckingInfrastructure(t *testing.T) {
++	t.Parallel()
++
++	handler := httpapi.NewHandler(httpapi.Dependencies{
++		Readiness: application.NewReadinessService(forbiddenLivenessProbe{}),
++	})
++	response := httptest.NewRecorder()
++	handler.ServeHTTP(response, httptest.NewRequestWithContext(
++		t.Context(), http.MethodGet, "/health/live", nil,
++	))
++	if response.Code != http.StatusOK {
++		t.Fatalf("status = %d, want 200", response.Code)
++	}
++	if got := response.Header().Get("Content-Type"); got != "application/json" {
++		t.Fatalf("Content-Type = %q, want application/json", got)
++	}
++	var body map[string]string
++	if err := json.Unmarshal(response.Body.Bytes(), &body); err != nil {
++		t.Fatalf("decode response: %v", err)
++	}
++	want := map[string]string{"status": "live", "service": "DRIP Недвижимость"}
++	if !reflect.DeepEqual(body, want) {
++		t.Fatalf("body = %#v, want %#v", body, want)
++	}
++}
++
++func TestReadinessResponseStillContainsOnlyStatus(t *testing.T) {
++	t.Parallel()
++
++	response := httptest.NewRecorder()
++	newHandler(staticProbe{}).ServeHTTP(response, httptest.NewRequestWithContext(
++		t.Context(), http.MethodGet, "/health/ready", nil,
++	))
++	if response.Code != http.StatusOK {
++		t.Fatalf("status = %d, want 200", response.Code)
++	}
++	var body map[string]string
++	if err := json.Unmarshal(response.Body.Bytes(), &body); err != nil {
++		t.Fatalf("decode response: %v", err)
++	}
++	if want := map[string]string{"status": "ready"}; !reflect.DeepEqual(body, want) {
++		t.Fatalf("body = %#v, want %#v", body, want)
++	}
++}

@@ -1,0 +1,147 @@
+[
+  {
+    "command": "/bin/zsh -lc 'pwd; git status --short; cat docs/project.md docs/development.md; cat Makefile'",
+    "exit_code": 0,
+    "output_characters": 8954
+  },
+  {
+    "command": "/bin/zsh -lc \"rg -n 'health/live|Liveness|HealthLive|liveness' api internal web; rg --files -g AGENTS.md\"",
+    "exit_code": 0,
+    "output_characters": 200
+  },
+  {
+    "command": "/bin/zsh -lc \"cat backend/Makefile frontend/Makefile; rg -n 'GetLiveness|HealthResponse|Liveness|health/live|HealthStatus' backend frontend/src api/openapi.yaml; sed -n '335,405p' api/openapi.yaml; rg -n 'Health' api/openapi.yaml\"",
+    "exit_code": 0,
+    "output_characters": 9273
+  },
+  {
+    "command": "/bin/zsh -lc \"sed -n '1,115p' backend/internal/adapters/httpapi/handler_test.go; sed -n '195,245p' backend/internal/adapters/httpapi/handler.go; sed -n '730,760p' api/openapi.yaml; cat frontend/package.json; ls frontend/node_modules/.bin | head\"",
+    "exit_code": 0,
+    "output_characters": 7306
+  },
+  {
+    "command": "/bin/zsh -lc \"rg -n 'func newHandler|type staticProbe' backend/internal/adapters/httpapi/handler_test.go; sed -n '520,585p' backend/internal/adapters/httpapi/handler_test.go; cat backend/go.mod | head -20\"",
+    "exit_code": 0,
+    "output_characters": 617
+  },
+  {
+    "command": "/bin/zsh -lc 'GOPROXY=off GOSUMDB=off npm_config_offline=true make generate'",
+    "exit_code": 2,
+    "output_characters": 349
+  },
+  {
+    "command": "/bin/zsh -lc \"ls /Users/densin/go/pkg/mod/golang.org/toolchain*; sed -n '120,165p' backend/internal/adapters/httpapi/handler_test.go; command -v go; ls /usr/local/go/bin/go /opt/homebrew/bin/go 2>/dev/null; env | rg 'GO|PNPM'\"",
+    "exit_code": 0,
+    "output_characters": 901
+  },
+  {
+    "command": "/bin/zsh -lc 'GOTOOLCHAIN=local GOPROXY=off npm_config_offline=true PATH=\"/Users/densin/go/pkg/mod/golang.org/toolchain@v0.0.1-go1.27.0.darwin-arm64/bin:$PATH\" make generate'",
+    "exit_code": 0,
+    "output_characters": 634
+  },
+  {
+    "command": "/bin/zsh -lc \"rg -n 'LivenessService|LivenessStatus' backend/internal/adapters/httpapi/generated/api.gen.go\"",
+    "exit_code": 0,
+    "output_characters": 755
+  },
+  {
+    "command": "/bin/zsh -lc 'gofmt -w backend/internal/adapters/httpapi/handler.go backend/internal/adapters/httpapi/liveness_service_test.go; GOTOOLCHAIN=local GOPROXY=off PATH=\"/Users/densin/go/pkg/mod/golang.org/toolchain@v0.0.1-go1.27.0.darwin-arm64/bin:$PATH\" go test ./internal/adapters/httpapi -run '\"'TestLiveness|TestReady' -count=1\"",
+    "exit_code": 1,
+    "output_characters": 496
+  },
+  {
+    "command": "/bin/zsh -lc \"sed -n '105,130p' backend/internal/adapters/httpapi/generated/api.gen.go; rg -n 'generated\\\\.(Ready|NotReady|Live)' backend --glob '\"'!api.gen.go'\"'\"",
+    "exit_code": 0,
+    "output_characters": 918
+  },
+  {
+    "command": "/bin/zsh -lc 'GOTOOLCHAIN=local GOPROXY=off PATH=\"/Users/densin/go/pkg/mod/golang.org/toolchain@v0.0.1-go1.27.0.darwin-arm64/bin:$PATH\" go test ./internal/adapters/httpapi -run '\"'TestLiveness|TestReady' -count=1\"",
+    "exit_code": 0,
+    "output_characters": 88
+  },
+  {
+    "command": "/bin/zsh -lc 'git diff --stat; git diff --check'",
+    "exit_code": 0,
+    "output_characters": 319
+  },
+  {
+    "command": "/bin/zsh -lc 'gofmt -w backend/internal/adapters/httpapi/handler.go backend/internal/adapters/httpapi/liveness_service_test.go; GOTOOLCHAIN=local GOPROXY=off npm_config_offline=true PATH=\"/Users/densin/go/pkg/mod/golang.org/toolchain@v0.0.1-go1.27.0.darwin-arm64/bin:$PATH\" make verify-fast'",
+    "exit_code": 2,
+    "output_characters": 878770
+  },
+  {
+    "command": "/bin/zsh -lc 'git status --short; cat backend/internal/adapters/httpapi/liveness_service_test.go'",
+    "exit_code": 0,
+    "output_characters": 2098
+  },
+  {
+    "command": "/bin/zsh -lc 'tail -15 .verify-fast.log; git status --short'",
+    "exit_code": 0,
+    "output_characters": 1212
+  },
+  {
+    "command": "/bin/zsh -lc 'tail -8 .verify-fast.log; git diff --check'",
+    "exit_code": 0,
+    "output_characters": 531
+  },
+  {
+    "command": "/bin/zsh -lc 'tail -12 .verify-fast.log'",
+    "exit_code": 0,
+    "output_characters": 706
+  },
+  {
+    "command": "/bin/zsh -lc 'tail -12 .verify-fast.log'",
+    "exit_code": 0,
+    "output_characters": 706
+  },
+  {
+    "command": "/bin/zsh -lc 'git diff -- api/openapi.yaml backend/internal/adapters/httpapi/handler.go frontend/src/api/schema.d.ts'",
+    "exit_code": 0,
+    "output_characters": 3168
+  },
+  {
+    "command": "/bin/zsh -lc 'tail -15 .verify-fast.log'",
+    "exit_code": 0,
+    "output_characters": 1317
+  },
+  {
+    "command": "/bin/zsh -lc 'gofmt -w backend/internal/adapters/httpapi/liveness_service_test.go; GOTOOLCHAIN=local GOPROXY=off npm_config_offline=true GOLANGCI_LINT_CACHE=\"$PWD/.cache/golangci-lint\" PATH=\"/Users/densin/go/pkg/mod/golang.org/toolchain@v0.0.1-go1.27.0.darwin-arm64/bin:$PATH\" make verify-fast > .verify-fast.log 2>&1'",
+    "exit_code": 2,
+    "output_characters": 0
+  },
+  {
+    "command": "/bin/zsh -lc 'GOTOOLCHAIN=local GOPROXY=off PATH=\"/Users/densin/go/pkg/mod/golang.org/toolchain@v0.0.1-go1.27.0.darwin-arm64/bin:$PATH\" go test -race ./internal/adapters/httpapi -count=1'",
+    "exit_code": 0,
+    "output_characters": 88
+  },
+  {
+    "command": "/bin/zsh -lc 'npm_config_offline=true make test-frontend > .frontend-test.log 2>&1'",
+    "exit_code": 0,
+    "output_characters": 0
+  },
+  {
+    "command": "/bin/zsh -lc \"tail -10 .frontend-test.log; rg -n '\"'^(ok|FAIL)|listen tcp|operation not permitted'\"' .verify-fast.log | tail -20\"",
+    "exit_code": 0,
+    "output_characters": 1935
+  },
+  {
+    "command": "/bin/zsh -lc 'GOTOOLCHAIN=local GOPROXY=off npm_config_offline=true PATH=\"/Users/densin/go/pkg/mod/golang.org/toolchain@v0.0.1-go1.27.0.darwin-arm64/bin:$PATH\" make build > .build-check.log 2>&1'",
+    "exit_code": 0,
+    "output_characters": 0
+  },
+  {
+    "command": "/bin/zsh -lc 'tail -10 .build-check.log; git diff --check'",
+    "exit_code": 0,
+    "output_characters": 578
+  },
+  {
+    "command": "/bin/zsh -lc 'rm .verify-fast.log .frontend-test.log .build-check.log; git status --short; git diff --check'",
+    "exit_code": 0,
+    "output_characters": 231
+  },
+  {
+    "command": "/bin/zsh -lc \"python3 - <<'PY'\nfrom pathlib import Path\nimport shutil\ncache = Path('.cache/golangci-lint')\nif cache.is_dir():\n    shutil.rmtree(cache)\nroot = Path('.cache')\nif root.is_dir() and not any(root.iterdir()):\n    root.rmdir()\nPY\n git status --short\"",
+    "exit_code": 0,
+    "output_characters": 220
+  }
+]

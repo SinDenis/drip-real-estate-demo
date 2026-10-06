@@ -1,0 +1,87 @@
+[
+  {
+    "command": "/bin/zsh -lc \"pwd; rg --files -g AGENTS.md -g Makefile -g '*health*' -g '*live*' -g 'openapi.yaml' -g 'development.md' -g 'project.md'\"",
+    "exit_code": 0,
+    "output_characters": 203
+  },
+  {
+    "command": "/bin/zsh -lc 'cat docs/project.md docs/development.md'",
+    "exit_code": 0,
+    "output_characters": 3188
+  },
+  {
+    "command": "/bin/zsh -lc \"git status --short; rg -n 'Liveness|liveness|Health|health/live|status.*ok' api/openapi.yaml backend/internal/adapters/httpapi Makefile backend/Makefile frontend/Makefile; cat AGENTS.md\"",
+    "exit_code": 0,
+    "output_characters": 6158
+  },
+  {
+    "command": "/bin/zsh -lc \"sed -n '335,372p' api/openapi.yaml; sed -n '730,760p' api/openapi.yaml; sed -n '1,145p' backend/internal/adapters/httpapi/handler_test.go; sed -n '190,245p' backend/internal/adapters/httpapi/handler.go; cat Makefile backend/Makefile frontend/Makefile\"",
+    "exit_code": 0,
+    "output_characters": 15921
+  },
+  {
+    "command": "/bin/zsh -lc 'GOPROXY=off GOSUMDB=off GOTOOLCHAIN=local make generate PNPM=pnpm'",
+    "exit_code": 2,
+    "output_characters": 306
+  },
+  {
+    "command": "/bin/zsh -lc 'GOPROXY=off GOSUMDB=off make generate PNPM=pnpm'",
+    "exit_code": 2,
+    "output_characters": 349
+  },
+  {
+    "command": "/bin/zsh -lc \"sed -n '1,80p' backend/internal/application/readiness.go; rg -n 'Liveness|HealthStatus' backend/internal/adapters/httpapi/generated/api.gen.go\"",
+    "exit_code": 0,
+    "output_characters": 2401
+  },
+  {
+    "command": "/bin/zsh -lc 'go env GOPATH GOMODCACHE; ls /Users/densin/go/pkg/mod/golang.org/toolchain*; command -v pnpm'",
+    "exit_code": 0,
+    "output_characters": 206
+  },
+  {
+    "command": "/bin/zsh -lc 'ls -d /Users/densin/go/pkg/mod/golang.org/toolchain*; cat frontend/package.json'",
+    "exit_code": 0,
+    "output_characters": 1788
+  },
+  {
+    "command": "/bin/zsh -lc 'PATH=\"/Users/densin/go/pkg/mod/golang.org/toolchain@v0.0.1-go1.27.0.darwin-arm64/bin:$PATH\" GOPROXY=off GOSUMDB=off GOTOOLCHAIN=local npm_config_offline=true make generate PNPM=pnpm'",
+    "exit_code": 2,
+    "output_characters": 620
+  },
+  {
+    "command": "/bin/zsh -lc 'PATH=\"/Users/densin/go/pkg/mod/golang.org/toolchain@v0.0.1-go1.27.0.darwin-arm64/bin:$PATH\" GOPROXY=off GOSUMDB=off GOTOOLCHAIN=local npm_config_offline=true make generate PNPM=pnpm'",
+    "exit_code": 0,
+    "output_characters": 616
+  },
+  {
+    "command": "/bin/zsh -lc 'gofmt -w backend/internal/adapters/httpapi/handler.go backend/internal/adapters/httpapi/liveness_test.go; PATH=\"/Users/densin/go/pkg/mod/golang.org/toolchain@v0.0.1-go1.27.0.darwin-arm64/bin:$PATH\" GOPROXY=off GOSUMDB=off GOTOOLCHAIN=local go test ./internal/adapters/httpapi -count=1'",
+    "exit_code": 1,
+    "output_characters": 488
+  },
+  {
+    "command": "/bin/zsh -lc \"sed -n '105,170p' backend/internal/adapters/httpapi/generated/api.gen.go; git diff --stat\"",
+    "exit_code": 0,
+    "output_characters": 1784
+  },
+  {
+    "command": "/bin/zsh -lc 'gofmt -w backend/internal/adapters/httpapi/handler.go backend/internal/adapters/httpapi/liveness_test.go; PATH=\"/Users/densin/go/pkg/mod/golang.org/toolchain@v0.0.1-go1.27.0.darwin-arm64/bin:$PATH\" GOPROXY=off GOSUMDB=off GOTOOLCHAIN=local npm_config_offline=true make generate PNPM=pnpm'",
+    "exit_code": 0,
+    "output_characters": 614
+  },
+  {
+    "command": "/bin/zsh -lc 'git diff --check; git status --short; git diff --stat'",
+    "exit_code": 0,
+    "output_characters": 530
+  },
+  {
+    "command": "/bin/zsh -lc 'PATH=\"/Users/densin/go/pkg/mod/golang.org/toolchain@v0.0.1-go1.27.0.darwin-arm64/bin:$PATH\" GOPROXY=off GOSUMDB=off GOTOOLCHAIN=local go test ./internal/adapters/httpapi -count=1'",
+    "exit_code": 0,
+    "output_characters": 88
+  },
+  {
+    "command": "/bin/zsh -lc 'git diff -- api/openapi.yaml backend/internal/adapters/httpapi/handler.go frontend/src/api/schema.d.ts; git diff -- backend/internal/adapters/httpapi/generated/api.gen.go'",
+    "exit_code": 0,
+    "output_characters": 4467
+  }
+]

@@ -1,0 +1,77 @@
+[
+  {
+    "command": "/bin/zsh -lc \"pwd; git status --short; cat docs/project.md docs/development.md; rg -n 'health/live|Liveness|liveness|HealthLive' api backend Makefile\"",
+    "exit_code": 0,
+    "output_characters": 6728
+  },
+  {
+    "command": "/bin/zsh -lc \"sed -n '335,385p' api/openapi.yaml; rg -n 'Health:|Health\\\\b|generate:|generate-' api/openapi.yaml Makefile; sed -n '1,140p' backend/internal/adapters/httpapi/handler_test.go; sed -n '195,240p' backend/internal/adapters/httpapi/handler.go; cat Makefile\"",
+    "exit_code": 0,
+    "output_characters": 13205
+  },
+  {
+    "command": "/bin/zsh -lc \"sed -n '735,765p' api/openapi.yaml; cat backend/Makefile frontend/Makefile; rg --files -g AGENTS.md\"",
+    "exit_code": 0,
+    "output_characters": 2711
+  },
+  {
+    "command": "/bin/zsh -lc 'GOPROXY=off GOSUMDB=off GOTOOLCHAIN=local npm_config_offline=true make generate PNPM=pnpm'",
+    "exit_code": 2,
+    "output_characters": 306
+  },
+  {
+    "command": "/bin/zsh -lc \"go env GOTOOLCHAIN GOPATH; ls /Users/densin/go/pkg/mod/golang.org/toolchain*; rg -n 'go1.27|GOTOOLCHAIN' . --glob '\"'!pnpm-lock.yaml'\"' --glob '\"'!api.gen.go'\"'; cat backend/go.mod | head -15\"",
+    "exit_code": 0,
+    "output_characters": 541
+  },
+  {
+    "command": "/bin/zsh -lc 'GOPROXY=off GOSUMDB=off npm_config_offline=true make generate PNPM=pnpm'",
+    "exit_code": 2,
+    "output_characters": 349
+  },
+  {
+    "command": "/bin/zsh -lc \"printf '%s\\\\n' /Users/densin/go/pkg/mod/golang.org/toolchain*/bin/go; ls -l /Users/densin/go/pkg/mod/golang.org/toolchain*/bin/go\"",
+    "exit_code": 0,
+    "output_characters": 215
+  },
+  {
+    "command": "/bin/zsh -lc 'PATH=/Users/densin/go/pkg/mod/golang.org/toolchain@v0.0.1-go1.27.0.darwin-arm64/bin:$PATH GOPROXY=off GOSUMDB=off GOTOOLCHAIN=local npm_config_offline=true make generate PNPM=pnpm'",
+    "exit_code": 0,
+    "output_characters": 614
+  },
+  {
+    "command": "/bin/zsh -lc \"rg -n 'LivenessStatus|LivenessService' backend/internal/adapters/httpapi/generated/api.gen.go\"",
+    "exit_code": 0,
+    "output_characters": 755
+  },
+  {
+    "command": "/bin/zsh -lc 'gofmt -w backend/internal/adapters/httpapi/handler.go backend/internal/adapters/httpapi/liveness_test.go; git diff --stat; git diff --check'",
+    "exit_code": 0,
+    "output_characters": 317
+  },
+  {
+    "command": "/bin/zsh -lc 'PATH=/Users/densin/go/pkg/mod/golang.org/toolchain@v0.0.1-go1.27.0.darwin-arm64/bin:$PATH GOPROXY=off GOSUMDB=off GOTOOLCHAIN=local go test ./internal/adapters/httpapi -count=1'",
+    "exit_code": 1,
+    "output_characters": 326
+  },
+  {
+    "command": "/bin/zsh -lc \"git diff backend/internal/adapters/httpapi/generated/api.gen.go | head -110; rg -n 'generated\\\\.(Live|Ready|NotReady)' backend --glob '\"'!api.gen.go'\"'\"",
+    "exit_code": 0,
+    "output_characters": 2836
+  },
+  {
+    "command": "/bin/zsh -lc 'PATH=/Users/densin/go/pkg/mod/golang.org/toolchain@v0.0.1-go1.27.0.darwin-arm64/bin:$PATH GOPROXY=off GOSUMDB=off GOTOOLCHAIN=local npm_config_offline=true make generate PNPM=pnpm'",
+    "exit_code": 0,
+    "output_characters": 616
+  },
+  {
+    "command": "/bin/zsh -lc 'git diff --check; git status --short; git diff --stat'",
+    "exit_code": 0,
+    "output_characters": 531
+  },
+  {
+    "command": "/bin/zsh -lc 'PATH=/Users/densin/go/pkg/mod/golang.org/toolchain@v0.0.1-go1.27.0.darwin-arm64/bin:$PATH GOPROXY=off GOSUMDB=off GOTOOLCHAIN=local go test ./internal/adapters/httpapi -count=1'",
+    "exit_code": 0,
+    "output_characters": 88
+  }
+]
