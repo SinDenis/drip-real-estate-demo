@@ -46,6 +46,7 @@ INVALID означает незавершенный запуск инструм�
 |---|---|---:|---:|---:|---:|---|---:|
 | 1. Название в liveness | before | 156.0 | 494,485 | 461,312 | 29,360 | [PASS](reports/1-before-20261006T141609127274Z/checks.log) | [55](reports/1-before-20261006T141609127274Z/changes.patch) |
 | 1. Название в liveness | after | 101.8 | 290,176 | 252,672 | 34,951 | [PASS](reports/1-after-20261006T142000204753Z/checks.log) | [58](reports/1-after-20261006T142000204753Z/changes.patch) |
+| 2. CSV-экспорт сессии | before | 119.8 | 336,322 | 294,912 | 37,303 | [PASS](reports/2-before-20261006T142310284237Z/checks.log) | [231](reports/2-before-20261006T142310284237Z/changes.patch) |
 
 *Добавленные и удаленные строки, включая тесты и YAML; generated Go/TypeScript исключены.
 
