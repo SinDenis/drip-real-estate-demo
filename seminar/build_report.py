@@ -10,7 +10,7 @@ GITHUB = 'https://github.com/SinDenis/drip-real-estate-demo/blob/codex/context-e
 EXPLANATIONS = {
  '01-http-contract': {'name':'HTTP-контракт','before':'Пустой контекст репозитория','after':'AGENTS.md + описание + workflow','lesson':'Два baseline-ответа оставили TypeScript-контракт устаревшим. Проверка самого Go API этого не обнаруживает.','oracle':'HTTP handler, readiness, Go/TypeScript codegen, исходные HTTP-тесты'},
  '02-domain-metrics': {'name':'Язык предметной области','before':'Базовые инструкции первого примера','after':'Карта + архитектура + CONTEXT.md','lesson':'Обе версии ответили правильно. Добавление документов не дало измеренного выигрыша в точности. Ошибка deleted в заметке отдельно найдена по схеме.','oracle':'175 по известной части, delta 0, неизвестные продажи и полный итог, missing 9003'},
- '03-db-command': {'name':'БД и прежние решения','before':'Исправленный полный контекст второго примера','after':'Два ADR + ссылки на решения','lesson':'Сравните не только SQL, но и пользовательский контракт: видимые сессии, пустая база, путь DOCKER и CSV без recipe echo.','oracle':'Три реальные synthetic SQL fixture, SELECT-only, один запрос, CSV и прежние команды'},
+ '03-db-command': {'name':'БД и прежние решения','before':'Исправленный полный контекст второго примера','after':'Два ADR + ссылки на решения','lesson':'Все шесть решений прошли контракт. При дополнительном разборе патчей db-query переиспользован в 1/3 baseline и 3/3 guided. Это наблюдение после запуска, не новый критерий pass.','oracle':'Три реальные synthetic SQL fixture, SELECT-only, один запрос, CSV и прежние команды'},
 }
 
 def build_data():

@@ -274,9 +274,16 @@ def main():
             cfg = json.loads(path.read_text())
             folder = SEM / 'reports' / cfg['id']
             official = json.loads((folder / 'official.json').read_text())['report']
-            run([str(tooling()), 'import', str(folder / official / 'promptfoo.json')], env=env)
+            export = folder / official / 'promptfoo.json'
+            export_id = json.loads(export.read_text())['evalId']
+            imported = subprocess.run([str(tooling()), 'import', str(export)], cwd=ROOT, env=env, text=True, capture_output=True)
+            log = imported.stdout + imported.stderr
+            duplicate = 'Eval ' + export_id + ' already exists. Use --new-id to import with a new ID, or --force to replace it.'
+            if imported.returncode and duplicate not in log:
+                raise RuntimeError('Promptfoo import failed: ' + log.strip())
+            print(('existing_series: ' if imported.returncode else 'imported_series: ') + export_id, flush=True)
             count += 1
-        print('imported_series: ' + str(count))
+        print('available_series: ' + str(count))
         print('model_calls: 0')
         print('help: start promptfoo view with PROMPTFOO_CONFIG_DIR=' + env['PROMPTFOO_CONFIG_DIR'])
     elif args.action == 'prepare':

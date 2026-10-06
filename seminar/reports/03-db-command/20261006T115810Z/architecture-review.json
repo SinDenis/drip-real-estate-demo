@@ -1,0 +1,40 @@
+{
+  "criterion": "Reuse existing db-query target instead of duplicating psql connection flags",
+  "pre_registered": false,
+  "affects_primary_pass": false,
+  "note": "Exploratory review of all six saved patches after inference. All six still pass the original behavioral checks.",
+  "rows": [
+    {
+      "trial": "after-r1",
+      "reuses_existing_db_query": true,
+      "candidate_patch_sha256": "4d9595cdea09c532acedfe8677e1a771ce2292829cd5bf650b20d2589b6865df"
+    },
+    {
+      "trial": "after-r2",
+      "reuses_existing_db_query": true,
+      "candidate_patch_sha256": "c2fc36b34c19e07aed93bcc8e11d6d8ef1fa52f64cab5ecc3e486a1b061eb050"
+    },
+    {
+      "trial": "after-r3",
+      "reuses_existing_db_query": true,
+      "candidate_patch_sha256": "e83082fbc7a5ceb0e75f4eaa302349517c166e7004c56dabc791c56779e2e625"
+    },
+    {
+      "trial": "before-r1",
+      "reuses_existing_db_query": true,
+      "candidate_patch_sha256": "06e5e27e241ba17eea4637fd8e854feed909f825e0e3bcf2a9752a612e78e1a5"
+    },
+    {
+      "trial": "before-r2",
+      "reuses_existing_db_query": false,
+      "candidate_patch_sha256": "bb127e8a54fc7e681cf5ab6336876796ae3bef4dac30222b1d70ef0cd5ce3bae"
+    },
+    {
+      "trial": "before-r3",
+      "reuses_existing_db_query": false,
+      "candidate_patch_sha256": "ec05b68fada934d9552d7d4736b6b802b0bd514e36284bc621d889aa02af654f"
+    }
+  ],
+  "before_reuse": 1,
+  "after_reuse": 3
+}

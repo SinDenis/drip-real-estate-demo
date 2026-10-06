@@ -52,7 +52,7 @@ Raw-отчёты остаются сохранёнными. Неисправны
 
 Для живого проектирования `prepare` создаёт редактируемую classroom-копию. Параметры `--after-source` и новая `--revision` сохраняют новый вариант отдельно. Пример и ограничения описаны в памятке преподавателя.
 
-Чтобы открыть сохранённые серии на другой машине без вызовов модели, выполните `python3 seminar/run.py restore`. Команда импортирует official JSON в локальную базу Promptfoo. Авторизация Codex для этого не нужна.
+Чтобы открыть сохранённые серии на другой машине без вызовов модели, выполните `python3 seminar/run.py restore`. Команда импортирует official JSON в локальную базу Promptfoo и пропускает уже существующие ID, сохраняя пользовательские оценки. Авторизация Codex для этого не нужна.
 
 Для нативного UI Promptfoo используйте тот же config directory, что harness: `PROMPTFOO_CONFIG_DIR=seminar/runtime/promptfoo-home seminar/runtime/tool/node_modules/.bin/promptfoo view --port 15501`. Открывайте http://127.0.0.1:15501/eval. Если использован CE_PROMPTFOO_BIN, вызовите этот бинарник вместо локального.
 
